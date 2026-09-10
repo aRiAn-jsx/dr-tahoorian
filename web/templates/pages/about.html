@@ -2,15 +2,20 @@
 {{$data := .Content}}
 <section class="about-page">
     <div class="about-hero">
-        <div class="about-atoms" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="about-atoms" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
         <div class="about-hero__grid"></div>
         <div class="about-shell about-shell--hero">
             {{if $data.About}}
             <div class="about-copy about-copy--hero scroll-reveal">
                 <span class="about-kicker">درباره من / مسیر یک ایده</span>
-                <h1>فکر را به<br><em>اثر ماندگار</em> تبدیل می‌کنم.</h1>
+                <h1><span class="about-hero__static">فکر را به</span><br><em class="about-typed" data-typed-words="اثر ماندگار|اختراع تازه|تصمیم روشن">اثر ماندگار</em><span class="about-typed__cursor">|</span><br><span class="about-hero__static">تبدیل می‌کنم.</span></h1>
                 <div class="about-copy__rule"></div>
                 <div class="about-copy__text">{{$data.About.Content}}</div>
+                <div class="about-hero__metrics">
+                    <div><strong><b data-counter="5">۰</b></strong><span>اختراع ثبت‌شده</span></div>
+                    <div><strong><b data-counter="32">۰</b><small>+</small></strong><span>مدرک بین‌المللی</span></div>
+                    <div><strong><b data-counter="20">۰</b></strong><span>سال تجربه</span></div>
+                </div>
                 <a href="#achievements" class="about-hero__link">شناختن مسیر من <i data-lucide="arrow-down-left"></i></a>
             </div>
             <div class="about-visual about-visual--hero scroll-reveal">
@@ -25,6 +30,12 @@
         </div>
         <span class="about-hero__scroll">اسکرول کنید <i data-lucide="arrow-down"></i></span>
     </div>
+    <section class="about-inventions">
+        <div class="about-shell about-inventions__shell">
+            <div class="about-inventions__visual scroll-reveal"><div class="about-inventions__halo"></div><img src="/static/images/اختراعات-دکتر-سایت.png" alt="اختراعات دکتر حسین طهوریان" loading="lazy"><span class="about-inventions__stamp">PATENTS<br><b>۰۵</b></span></div>
+            <div class="about-inventions__copy scroll-reveal"><span class="about-kicker">اختراعات دکتر</span><h2>از یک پرسش<br><em>تا یک اختراع</em></h2><p>اختراع برای من فقط ثبت یک ایده نیست؛ راهی است برای دیدن یک مسئله از زاویه‌ای تازه و ساختن راه‌حلی که در جهان واقعی اثر بگذارد.</p><div class="about-inventions__line"><span></span><b>تحقیق / طراحی / اثر</b></div><a href="/contact">درباره مسیر اختراعات <i data-lucide="arrow-up-left"></i></a></div>
+        </div>
+    </section>
     <section class="about-section about-section--stats" id="achievements">
         <div class="about-shell"><div class="about-section__heading scroll-reveal"><span class="about-kicker">اعداد مسیر</span><h2>چیزهایی که<br><em>اندازه گرفته‌ایم</em></h2></div>
             <div class="about-highlights about-highlights--large">

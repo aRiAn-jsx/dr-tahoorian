@@ -46,8 +46,61 @@ function initProjectNumbers() {
     });
 }
 
+function toPersianDigits(value) {
+    return String(value).replace(/\d/g, (digit) => '۰۱۲۳۴۵۶۷۸۹'[digit]);
+}
+
+function initAboutCounters() {
+    document.querySelectorAll('[data-counter]').forEach((counter) => {
+        if (counter.dataset.counterBound === 'true') return;
+        counter.dataset.counterBound = 'true';
+        const target = Number(counter.dataset.counter);
+        const render = (value) => { counter.textContent = toPersianDigits(value); };
+        render(0);
+        if (!('IntersectionObserver' in window)) {
+            render(target);
+            return;
+        }
+        const observer = new IntersectionObserver((entries, currentObserver) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                const startedAt = performance.now();
+                const duration = 1500;
+                const tick = (now) => {
+                    const progress = Math.min((now - startedAt) / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    render(Math.round(target * eased));
+                    if (progress < 1) requestAnimationFrame(tick);
+                };
+                requestAnimationFrame(tick);
+                currentObserver.unobserve(counter);
+            });
+        }, { threshold: 0.65 });
+        observer.observe(counter);
+    });
+}
+
+function initAboutAtomField() {
+    const hero = document.querySelector('.about-hero');
+    if (!hero || hero.dataset.atomsBound === 'true') return;
+    hero.dataset.atomsBound = 'true';
+    const atoms = hero.querySelectorAll('.about-atoms span');
+    hero.addEventListener('pointermove', (event) => {
+        const bounds = hero.getBoundingClientRect();
+        const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+        const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+        atoms.forEach((atom, index) => {
+            const strength = (index % 3 + 1) * 14;
+            atom.style.transform = `translate(${x * strength}px, ${y * strength}px)`;
+        });
+    });
+    hero.addEventListener('pointerleave', () => {
+        atoms.forEach((atom) => { atom.style.transform = ''; });
+    });
+}
+
 function initScrollReveal() {
-    const revealItems = document.querySelectorAll('.value-section, .ventures-section, .packages-section, .portfolio-section, .stats-section, .contact-section, .venture-card, .project-feature, .project-item, .brand-card, .team-lead, .team-values');
+    const revealItems = document.querySelectorAll('.value-section, .ventures-section, .packages-section, .portfolio-section, .stats-section, .contact-section, .venture-card, .project-feature, .project-item, .brand-card, .about-page .scroll-reveal, .team-lead, .team-values');
     if (!('IntersectionObserver' in window)) {
         revealItems.forEach((item) => item.classList.add('is-visible'));
         return;
@@ -142,6 +195,8 @@ function initScrollHeader() {
 document.addEventListener('DOMContentLoaded', () => {
     refreshIcons();
     initProjectNumbers();
+    initAboutCounters();
+    initAboutAtomField();
     updateActiveNavigation();
     initScrollReveal();
     initVentureCards();
@@ -152,6 +207,8 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('htmx:afterSettle', () => {
     refreshIcons();
     initProjectNumbers();
+    initAboutCounters();
+    initAboutAtomField();
     updateActiveNavigation();
     initScrollReveal();
     initVentureCards();

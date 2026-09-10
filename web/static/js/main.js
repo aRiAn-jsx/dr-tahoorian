@@ -47,7 +47,7 @@ function initProjectNumbers() {
 }
 
 function initScrollReveal() {
-    const revealItems = document.querySelectorAll('.value-section, .ventures-section, .packages-section, .portfolio-section, .stats-section, .contact-section, .venture-card, .project-feature, .project-item, .team-lead, .team-values');
+    const revealItems = document.querySelectorAll('.value-section, .ventures-section, .packages-section, .portfolio-section, .stats-section, .contact-section, .venture-card, .project-feature, .project-item, .brand-card, .team-lead, .team-values');
     if (!('IntersectionObserver' in window)) {
         revealItems.forEach((item) => item.classList.add('is-visible'));
         return;

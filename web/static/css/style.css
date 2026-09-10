@@ -264,6 +264,74 @@
     .service-item__image { height: 210px; }
 }
 
+/* Brand-led project showcase */
+.projects-page { background: #f1f1eb; }
+.projects-intro--editorial { align-items: end; margin-bottom: 66px; }
+.projects-intro--editorial h1 { letter-spacing: -.02em; }
+.projects-intro--editorial h1 em { color: var(--violet); font-style: normal; }
+.projects-intro__aside { width: min(310px, 100%); display: flex; align-items: start; gap: 15px; direction: rtl; }
+.projects-intro__aside p { margin: 0; font-size: 12px; line-height: 2.25; }
+.projects-intro__line { width: 42px; height: 1px; flex: 0 0 auto; margin-top: 11px; background: var(--violet); }
+.brand-showcase { display: grid; grid-template-columns: 1.35fr .82fr; gap: 24px; align-items: stretch; }
+.brand-stack { display: grid; grid-template-rows: 1fr 1fr; gap: 24px; }
+.brand-card { min-width: 0; min-height: 300px; opacity: 0; transform: translateY(35px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.75,.2,1); }
+.brand-card.is-visible { opacity: 1; transform: translateY(0); }
+.brand-stack .brand-card:nth-child(2) { transition-delay: .12s; }
+.brand-card__surface { min-height: 100%; position: relative; display: flex; overflow: hidden; color: white; isolation: isolate; }
+.brand-card__background { position: absolute; z-index: -2; inset: 0; background-position: center; background-size: cover; transition: transform 1s cubic-bezier(.2,.75,.2,1), filter .8s ease; }
+.brand-card__surface::before { content: ''; position: absolute; z-index: -1; inset: 0; background: linear-gradient(135deg, rgba(2,42,40,.78) 0%, rgba(2,42,40,.18) 48%, rgba(2,42,40,.86) 100%); }
+.brand-card__surface::after { content: ''; position: absolute; z-index: 0; inset: 18px; border: 1px solid rgba(255,255,255,.34); pointer-events: none; transition: inset .6s ease, border-color .5s ease; }
+.brand-card__surface:hover .brand-card__background { filter: saturate(1.2); transform: scale(1.07); }
+.brand-card__surface:hover::after { inset: 25px; border-color: rgba(255,255,255,.7); }
+.brand-card__topline { position: absolute; z-index: 2; top: 30px; right: 32px; left: 32px; display: flex; justify-content: space-between; color: rgba(255,255,255,.8); font-family: Georgia, serif; font-size: 11px; letter-spacing: .08em; direction: ltr; }
+.brand-card__content { z-index: 2; align-self: end; padding: 42px 48px 46px; direction: rtl; }
+.brand-card__kicker { display: block; margin-bottom: 16px; color: var(--gold-light); font-family: Georgia, serif; font-size: 10px; direction: ltr; }
+.brand-card h2 { margin: 0 0 20px; color: white; font-size: clamp(34px, 4.5vw, 65px); line-height: 1.35; }
+.brand-card h2 em { color: var(--gold-light); font-style: normal; }
+.brand-card p { max-width: 340px; margin: 0 0 22px; color: #d7e6de; font-size: 12px; line-height: 2.2; }
+.brand-card__action { display: inline-flex; align-items: center; gap: 8px; color: white; font-size: 10px; font-weight: 800; }
+.brand-card__action svg { width: 15px; height: 15px; color: var(--gold-light); transition: transform .3s ease; }
+.brand-card__surface:hover .brand-card__action svg { transform: translate(-4px, -4px); }
+.brand-card__mark { position: absolute; z-index: 1; left: 34px; top: 50%; color: rgba(255,255,255,.11); font-family: Georgia, serif; font-size: clamp(85px, 14vw, 190px); font-weight: 900; letter-spacing: .05em; transform: translateY(-50%); }
+.brand-card--ssi { min-height: 660px; }
+.brand-card--ssi .brand-card__background { background-image: url('/static/images/شرکت.png'); background-color: #ffca91; background-size: contain; background-repeat: no-repeat; background-position: 58% center; }
+.brand-card--ssi .brand-card__surface::before { background: linear-gradient(135deg, rgba(2,42,40,.82), rgba(2,42,40,.08) 60%, rgba(2,42,40,.72)); }
+.brand-card--hodhod { min-height: 318px; }
+.brand-card--hodhod .brand-card__background { background-image: url('/static/images/31-100x100.png'); background-color: #022a28; background-size: 170px; background-repeat: no-repeat; background-position: 25% center; }
+.brand-card--hodhod .brand-card__surface::before { background: linear-gradient(90deg, rgba(2,42,40,.08), rgba(2,42,40,.94) 72%); }
+.brand-card--hodhod .brand-card__content { padding: 38px 38px 34px; margin-right: auto; }
+.brand-card--hodhod h2, .brand-card--ideas h2 { font-size: clamp(27px, 3vw, 42px); }
+.brand-card--ideas { min-height: 318px; }
+.brand-card--ideas .brand-card__background { background-image: url('/static/images/کتاب-های-سایت-دکتر-طهوریان-1024x569.jpg'); background-position: center; filter: saturate(.72); }
+.brand-card--ideas .brand-card__surface::before { background: linear-gradient(135deg, rgba(2,42,40,.9), rgba(2,42,40,.18) 70%, rgba(2,42,40,.72)); }
+.brand-card--ideas .brand-card__content { padding: 38px 38px 34px; }
+.projects-signature { display: flex; align-items: center; gap: 24px; margin-top: 76px; padding-top: 22px; border-top: 1px solid rgba(3,52,49,.2); direction: rtl; }
+.projects-signature > span { color: var(--violet); font-family: Georgia, serif; font-size: 25px; direction: ltr; }
+.projects-signature p { margin: 0; color: var(--muted); font-size: 11px; }
+.projects-signature a { display: inline-flex; align-items: center; gap: 7px; margin-right: auto; color: var(--green); font-size: 10px; font-weight: 800; }
+.projects-signature a:hover { color: var(--violet); }
+.projects-signature svg { width: 15px; height: 15px; }
+
+@media (max-width: 800px) {
+    .projects-intro--editorial { margin-bottom: 42px; }
+    .projects-intro__aside { margin-top: 22px; }
+    .brand-showcase { display: block; }
+    .brand-stack { display: grid; grid-template-rows: none; gap: 18px; margin-top: 18px; }
+    .brand-card--ssi { min-height: 560px; }
+    .brand-card--hodhod, .brand-card--ideas { min-height: 330px; }
+    .brand-card__content { padding: 34px 28px 32px; }
+    .brand-card__topline { top: 25px; right: 25px; left: 25px; }
+    .brand-card__surface::after { inset: 14px; }
+    .brand-card__mark { left: 20px; font-size: 90px; }
+    .projects-signature { display: block; margin-top: 54px; }
+    .projects-signature p { margin: 13px 0 19px; }
+    .projects-signature a { margin-right: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .brand-card, .brand-card__background, .brand-card__surface::after, .brand-card__action svg { transition: none; }
+}
+
 /* Editorial project gallery */
 .projects-archive-heading { position: relative; z-index: 1; }
 .projects-archive-heading__note { color: var(--muted); font-size: 10px; line-height: 2; text-align: left; }

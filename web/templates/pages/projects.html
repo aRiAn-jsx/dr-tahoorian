@@ -2,32 +2,37 @@
 {{$data := .Content}}
 <section class="projects-page">
     <div class="projects-shell">
-        <header class="projects-intro">
-            <div><span class="eyebrow">پروژه‌ها / ویترین تجربه</span><h1>چیزهایی که<br><em>ساخته‌ایم</em></h1></div>
-            <p>مجموعه‌ای از مسیرها، همکاری‌ها و پروژه‌هایی که با نگاه استراتژیک و اجرای دقیق شکل گرفته‌اند.</p>
+        <header class="projects-intro projects-intro--editorial">
+            <div><span class="eyebrow">پروژه‌ها / امضای ما</span><h1>هر برند،<br><em>یک جهان تازه</em></h1></div>
+            <div class="projects-intro__aside"><span class="projects-intro__line"></span><p>ما فقط پروژه تحویل نمی‌دهیم؛ برای هر ایده یک شخصیت، یک صدا و یک تجربه‌ی ماندگار می‌سازیم.</p></div>
         </header>
-        <article class="project-feature project-feature--ssi">
-            <div class="project-feature__visual"><span class="project-feature__index">01</span><span class="project-feature__giant">SSI</span><img src="/static/images/شرکت.png" alt="هلدینگ سرآمد سرمایه ایلیا" loading="eager"></div>
-            <div class="project-feature__content"><span class="project-feature__label">هلدینگ خصوصی و دانش‌بنیان</span><h2>سرآمد سرمایه<br><em>ایلیا</em></h2><p>از ۸/۸/۸۸، یک نهاد مستقل برای ساختن راه‌حل‌های نوین و خلق ارزش افزوده برای جامعه.</p><div class="project-feature__facts"><span><strong>۱۳۸۸</strong>سال آغاز</span><span><strong>SSI</strong>هویت پروژه</span></div><a href="https://ssiholding.co/" target="_blank" rel="noopener noreferrer" class="project-feature__link">ورود به سایت هلدینگ <i data-lucide="arrow-up-left"></i></a></div>
-        </article>
-        <article class="project-feature project-feature--hodhod">
-            <div class="project-feature__content"><span class="project-feature__label">آژانس دیجیتال مارکتینگ</span><h2>هدهد؛<br><em>ایده‌ها در پرواز</em></h2><p>از طراحی سایت و مدیریت سوشال مدیا تا تبلیغات، بازاریابی آنلاین، عکاسی تبلیغاتی و ساخت تیزر.</p><div class="project-feature__facts"><span><strong>۱۳۹۹</strong>سال آغاز</span><span><strong>360°</strong>نگاه دیجیتال</span></div><a href="/contact" class="project-feature__link">شروع یک پروژه <i data-lucide="arrow-up-left"></i></a></div>
-            <div class="project-feature__visual"><span class="project-feature__index">02</span><span class="project-feature__giant">HODHOD</span><img src="/static/images/31-100x100.png" alt="آژانس دیجیتال مارکتینگ هدهد" loading="lazy"></div>
-        </article>
-        <div class="projects-archive-heading"><div><span class="eyebrow">آرشیو پروژه‌ها</span><h2>ادامه مسیر</h2></div><span class="projects-archive-heading__note">انتخاب‌هایی از مسیر ما<br>برای نگاه دقیق‌تر</span></div><div class="projects-grid">
-            {{range $i, $item := $data.Gallery}}
-            <article class="project-item{{if eq $i 0}} project-item--hero{{else if eq $i 1}} project-item--small{{else if eq $i 2}} project-item--small{{end}}">
-                <a href="/contact" class="project-item__visual" aria-label="مشاهده جزئیات پروژه {{$item.Title}}">
-                    <img src="{{$item.ImageURL}}" alt="{{$item.Title}}" loading="lazy">
-                    <span class="project-item__number" data-project-number="{{$i}}">۰۱</span>
-                    <span class="project-item__open"><i data-lucide="arrow-up-left"></i></span>
+        <div class="brand-showcase">
+            <article class="brand-card brand-card--ssi scroll-reveal">
+                <a href="https://ssiholding.co/" target="_blank" rel="noopener noreferrer" class="brand-card__surface" aria-label="ورود به سایت سرآمد سرمایه ایلیا">
+                    <div class="brand-card__background"></div>
+                    <div class="brand-card__topline"><span>۰۱ / هلدینگ</span><span>SSI</span></div>
+                    <div class="brand-card__content"><span class="brand-card__kicker">Private holding · Since 1388</span><h2>سرآمد سرمایه<br><em>ایلیا</em></h2><p>ساختن راه‌حل‌های نوین و خلق ارزش افزوده برای جامعه.</p><span class="brand-card__action">ورود به جهان برند <i data-lucide="arrow-up-left"></i></span></div>
+                    <span class="brand-card__mark">SSI</span>
                 </a>
-                <div class="project-item__meta"><span>{{$item.Category}}</span><h2>{{$item.Title}}</h2><a href="/contact">شروع یک گفت‌وگو <i data-lucide="arrow-up-left"></i></a></div>
             </article>
-            {{else}}
-            <p class="projects-empty">پروژه‌ها در حال به‌روزرسانی هستند.</p>
-            {{end}}
+            <div class="brand-stack">
+                <article class="brand-card brand-card--hodhod scroll-reveal">
+                    <a href="/contact" class="brand-card__surface" aria-label="شروع پروژه با آژانس هدهد">
+                        <div class="brand-card__background"></div>
+                        <div class="brand-card__topline"><span>۰۲ / آژانس دیجیتال</span><span>HODHOD</span></div>
+                        <div class="brand-card__content"><span class="brand-card__kicker">Digital studio · Since 1399</span><h2>هدهد؛<br><em>ایده‌ها در پرواز</em></h2><span class="brand-card__action">شروع یک پروژه <i data-lucide="arrow-up-left"></i></span></div>
+                    </a>
+                </article>
+                <article class="brand-card brand-card--ideas scroll-reveal">
+                    <a href="/contact" class="brand-card__surface" aria-label="مشاهده مسیر ایده‌ها و دستاوردها">
+                        <div class="brand-card__background"></div>
+                        <div class="brand-card__topline"><span>۰۳ / دستاوردها</span><span>IDEAS</span></div>
+                        <div class="brand-card__content"><span class="brand-card__kicker">Research · Creativity · Impact</span><h2>ایده‌هایی<br><em>برای ماندن</em></h2><span class="brand-card__action">آشنایی بیشتر <i data-lucide="arrow-up-left"></i></span></div>
+                    </a>
+                </article>
+            </div>
         </div>
+        <footer class="projects-signature"><span>۳ مسیر</span><p>یک نگاه مشترک: جسارت در فکر، دقت در اجرا.</p><a href="/contact">پروژه‌ی بعدی را با ما بسازید <i data-lucide="arrow-up-left"></i></a></footer>
     </div>
 </section>
 {{end}}

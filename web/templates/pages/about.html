@@ -1,0 +1,28 @@
+{{define "content"}}
+{{$data := .Content}}
+<section class="about-section">
+    <div class="about-shell">
+            {{if $data.About}}
+                <div class="about-visual">
+                    <div class="about-visual__wash"></div>
+                    <span class="about-visual__label">مشاور و راهبر کسب‌وکار</span>
+                    <img src="/static/images/download%20(3).webp" alt="دکتر حسین طهوریان با گواهی‌نامه حرفه‌ای" class="about-portrait">
+                    <div class="about-stamp"><strong>۱۷<small>+</small></strong><span>سال تجربه<br>حرفه‌ای</span></div>
+                </div>
+                <div class="about-copy">
+                    <span class="about-kicker">درباره من</span>
+                    <h1>{{$data.About.Title}}</h1>
+                    <div class="about-copy__rule"></div>
+                    <div class="about-copy__text">{{$data.About.Content}}</div>
+                    <div class="about-highlights">
+                        <div><strong>۵</strong><span>اختراع ثبت‌شده</span></div>
+                        <div><strong>۳۲<small>+</small></strong><span>مدرک بین‌المللی</span></div>
+                        <div><strong>۲۰</strong><span>سال تجربه مدیریتی</span></div>
+                    </div>
+                </div>
+                {{else}}
+                <div class="about-empty"><span class="about-kicker">درباره من</span><h1>اطلاعات در حال به‌روزرسانی است.</h1></div>
+                {{end}}
+    </div>
+</section>
+{{end}}

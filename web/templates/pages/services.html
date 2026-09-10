@@ -1,0 +1,26 @@
+{{define "content"}}
+{{$services := .Content}}
+<section class="services-page">
+    <div class="services-shell">
+        <header class="services-intro">
+            <div><span class="eyebrow">پروژه‌ها و هلدینگ‌ها</span><h1>ساختن مجموعه‌هایی<br><em>برای آینده</em></h1></div>
+            <p>هر کسب‌وکار، بخشی از مسیر تجربه، یادگیری و اثرگذاری دکتر حسین طهوریان است.</p>
+        </header>
+        <div class="services-list-heading"><span class="eyebrow">دیگر مسیرها</span><h2>تجربه‌هایی که<br><em>ادامه دارند</em></h2></div>
+        <div class="services-grid">
+            {{range $service := $services}}
+                    <div class="service-item">
+                {{if $service.ImageURL}}
+                            <img src="{{$service.ImageURL}}" alt="{{$service.Title}}" class="service-item__image">
+                {{end}}
+                        <div class="service-item__content">
+                            <h3>{{$service.Title}}</h3>
+                            <p>{{$service.Description}}</p>
+                            <button class="service-item__button" type="button">بیشتر بدانید <i data-lucide="arrow-up-left"></i></button>
+                </div>
+            </div>
+            {{end}}
+        </div>
+    </div>
+</section>
+{{end}}

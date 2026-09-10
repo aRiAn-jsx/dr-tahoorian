@@ -1,0 +1,30 @@
+{{define "base"}}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}}</title>
+    <meta name="description" content="دکتر حسین طهوریان - تجربه ۲۰ ساله در مدیریت و هلدینگ‌ها">
+    <link rel="icon" type="image/webp" href="/static/images/download%20(2).webp">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        body { font-family: 'Vazirmatn', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#fbfbfd] text-[#17151d]" hx-boost="true" hx-target="#page-content" hx-select="#page-content" hx-swap="outerHTML">
+    {{template "header" .}}
+    <main id="page-content">
+        {{template "content" .}}
+    </main>
+    {{template "footer" .}}
+    <script src="/static/js/main.js"></script>
+    <script>window.addEventListener('DOMContentLoaded', function () { if (window.lucide) lucide.createIcons(); });</script>
+</body>
+</html>
+{{end}}

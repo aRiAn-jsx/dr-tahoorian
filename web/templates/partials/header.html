@@ -1,0 +1,32 @@
+{{define "header"}}
+<header class="site-header">
+    <nav class="site-nav" x-data="{ open: false }">
+        <a href="/" class="brand-mark" aria-label="طهوریان">
+            <img class="brand-logo" src="/static/images/download%20(2).webp" alt="طهوریان">
+        </a>
+        <div class="desktop-nav">
+            <a href="/" class="{{if eq .CurrentPath "/"}}is-active{{end}}" {{if eq .CurrentPath "/"}}aria-current="page"{{end}}>خانه</a>
+            <a href="/about" class="{{if eq .CurrentPath "/about"}}is-active{{end}}" {{if eq .CurrentPath "/about"}}aria-current="page"{{end}}>درباره من</a>
+            <a href="/projects" class="{{if eq .CurrentPath "/projects"}}is-active{{end}}" {{if eq .CurrentPath "/projects"}}aria-current="page"{{end}}>پروژه‌ها</a>
+            <a href="/team" class="{{if eq .CurrentPath "/team"}}is-active{{end}}" {{if eq .CurrentPath "/team"}}aria-current="page"{{end}}>تیم من</a>
+            <a href="/contact" class="{{if eq .CurrentPath "/contact"}}is-active{{end}}" {{if eq .CurrentPath "/contact"}}aria-current="page"{{end}}>تماس با من</a>
+        </div>
+        <a href="/contact" class="header-cta">تماس با من <span aria-hidden="true">↗</span></a>
+        <button type="button" class="menu-toggle" aria-expanded="false" aria-controls="mobile-navigation" aria-label="باز کردن منو">
+            <span class="menu-lines menu-lines--open" aria-hidden="true"><span></span><span></span></span>
+            <span class="menu-lines menu-lines--close" aria-hidden="true"><span></span><span></span></span>
+        </button>
+        <div id="mobile-navigation" class="mobile-nav">
+            <div class="mobile-nav__handle" aria-hidden="true"><span></span></div>
+            <div class="mobile-nav__heading"><span>منوی اصلی</span><small>طهوریان / ۲۰۲۶</small></div>
+            <a href="/" hx-boost="true" class="{{if eq .CurrentPath "/"}}is-active{{end}}" {{if eq .CurrentPath "/"}}aria-current="page"{{end}}><i data-lucide="house"></i><span>خانه</span><b>01</b></a>
+            <a href="/about" hx-boost="true" class="{{if eq .CurrentPath "/about"}}is-active{{end}}" {{if eq .CurrentPath "/about"}}aria-current="page"{{end}}><i data-lucide="user-round"></i><span>درباره من</span><b>02</b></a>
+            <a href="/projects" hx-boost="true" class="{{if eq .CurrentPath "/projects"}}is-active{{end}}" {{if eq .CurrentPath "/projects"}}aria-current="page"{{end}}><i data-lucide="layers-3"></i><span>پروژه‌ها</span><b>03</b></a>
+            <a href="/team" hx-boost="true" class="{{if eq .CurrentPath "/team"}}is-active{{end}}" {{if eq .CurrentPath "/team"}}aria-current="page"{{end}}><i data-lucide="users-round"></i><span>تیم من</span><b>04</b></a>
+            <a href="/contact" hx-boost="true" class="{{if eq .CurrentPath "/contact"}}is-active{{end}}" {{if eq .CurrentPath "/contact"}}aria-current="page"{{end}}><i data-lucide="arrow-up-left"></i><span>تماس با من</span><b>05</b></a>
+            <div class="mobile-nav__footer"><span>شروع یک همکاری تازه</span><i data-lucide="sparkles"></i></div>
+        </div>
+    </nav>
+</header>
+<div class="header-spacer" aria-hidden="true"></div>
+{{end}}

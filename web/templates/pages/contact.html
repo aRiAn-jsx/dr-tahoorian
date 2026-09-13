@@ -1,55 +1,150 @@
 {{define "content"}}
-{{$contact := .Content}}
-<section class="py-20 bg-white">
-    <div class="container mx-auto px-4">
-        <h1 class="text-4xl font-bold text-center text-[#1A365D] mb-12">تماس با ما</h1>
-        <div class="grid md:grid-cols-2 gap-12">
-            <div>
-                <form hx-post="/api/contact" hx-target="#contact-result" hx-swap="innerHTML" class="space-y-6">
-                    <div>
-                        <label class="block text-gray-700 mb-2">نام</label>
-                        <input type="text" name="name" required class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#1A365D]">
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 mb-2">ایمیل</label>
-                        <input type="email" name="email" class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#1A365D]">
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 mb-2">شماره تماس</label>
-                        <input type="tel" name="phone" required class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#1A365D]">
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 mb-2">موضوع</label>
-                        <input type="text" name="subject" class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#1A365D]">
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 mb-2">پیام</label>
-                        <textarea name="message" rows="5" required class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#1A365D]"></textarea>
-                    </div>
-                    <button type="submit" class="w-full bg-[#1A365D] hover:bg-[#2D3748] text-white font-bold py-3 px-6 rounded-lg transition">
-                        ارسال پیام
-                    </button>
-                </form>
-                <div id="contact-result"></div>
-            </div>
-            <div class="space-y-8">
-                <div class="bg-gray-50 p-6 rounded-xl">
-                    <h3 class="text-xl font-bold text-[#1A365D] mb-4">اطلاعات تماس</h3>
-                    {{if $contact}}
-                    <p class="text-gray-700 mb-2">آدرس: {{$contact.Address}}</p>
-                    <p class="text-gray-700 mb-2">تلفن: {{$contact.Phone}}</p>
-                    <p class="text-gray-700 mb-2">ایمیل: {{$contact.Email}}</p>
-                    {{else}}
-                    <p class="text-gray-500">اطلاعات تماس در حال به‌روزرسانی است.</p>
-                    {{end}}
-                </div>
-                <div class="bg-gray-50 p-6 rounded-xl">
-                    <h3 class="text-xl font-bold text-[#1A365D] mb-4">ساعت کاری</h3>
-                    <p class="text-gray-700">شنبه تا چهارشنبه: ۹ صبح تا ۶ عصر</p>
-                    <p class="text-gray-700">پنجشنبه: ۹ صبح تا ۱ بعد از ظهر</p>
-                </div>
+{{$phone := "02122014567"}}
+{{$phoneLabel := "۰۲۱-۲۲۰۱۴۵۶۷"}}
+{{$email := "info@tahoorian.ir"}}
+{{$address := "تهران، خیابان ولیعصر، برج تجاری آرین، طبقه ۱۲"}}
+{{$hours := "شنبه تا چهارشنبه ۹:۰۰ الی ۱۷:۰۰"}}
+{{if .Content.Phone}}{{$phone = .Content.Phone}}{{$phoneLabel = .Content.Phone}}{{end}}
+{{if .Content.Email}}{{$email = .Content.Email}}{{end}}
+{{if .Content.Address}}{{$address = .Content.Address}}{{end}}
+{{if .Content.WorkHours}}{{$hours = .Content.WorkHours}}{{end}}
+
+<div class="contact-page">
+    <header class="contact-hero contact-hero-section">
+        <div class="contact-shell">
+            <div class="contact-hero__inner">
+                <span class="contact-badge">
+                    <span class="status-dot"></span>
+                    ارتباط مستقیم و گفت‌وگوی راهبردی
+                </span>
+                <h1>راه ارتباطی با <em>دکتر حسین طهوریان</em></h1>
+                <p>مشاوره استراتژیک هلدینگ‌ها، بررسی فرصت‌های مشارکت و سرمایه‌گذاری، و همراهی کسب‌وکارها در مسیر توسعه پایدار.</p>
+                <ul class="contact-points">
+                    <li><i data-lucide="shield-check"></i> محرمانگی کامل اطلاعات</li>
+                    <li><i data-lucide="clock"></i> پاسخگویی زیر ۲۴ ساعت</li>
+                    <li><i data-lucide="award"></i> مشاوره سطح مدیران ارشد</li>
+                </ul>
             </div>
         </div>
-    </div>
-</section>
+    </header>
+
+    <section class="contact-main">
+        <div class="contact-shell contact-layout">
+            <div class="contact-channels">
+                <span class="eyebrow">کانال‌های ارتباطی</span>
+                <h2>درگاه‌های مستقیم <em>تماس</em></h2>
+                <p class="contact-channels__lead">از هر یک از مسیرهای زیر می‌توانید با دفتر در ارتباط باشید. پذیرش حضوری فقط با هماهنگی قبلی انجام می‌شود.</p>
+
+                <a class="channel-card" href="tel:{{$phone}}">
+                    <span class="channel-card__icon"><i data-lucide="phone-call"></i></span>
+                    <span class="channel-card__body">
+                        <small>تماس تلفنی و هماهنگی</small>
+                        <strong>{{$phoneLabel}}</strong>
+                        <em>پاسخگویی شنبه تا چهارشنبه ۹ الی ۱۷</em>
+                    </span>
+                    <span class="channel-card__go" aria-hidden="true"><i data-lucide="arrow-up-left"></i></span>
+                </a>
+                <a class="channel-card" href="mailto:{{$email}}">
+                    <span class="channel-card__icon"><i data-lucide="mail"></i></span>
+                    <span class="channel-card__body">
+                        <small>مکاتبات رسمی</small>
+                        <strong dir="ltr">{{$email}}</strong>
+                        <em>ارسال پیشنهاد و دعوت‌نامه</em>
+                    </span>
+                    <span class="channel-card__go" aria-hidden="true"><i data-lucide="arrow-up-left"></i></span>
+                </a>
+                <div class="channel-card channel-card--static">
+                    <span class="channel-card__icon"><i data-lucide="map-pin"></i></span>
+                    <span class="channel-card__body">
+                        <small>دفتر مرکزی</small>
+                        <strong>{{$address}}</strong>
+                        <em>پذیرش حضوری فقط با وقت قبلی</em>
+                    </span>
+                </div>
+                <div class="channel-card channel-card--static">
+                    <span class="channel-card__icon"><i data-lucide="clock"></i></span>
+                    <span class="channel-card__body">
+                        <small>ساعات کاری</small>
+                        <strong>{{$hours}}</strong>
+                        <em>فرم سایت به‌صورت ۲۴ ساعته فعال است</em>
+                    </span>
+                </div>
+
+                <blockquote class="contact-note">
+                    <p>«تصمیم‌های کلیدی با یک گفت‌وگوی روشن آغاز می‌شوند. آماده شنیدن چشم‌انداز شما هستیم.»</p>
+                    <cite>دکتر حسین طهوریان</cite>
+                </blockquote>
+            </div>
+
+            <div class="contact-form-card">
+                <div class="contact-form-card__head">
+                    <span class="form-chip"><i data-lucide="message-square-plus"></i> فرم درخواست</span>
+                    <h2>ارسال <em>پیام مستقیم</em></h2>
+                    <p>برای تنظیم جلسه یا طرح همکاری، اطلاعات زیر را تکمیل کنید.</p>
+                </div>
+                <form class="contact-form" hx-post="/api/contact" hx-target="#contact-result" hx-swap="innerHTML">
+                    <div class="form-row">
+                        <label>
+                            نام و نام خانوادگی <span class="req">*</span>
+                            <input type="text" name="name" required placeholder="مثال: علیرضا محمدی" autocomplete="name">
+                        </label>
+                        <label>
+                            شماره تماس <span class="req">*</span>
+                            <input type="tel" name="phone" required placeholder="۰۹۱۲ ۱۲۳ ۴۵۶۷" autocomplete="tel">
+                        </label>
+                    </div>
+                    <div class="form-row">
+                        <label>
+                            پست الکترونیک
+                            <input type="email" name="email" placeholder="info@company.com" autocomplete="email">
+                        </label>
+                        <label>
+                            موضوع درخواست
+                            <select name="subject">
+                                <option value="مشاوره استراتژیک هلدینگ">مشاوره استراتژیک هلدینگ</option>
+                                <option value="سرمایه‌گذاری و توسعه کسب‌وکار">سرمایه‌گذاری و توسعه کسب‌وکار</option>
+                                <option value="همراهی و منتورینگ مدیریت">همراهی و منتورینگ مدیریت</option>
+                                <option value="دعوت به سخنرانی و رویداد">دعوت به سخنرانی و رویداد</option>
+                                <option value="سایر موضوعات">سایر موضوعات</option>
+                            </select>
+                        </label>
+                    </div>
+                    <label>
+                        شرح درخواست <span class="req">*</span>
+                        <textarea name="message" rows="5" required placeholder="توضیح مختصر درباره کسب‌وکار یا موضوع جلسه..."></textarea>
+                    </label>
+                    <button type="submit" class="contact-submit">ارسال پیام و ثبت درخواست <i data-lucide="arrow-up-left"></i></button>
+                    <div id="contact-result" class="contact-result-container"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-faq">
+        <div class="contact-shell">
+            <div class="contact-faq__head">
+                <span class="eyebrow">سوالات متداول</span>
+                <h2>قبل از تماس <em>بدانید</em></h2>
+            </div>
+            <div class="faq-list">
+                <details class="faq-item" open>
+                    <summary>جلسات مشاوره چگونه برگزار می‌شوند؟</summary>
+                    <p>جلسات بسته به توافق، حضوری در دفتر تهران یا به‌صورت جلسه تصویری اختصاصی برگزار می‌شود.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>زمینه‌های اصلی مشاوره چیست؟</summary>
+                    <p>راهبری استراتژیک هلدینگ‌ها، ساختار سازمانی مقیاس‌پذیر، زنجیره تامین و مشارکت در طرح‌های سرمایه‌گذاری.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>زمان پاسخ اولیه چقدر است؟</summary>
+                    <p>پیام‌ها معمولاً ظرف ۲۴ تا ۴۸ ساعت کاری بررسی می‌شوند و برای هماهنگی جلسه پاسخ داده می‌شود.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>آیا اطلاعات ارسالی محرمانه می‌ماند؟</summary>
+                    <p>بله. ایده، آمار مالی و طرح‌های تجاری بر اساس استاندارد محرمانگی حرفه‌ای حفظ می‌شود.</p>
+                </details>
+            </div>
+        </div>
+    </section>
+</div>
 {{end}}

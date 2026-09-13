@@ -2,6 +2,19 @@ package domain
 
 import "time"
 
+type Article struct {
+	ID          int       `json:"id" db:"id"`
+	Title       string    `json:"title" db:"title"`
+	Slug        string    `json:"slug" db:"slug"`
+	Summary     string    `json:"summary" db:"summary"`
+	Content     string    `json:"content" db:"content"`
+	ImageURL    string    `json:"image_url" db:"image_url"`
+	Author      string    `json:"author" db:"author"`
+	IsPublished bool      `json:"is_published" db:"is_published"`
+	CreatedAt   time.Time `json:"created_at" db:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at" db:"updated_at"`
+}
+
 type About struct {
 	ID          int       `json:"id" db:"id"`
 	Title       string    `json:"title" db:"title"`
@@ -55,3 +68,4 @@ type ContactInfo struct {
 	Email     string `json:"email"`
 	WorkHours string `json:"work_hours"`
 }
+

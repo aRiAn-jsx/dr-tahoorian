@@ -110,3 +110,66 @@ func (r *Repository) GetContactInfo() (*domain.ContactInfo, error) {
 	}
 	return info, err
 }
+
+func (r *Repository) ListArticles() ([]domain.Article, error) {
+	rows, err := r.db.Query(`SELECT id, title, slug, summary, content, image_url, author, is_published, created_at, updated_at FROM articles ORDER BY id DESC`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var articles []domain.Article
+	for rows.Next() {
+		var a domain.Article
+		if err := rows.Scan(&a.ID, &a.Title, &a.Slug, &a.Summary, &a.Content, &a.ImageURL, &a.Author, &a.IsPublished, &a.CreatedAt, &a.UpdatedAt); err != nil {
+			return nil, err
+		}
+		articles = append(articles, a)
+	}
+	return articles, nil
+}
+
+func (r *Repository) GetArticleByID(id int) (*domain.Article, error) {
+	row := r.db.QueryRow(`SELECT id, title, slug, summary, content, image_url, author, is_published, created_at, updated_at FROM articles WHERE id = ?`, id)
+	a := &domain.Article{}
+	err := row.Scan(&a.ID, &a.Title, &a.Slug, &a.Summary, &a.Content, &a.ImageURL, &a.Author, &a.IsPublished, &a.CreatedAt, &a.UpdatedAt)
+	if err == sql.ErrNoRows {
+		return nil, nil
+	}
+	return a, err
+}
+
+func (r *Repository) GetArticleBySlug(slug string) (*domain.Article, error) {
+	row := r.db.QueryRow(`SELECT id, title, slug, summary, content, image_url, author, is_published, created_at, updated_at FROM articles WHERE slug = ?`, slug)
+	a := &domain.Article{}
+	err := row.Scan(&a.ID, &a.Title, &a.Slug, &a.Summary, &a.Content, &a.ImageURL, &a.Author, &a.IsPublished, &a.CreatedAt, &a.UpdatedAt)
+	if err == sql.ErrNoRows {
+		return nil, nil
+	}
+	return a, err
+}
+
+func (r *Repository) CreateArticle(article *domain.Article) error {
+	res, err := r.db.Exec(`INSERT INTO articles (title, slug, summary, content, image_url, author, is_published, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+		article.Title, article.Slug, article.Summary, article.Content, article.ImageURL, article.Author, article.IsPublished, article.CreatedAt, article.UpdatedAt)
+	if err != nil {
+		return err
+	}
+	id, err := res.LastInsertId()
+	if err == nil {
+		article.ID = int(id)
+	}
+	return nil
+}
+
+func (r *Repository) UpdateArticle(article *domain.Article) error {
+	_, err := r.db.Exec(`UPDATE articles SET title = ?, slug = ?, summary = ?, content = ?, image_url = ?, author = ?, is_published = ?, updated_at = ? WHERE id = ?`,
+		article.Title, article.Slug, article.Summary, article.Content, article.ImageURL, article.Author, article.IsPublished, article.UpdatedAt, article.ID)
+	return err
+}
+
+func (r *Repository) DeleteArticle(id int) error {
+	_, err := r.db.Exec(`DELETE FROM articles WHERE id = ?`, id)
+	return err
+}
+

@@ -1,0 +1,93 @@
+{{define "content"}}
+{{$data := .Content}}
+{{$art := $data.Article}}
+<section class="min-h-screen py-12 sm:py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Breadcrumb & Back -->
+        <nav class="flex items-center justify-between gap-4 mb-8 text-xs font-bold text-slate-400">
+            <div class="flex items-center gap-2">
+                <a href="/" class="hover:text-slate-700 transition">خانه</a>
+                <span>/</span>
+                <a href="/articles" class="hover:text-slate-700 transition">مقالات</a>
+                <span>/</span>
+                <span class="text-slate-600 truncate max-w-xs">{{$art.Title}}</span>
+            </div>
+            <a href="/articles" class="text-amber-600 hover:text-amber-700 flex items-center gap-1">
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                <span>بازگشت به مقالات</span>
+            </a>
+        </nav>
+
+        <!-- Article Header -->
+        <header class="mb-10">
+            <div class="flex items-center gap-3 text-xs text-amber-600 font-bold mb-4">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-700">
+                    <i data-lucide="user" class="w-3.5 h-3.5"></i>
+                    {{$art.Author}}
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-600">
+                    <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+                    {{formatDate $art.CreatedAt}}
+                </span>
+            </div>
+            <h1 class="text-2xl sm:text-4xl font-black text-slate-900 leading-tight">
+                {{$art.Title}}
+            </h1>
+            {{if $art.Summary}}
+            <div class="mt-6 p-5 rounded-2xl bg-amber-50/70 border-r-4 border-amber-500 text-slate-700 text-sm sm:text-base leading-relaxed font-medium">
+                {{$art.Summary}}
+            </div>
+            {{end}}
+        </header>
+
+        <!-- Featured Image -->
+        {{if $art.ImageURL}}
+        <div class="rounded-3xl overflow-hidden mb-12 shadow-lg bg-slate-100 border border-slate-200/80 max-h-[460px]">
+            <img src="{{$art.ImageURL}}" alt="{{$art.Title}}" class="w-full h-full object-cover">
+        </div>
+        {{end}}
+
+        <!-- Article Body -->
+        <div class="bg-white rounded-3xl p-8 sm:p-12 border border-slate-200/90 shadow-sm">
+            <div class="prose prose-lg max-w-none text-slate-800 text-base sm:text-lg leading-loose whitespace-pre-line font-normal">
+                {{$art.Content}}
+            </div>
+
+            <!-- Footer / Author Bio -->
+            <div class="mt-12 pt-8 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+                <div class="flex items-center gap-4">
+                    <img src="/static/images/download%20(2).webp" alt="{{$art.Author}}" class="w-14 h-14 rounded-2xl object-cover bg-amber-50 border border-amber-200 p-1">
+                    <div>
+                        <div class="font-black text-slate-900">{{$art.Author}}</div>
+                        <div class="text-xs text-slate-500 mt-0.5">مشاور و راهبر کسب‌وکار و هلدینگ‌ها</div>
+                    </div>
+                </div>
+                <a href="/contact" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-slate-900 hover:bg-amber-500 text-white hover:text-slate-950 text-xs font-black transition">
+                    <span>درخواست مشاوره تخصصی</span>
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Recent Articles Navigation -->
+        {{if $data.RecentArticles}}
+        <div class="mt-16">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-black text-slate-900">سایر مقالات</h3>
+                <a href="/articles" class="text-xs font-bold text-amber-600 hover:underline">مشاهده همه</a>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {{range $rec := $data.RecentArticles}}
+                <a href="/articles/{{$rec.Slug}}" class="block p-5 rounded-2xl bg-white border border-slate-200 hover:border-amber-400 transition shadow-sm hover:shadow-md group">
+                    <span class="text-[11px] text-slate-400 font-bold block mb-1">{{formatDate $rec.CreatedAt}}</span>
+                    <h4 class="text-sm font-bold text-slate-900 group-hover:text-amber-600 transition">{{$rec.Title}}</h4>
+                </a>
+                {{end}}
+            </div>
+        </div>
+        {{end}}
+
+    </div>
+</section>
+{{end}}

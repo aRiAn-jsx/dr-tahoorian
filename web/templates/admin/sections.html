@@ -1,0 +1,132 @@
+{{define "admin_content"}}
+{{$data := .Data}}
+<div class="space-y-6">
+    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h2 class="text-xl font-black text-slate-900">مدیریت بخش‌های وب‌سایت</h2>
+            <p class="text-sm text-slate-500 mt-1">نمای کلی ماژول‌ها و بخش‌های فعال و در حال توسعه در پنل مدیریت</p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="px-3 py-1.5 rounded-xl bg-amber-50 text-amber-700 border border-amber-200 text-xs font-bold flex items-center gap-1.5">
+                <i data-lucide="check" class="w-4 h-4"></i>
+                بخش مقالات فعال است
+            </span>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <!-- Section 1: Articles (Active) -->
+        <div class="bg-white rounded-3xl p-6 border-2 border-amber-500/40 shadow-sm relative overflow-hidden flex flex-col justify-between">
+            <div class="absolute top-4 left-4">
+                <span class="px-2.5 py-1 rounded-full text-xs font-black bg-emerald-500 text-white shadow-sm">فعال</span>
+            </div>
+            <div>
+                <div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center mb-4">
+                    <i data-lucide="newspaper" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-lg font-black text-slate-900">مدیریت مقالات</h3>
+                <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                    ایجاد، ویرایش، حذف و انتشار مقالات و یادداشت‌های تخصصی دکتر طهوریان در وب‌سایت.
+                </p>
+                <div class="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600">
+                    <span>تعداد مقالات ثبت‌شده:</span>
+                    <span class="font-bold text-slate-900">{{$data.ArticleCount}} مقاله</span>
+                </div>
+            </div>
+            <div class="mt-6">
+                <a href="/admin/articles" class="w-full py-2.5 px-4 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs rounded-xl transition flex items-center justify-center gap-2">
+                    <span>ورود به مدیریت مقالات</span>
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                </a>
+            </div>
+        </div>
+
+
+        <!-- Section 2: About Me (Upcoming) -->
+        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between opacity-80 hover:opacity-100 transition">
+            <div>
+                <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-600 flex items-center justify-center mb-4">
+                    <i data-lucide="user-check" class="w-6 h-6"></i>
+                </div>
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-bold text-slate-900">درباره من و اختراعات</h3>
+                    <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-slate-100 text-slate-500">به‌زودی</span>
+                </div>
+                <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                    ویرایش متن معرفی، سوابق حرفه‌ای، اختراعات، کتب و پادکست‌های دکتر طهوریان.
+                </p>
+            </div>
+            <div class="mt-6">
+                <button disabled class="w-full py-2.5 px-4 bg-slate-100 text-slate-400 font-bold text-xs rounded-xl cursor-not-allowed">
+                    آماده‌سازی در فاز بعدی
+                </button>
+            </div>
+        </div>
+
+        <!-- Section 3: Services (Upcoming) -->
+        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between opacity-80 hover:opacity-100 transition">
+            <div>
+                <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-600 flex items-center justify-center mb-4">
+                    <i data-lucide="briefcase" class="w-6 h-6"></i>
+                </div>
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-bold text-slate-900">خدمات و مشاوره‌ها</h3>
+                    <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-slate-100 text-slate-500">به‌زودی</span>
+                </div>
+                <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                    مدیریت عناوین، توضیحات و خدمات ارائه شده به سازمان‌ها و هلدینگ‌ها.
+                </p>
+            </div>
+            <div class="mt-6">
+                <button disabled class="w-full py-2.5 px-4 bg-slate-100 text-slate-400 font-bold text-xs rounded-xl cursor-not-allowed">
+                    آماده‌سازی در فاز بعدی
+                </button>
+            </div>
+        </div>
+
+        <!-- Section 4: Contact & Messages (Upcoming) -->
+        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between opacity-80 hover:opacity-100 transition">
+            <div>
+                <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-600 flex items-center justify-center mb-4">
+                    <i data-lucide="mail" class="w-6 h-6"></i>
+                </div>
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-bold text-slate-900">صندوق پیام‌ها و تماس‌ها</h3>
+                    <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-slate-100 text-slate-500">به‌زودی</span>
+                </div>
+                <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                    مشاهده فرم‌های ارسال شده توسط کاربران و ویرایش اطلاعات تماس و ساعات کاری.
+                </p>
+            </div>
+            <div class="mt-6">
+                <button disabled class="w-full py-2.5 px-4 bg-slate-100 text-slate-400 font-bold text-xs rounded-xl cursor-not-allowed">
+                    آماده‌سازی در فاز بعدی
+                </button>
+            </div>
+        </div>
+
+        <!-- Section 5: Stats & Counters (Upcoming) -->
+        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between opacity-80 hover:opacity-100 transition">
+            <div>
+                <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-600 flex items-center justify-center mb-4">
+                    <i data-lucide="activity" class="w-6 h-6"></i>
+                </div>
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-bold text-slate-900">آمارهای کلیدی سایت</h3>
+                    <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-slate-100 text-slate-500">به‌زودی</span>
+                </div>
+                <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                    ویرایش اعداد سال‌های تجربه، پروژه‌ها، مدارک و اختراعات در صفحه اصلی.
+                </p>
+            </div>
+            <div class="mt-6">
+                <button disabled class="w-full py-2.5 px-4 bg-slate-100 text-slate-400 font-bold text-xs rounded-xl cursor-not-allowed">
+                    آماده‌سازی در فاز بعدی
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+{{end}}

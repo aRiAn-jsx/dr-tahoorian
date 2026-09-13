@@ -14,8 +14,10 @@
 # Go workspace file
 go.work
 
-# Dependency directories
+# Dependency directories (but keep self-hosted web assets)
 vendor/
+!web/static/vendor/
+!web/static/vendor/js/
 
 # IDE
 .idea/

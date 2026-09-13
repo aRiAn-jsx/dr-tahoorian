@@ -176,11 +176,13 @@ function initMobileMenu() {
 function initScrollHeader() {
     const header = document.querySelector('.site-header');
     const hero = document.querySelector('.hero-section');
+    const contactHero = document.querySelector('.contact-hero-section');
     const spacer = document.querySelector('.header-spacer');
     if (!header || !spacer) return;
     const updateHeader = () => {
-        const shouldFix = hero
-            ? hero.getBoundingClientRect().bottom <= 0
+        const heroSection = hero || contactHero;
+        const shouldFix = heroSection
+            ? heroSection.getBoundingClientRect().bottom <= 0
             : window.scrollY > 80;
         header.classList.toggle('site-header--fixed', shouldFix);
         spacer.classList.toggle('is-active', shouldFix);
@@ -190,6 +192,115 @@ function initScrollHeader() {
         window.addEventListener('scroll', updateHeader, { passive: true });
     }
     updateHeader();
+}
+
+function initContactPageAnimations() {
+    // Hero Particles Animation
+    const heroParticles = document.getElementById('hero-particles');
+    if (heroParticles) {
+        const createParticle = () => {
+            const particle = document.createElement('div');
+            particle.style.cssText = `
+                position: absolute;
+                width: ${Math.random() * 4 + 2}px;
+                height: ${Math.random() * 4 + 2}px;
+                background: rgba(216, 178, 115, ${Math.random() * 0.5 + 0.2});
+                border-radius: 50%;
+                left: ${Math.random() * 100}%;
+                top: ${Math.random() * 100}%;
+                pointer-events: none;
+                animation: particleFloat ${Math.random() * 10 + 10}s infinite ease-in-out;
+                animation-delay: ${Math.random() * 5}s;
+            `;
+            heroParticles.appendChild(particle);
+        };
+
+        for (let i = 0; i < 20; i++) {
+            createParticle();
+        }
+    }
+
+    // Contact Cards Hover Effect
+    const contactCards = document.querySelectorAll('.contact-card-item--modern');
+    contactCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px) scale(1.02)';
+        });
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = '';
+        });
+    });
+
+    // Form Input Animation
+    const formInputs = document.querySelectorAll('.form-field--floating input, .form-field--floating select, .form-field--floating textarea');
+    formInputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            this.parentElement.classList.add('is-focused');
+        });
+        input.addEventListener('blur', function() {
+            this.parentElement.classList.remove('is-focused');
+        });
+    });
+
+    // Social Chips Animation
+    const socialChips = document.querySelectorAll('.social-chip--modern');
+    socialChips.forEach(chip => {
+        chip.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-3px) scale(1.05)';
+        });
+        chip.addEventListener('mouseleave', function() {
+            this.style.transform = '';
+        });
+    });
+
+    // FAQ Accordion Smooth Animation
+    const faqItems = document.querySelectorAll('.faq-accordion-item--modern');
+    faqItems.forEach(item => {
+        const trigger = item.querySelector('.faq-trigger');
+        if (trigger) {
+            trigger.addEventListener('click', function() {
+                const isOpen = item.classList.contains('is-open');
+                // Close all other items
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('is-open');
+                    }
+                });
+            });
+        }
+    });
+
+    // CTA Banner Parallax Effect
+    const ctaBanner = document.querySelector('.cta-banner-card--modern');
+    if (ctaBanner) {
+        window.addEventListener('scroll', () => {
+            const rect = ctaBanner.getBoundingClientRect();
+            const scrollPercent = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
+            if (scrollPercent > 0 && scrollPercent < 1) {
+                ctaBanner.style.transform = `translateY(${(scrollPercent - 0.5) * 20}px)`;
+            }
+        });
+    }
+
+    // Scroll Reveal for Contact Page Elements
+    const revealElements = document.querySelectorAll('.contact-hero-content, .contact-dossier, .contact-form-wrapper, .faq-accordion-item, .cta-banner-card');
+    revealElements.forEach((element, index) => {
+        element.style.opacity = '0';
+        element.style.transform = 'translateY(30px)';
+        element.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                    observer.unobserve(element);
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        observer.observe(element);
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -203,6 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileNavDrag();
     initMobileMenu();
     initScrollHeader();
+    initContactPageAnimations();
 });
 document.addEventListener('htmx:afterSettle', () => {
     refreshIcons();
@@ -215,5 +327,7 @@ document.addEventListener('htmx:afterSettle', () => {
     initMobileNavDrag();
     initMobileMenu();
     initScrollHeader();
+    initContactPageAnimations();
 });
 window.addEventListener('popstate', updateActiveNavigation);
+

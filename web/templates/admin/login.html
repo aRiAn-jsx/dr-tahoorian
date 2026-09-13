@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}}</title>
+    <link rel="icon" type="image/webp" href="/static/images/download%20(2).webp">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Vazirmatn', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center p-4 selection:bg-amber-500 selection:text-slate-950">
+
+    <div class="w-full max-w-md">
+        <!-- Brand Header -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl mb-4 p-2">
+                <img src="/static/images/download%20(2).webp" alt="طهوریان" class="w-full h-full object-contain">
+            </div>
+            <h1 class="text-2xl font-black text-white tracking-tight">ورود به پنل مدیریت</h1>
+            <p class="text-sm text-slate-400 mt-1">وب‌سایت رسمی دکتر حسین طهوریان</p>
+        </div>
+
+        <!-- Login Card -->
+        <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-8 shadow-2xl backdrop-blur-md">
+            
+            {{if .Error}}
+            <div class="mb-6 p-4 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm flex items-center gap-3">
+                <i data-lucide="alert-triangle" class="w-5 h-5 shrink-0"></i>
+                <div>{{.Error}}</div>
+            </div>
+            {{end}}
+
+            <form action="/admin/login" method="POST" class="space-y-5">
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-2">نام کاربری</label>
+                    <div class="relative">
+                        <input type="text" name="username" required value="admin" class="w-full px-4 py-3.5 pr-11 bg-slate-950 border border-slate-700/80 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 text-sm transition">
+                        <i data-lucide="user" class="w-5 h-5 text-slate-500 absolute right-3.5 top-3.5"></i>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-2">رمز عبور</label>
+                    <div class="relative">
+                        <input type="password" name="password" required value="admin" class="w-full px-4 py-3.5 pr-11 bg-slate-950 border border-slate-700/80 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 text-sm transition">
+                        <i data-lucide="lock" class="w-5 h-5 text-slate-500 absolute right-3.5 top-3.5"></i>
+                    </div>
+                </div>
+
+                <div class="p-3 bg-slate-950/60 border border-slate-800 rounded-xl text-xs text-slate-400 flex items-center justify-between">
+                    <span>اطلاعات ورود پیش‌فرض:</span>
+                    <span class="font-mono text-amber-400 font-bold">admin / admin</span>
+                </div>
+
+                <button type="submit" class="w-full py-3.5 px-4 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-2xl transition duration-200 shadow-lg shadow-amber-500/20 text-sm flex items-center justify-center gap-2">
+                    <span>ورود به سامانه</span>
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                </button>
+            </form>
+
+            <div class="mt-6 pt-6 border-t border-slate-800 text-center">
+                <a href="/" class="text-xs text-slate-400 hover:text-amber-400 transition inline-flex items-center gap-1.5">
+                    <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                    <span>بازگشت به وب‌سایت اصلی</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) lucide.createIcons();
+        });
+    </script>
+</body>
+</html>

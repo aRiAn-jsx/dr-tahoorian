@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log/slog"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/glebarez/go-sqlite"
 )
 
 type Repository struct {
@@ -13,7 +13,7 @@ type Repository struct {
 }
 
 func New(dsn string) (*sql.DB, error) {
-	db, err := sql.Open("sqlite3", dsn)
+	db, err := sql.Open("sqlite", dsn)
 	if err != nil {
 		return nil, err
 	}
@@ -77,6 +77,18 @@ func Migrate(db *sql.DB) error {
 			phone TEXT NOT NULL,
 			email TEXT NOT NULL,
 			work_hours TEXT
+		)`,
+		`CREATE TABLE IF NOT EXISTS articles (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			title TEXT NOT NULL,
+			slug TEXT NOT NULL UNIQUE,
+			summary TEXT,
+			content TEXT NOT NULL,
+			image_url TEXT,
+			author TEXT,
+			is_published BOOLEAN DEFAULT 1,
+			created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+			updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 		)`,
 	}
 

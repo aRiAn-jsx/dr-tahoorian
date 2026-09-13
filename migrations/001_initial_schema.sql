@@ -54,7 +54,21 @@ CREATE TABLE IF NOT EXISTS contact_info (
     work_hours TEXT
 );
 
+CREATE TABLE IF NOT EXISTS articles (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    slug TEXT NOT NULL UNIQUE,
+    summary TEXT,
+    content TEXT NOT NULL,
+    image_url TEXT,
+    author TEXT,
+    is_published BOOLEAN DEFAULT 1,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
 -- +goose Down
+DROP TABLE IF EXISTS articles;
 DROP TABLE IF EXISTS contact_info;
 DROP TABLE IF EXISTS stats;
 DROP TABLE IF EXISTS gallery;

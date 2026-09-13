@@ -1,0 +1,97 @@
+{{define "admin_content"}}
+{{$data := .Data}}
+{{$isNew := $data.IsNew}}
+{{$art := $data.Article}}
+<div class="max-w-4xl mx-auto space-y-6">
+
+    <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <a href="/admin/articles" class="p-2 text-slate-500 hover:text-slate-800 hover:bg-white rounded-xl transition border border-transparent hover:border-slate-200">
+                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+            </a>
+            <div>
+                <h2 class="text-xl font-black text-slate-900">
+                    {{if $isNew}}نوشتن مقاله جدید{{else}}ویرایش مقاله: {{$art.Title}}{{end}}
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">اطلاعات و متن مقاله را در فرم زیر تکمیل نمایید</p>
+            </div>
+        </div>
+        <a href="/admin/articles" class="text-xs font-bold text-slate-500 hover:text-slate-800">
+            انصراف و بازگشت
+        </a>
+    </div>
+
+    <form action="{{if $isNew}}/admin/articles/new{{else}}/admin/articles/edit/{{$art.ID}}{{end}}" method="POST" class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+        <input type="hidden" name="_csrf" value="{{$.CSRFToken}}">
+        
+        <div>
+            <label class="block text-xs font-bold text-slate-700 mb-2">
+                عنوان مقاله <span class="text-red-500">*</span>
+            </label>
+            <input type="text" name="title" required value="{{$art.Title}}" placeholder="مثال: اصول مدیریت استراتژیک در کسب‌وکارهای نوین" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 text-sm focus:outline-none focus:border-amber-500 focus:bg-white transition">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-2">
+                    نامک انگلیسی (Slug)
+                </label>
+                <input type="text" name="slug" value="{{$art.Slug}}" placeholder="strategic-management-principles" dir="ltr" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 text-sm font-mono focus:outline-none focus:border-amber-500 focus:bg-white transition">
+                <span class="text-[11px] text-slate-400 mt-1 block">در صورت خالی ماندن، به‌صورت خودکار ساخته می‌شود.</span>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-2">
+                    نام نویسنده
+                </label>
+                <input type="text" name="author" value="{{if $art.Author}}{{$art.Author}}{{else}}دکتر حسین طهوریان{{end}}" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 text-sm focus:outline-none focus:border-amber-500 focus:bg-white transition">
+            </div>
+        </div>
+
+        <div>
+            <label class="block text-xs font-bold text-slate-700 mb-2">
+                آدرس تصویر شاخص (Image URL)
+            </label>
+            <input type="text" name="image_url" value="{{$art.ImageURL}}" placeholder="/static/images/کتاب-های-سایت-دکتر-طهوریان-1024x569.jpg" dir="ltr" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 text-sm font-mono focus:outline-none focus:border-amber-500 focus:bg-white transition">
+        </div>
+
+        <div>
+            <label class="block text-xs font-bold text-slate-700 mb-2">
+                چکیده و خلاصه مقاله
+            </label>
+            <textarea name="summary" rows="2" placeholder="توضیح کوتاه ۱ یا ۲ خطی درباره موضوع مقاله..." class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 text-sm focus:outline-none focus:border-amber-500 focus:bg-white transition">{{$art.Summary}}</textarea>
+        </div>
+
+        <div>
+            <label class="block text-xs font-bold text-slate-700 mb-2">
+                متن کامل مقاله <span class="text-red-500">*</span>
+            </label>
+            <textarea name="content" rows="12" required placeholder="متن تفصیلی و بندهای مقاله را اینجا بنویسید..." class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 text-sm leading-relaxed focus:outline-none focus:border-amber-500 focus:bg-white transition">{{$art.Content}}</textarea>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+            <div>
+                <span class="text-sm font-bold text-slate-800 block">وضعیت انتشار مقاله</span>
+                <span class="text-xs text-slate-500">در صورت فعال بودن، مقاله بلافاصله در وب‌سایت عمومی نمایش داده می‌شود.</span>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" name="is_published" value="true" class="sr-only peer" {{if $art.IsPublished}}checked{{end}}>
+                <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
+            </label>
+        </div>
+
+        <div class="pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
+            <a href="/admin/articles" class="px-5 py-3 rounded-xl text-slate-600 hover:bg-slate-100 font-bold text-sm transition">
+                انصراف
+            </a>
+            <button type="submit" class="px-7 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl text-sm transition shadow-md flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4"></i>
+                <span>{{if $isNew}}ثبت و انتشار مقاله{{else}}ذخیره تغییرات مقاله{{end}}</span>
+            </button>
+        </div>
+
+    </form>
+</div>
+{{end}}
+
+

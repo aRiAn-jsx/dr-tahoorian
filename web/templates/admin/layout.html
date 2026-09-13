@@ -1,0 +1,147 @@
+{{define "admin_layout"}}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}}</title>
+    <link rel="icon" type="image/webp" href="/static/images/download%20(2).webp">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Vazirmatn', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col" x-data="{ sidebarOpen: false }">
+
+    <div x-show="sidebarOpen" class="fixed inset-0 z-40 bg-slate-900/60 backdrop-blur-sm lg:hidden" @click="sidebarOpen = false"></div>
+
+    <div class="flex-1 flex overflow-hidden">
+        <!-- Sidebar -->
+        <aside :class="sidebarOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'" class="fixed lg:static inset-y-0 right-0 z-50 w-72 bg-slate-900 text-slate-300 flex flex-col transition-transform duration-300 ease-in-out border-l border-slate-800 shadow-2xl lg:shadow-none">
+            
+            <div class="h-20 flex items-center justify-between px-6 border-b border-slate-800 bg-slate-950/40">
+                <a href="/admin" class="flex items-center gap-3">
+                    <img src="/static/images/download%20(2).webp" alt="طهوریان" class="w-10 h-10 rounded-xl object-contain bg-slate-800 p-1 border border-slate-700">
+                    <div>
+                        <div class="text-white font-black text-lg tracking-tight">پنل مدیریت</div>
+                        <div class="text-xs text-amber-400 font-medium">دکتر حسین طهوریان</div>
+                    </div>
+                </a>
+                <button @click="sidebarOpen = false" class="lg:hidden text-slate-400 hover:text-white p-1 rounded-lg">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto px-4 py-6 space-y-1.5">
+                <div class="px-3 pb-2 text-[11px] font-bold text-slate-400 uppercase tracking-wider">بخش اصلی</div>
+                
+                <a href="/admin/dashboard" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors {{if or (eq .CurrentPath "/admin") (eq .CurrentPath "/admin/dashboard")}}bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20{{else}}text-slate-300 hover:bg-slate-800 hover:text-white{{end}}">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span>داشبورد اصلی</span>
+                </a>
+
+                <a href="/admin/articles" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors {{if or (eq .CurrentPath "/admin/articles") (eq .CurrentPath "/admin/articles/new")}}bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20{{else}}text-slate-300 hover:bg-slate-800 hover:text-white{{end}}">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="newspaper" class="w-5 h-5"></i>
+                        <span>مدیریت مقالات</span>
+                    </div>
+                    <span class="text-xs px-2 py-0.5 rounded-full {{if eq .CurrentPath "/admin/articles"}}bg-slate-950 text-white{{else}}bg-emerald-500/20 text-emerald-400 border border-emerald-500/30{{end}} font-bold">فعال</span>
+                </a>
+
+                <div class="pt-6 px-3 pb-2 text-[11px] font-bold text-slate-400 uppercase tracking-wider">سایر بخش‌های سایت</div>
+
+                <a href="/admin/sections" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors {{if eq .CurrentPath "/admin/sections"}}bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20{{else}}text-slate-300 hover:bg-slate-800 hover:text-white{{end}}">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="layers" class="w-5 h-5"></i>
+                        <span>مدیریت بخش‌ها</span>
+                    </div>
+                    <span class="text-xs px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">کل بخش‌ها</span>
+                </a>
+
+                <div class="pt-6 px-3 pb-2 text-[11px] font-bold text-slate-400 uppercase tracking-wider">دسترسی سریع</div>
+
+                <a href="/" target="_blank" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-amber-400 transition-colors">
+                    <i data-lucide="external-link" class="w-5 h-5"></i>
+                    <span>مشاهده سایت</span>
+                </a>
+            </div>
+
+
+            <div class="p-4 border-t border-slate-800 bg-slate-950/40">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-full bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold text-sm">
+                            <i data-lucide="shield" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <div class="text-sm font-bold text-white">مدیر سیستم</div>
+                            <div class="text-xs text-slate-400">admin</div>
+                        </div>
+                    </div>
+                    <a href="/admin/logout" title="خروج از حساب" class="p-2 text-slate-400 hover:text-red-400 hover:bg-slate-800 rounded-lg transition-colors">
+                        <i data-lucide="log-out" class="w-5 h-5"></i>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+            
+            <header class="h-20 bg-white border-b border-slate-200 sticky top-0 z-30 px-6 flex items-center justify-between shadow-sm">
+                <div class="flex items-center gap-4">
+                    <button @click="sidebarOpen = true" class="lg:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-xl transition-colors">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                    <div>
+                        <h1 class="text-lg font-black text-slate-900">{{.Title}}</h1>
+                        <p class="text-xs text-slate-400 hidden sm:block">سیستم جامع مدیریت محتوای وب‌سایت طهوریان</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <a href="/admin/articles/new" class="inline-flex items-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs sm:text-sm rounded-xl transition shadow-sm">
+                        <i data-lucide="plus" class="w-4 h-4"></i>
+                        <span>افزودن مقاله جدید</span>
+                    </a>
+                    <a href="/" target="_blank" class="hidden md:inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition border border-slate-200">
+                        <i data-lucide="globe" class="w-4 h-4"></i>
+                        <span>سایت اصلی</span>
+                    </a>
+                </div>
+            </header>
+
+            <main class="flex-1 p-6 md:p-8 max-w-7xl w-full mx-auto space-y-6">
+                {{if .Error}}
+                <div class="p-4 rounded-2xl bg-red-50 border border-red-200 text-red-700 flex items-center gap-3 text-sm">
+                    <i data-lucide="alert-circle" class="w-5 h-5 text-red-500 shrink-0"></i>
+                    <div>{{.Error}}</div>
+                </div>
+                {{end}}
+
+                {{if .Success}}
+                <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center gap-3 text-sm">
+                    <i data-lucide="check-circle" class="w-5 h-5 text-emerald-500 shrink-0"></i>
+                    <div>{{.Success}}</div>
+                </div>
+                {{end}}
+
+                {{template "admin_content" .}}
+            </main>
+
+            <footer class="py-4 px-6 text-center text-xs text-slate-400 border-t border-slate-200 bg-white">
+                پنل مدیریت اختصاصی وب‌سایت دکتر حسین طهوریان · طراحی شده با استانداردهای مدرن
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
+{{end}}

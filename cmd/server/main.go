@@ -4,6 +4,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/tahoorian/tahoorian/internal/config"
 	"github.com/tahoorian/tahoorian/internal/handler"
@@ -21,17 +22,33 @@ func main() {
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
 		Level: slog.LevelInfo,
 	}))
-
 	slog.SetDefault(logger)
 
+	// --- Repository (in-memory) ---
 	repo := memrepo.New()
-	svc := service.New(repo)
-	h := handler.New(svc)
+	slog.Info("using in-memory repository")
 
+	// --- Session manager ---
+	secret := cfg.SessionSecret
+	if secret == "" {
+		secret = "change-me-in-production"
+		slog.Warn("SESSION_SECRET not set, using default — change this in production")
+	}
+	sm := middleware.NewSessionManager(secret)
+
+	// --- Dev mode (re-parse templates on every request when ENV=development) ---
+	devMode := strings.ToLower(cfg.Env) == "development"
+
+	// --- Handlers ---
+	svc := service.New(repo)
+	h := handler.New(svc, devMode)
+	adminH := handler.NewAdmin(svc, sm, devMode)
+
+	// --- Router ---
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
-	r.Use(middleware.CORS)
+	// Single CORS middleware (go-chi/cors is comprehensive; custom one removed)
 	r.Use(cors.Handler(cors.Options{
 		AllowedOrigins:   []string{"*"},
 		AllowedMethods:   []string{"GET", "POST", "OPTIONS"},
@@ -40,26 +57,52 @@ func main() {
 		MaxAge:           300,
 	}))
 
+	// --- Public routes ---
 	r.Get("/", h.Index)
 	r.Get("/about", h.About)
 	r.Get("/services", h.Services)
 	r.Get("/projects", h.Projects)
+	r.Get("/articles", h.Articles)
+	r.Get("/articles/{slug}", h.ArticleDetail)
 	r.Get("/team", h.Team)
 	r.Get("/contact", h.Contact)
 	r.Post("/api/contact", h.SubmitContact)
 
-	fileServer := http.StripPrefix("/static/", http.FileServer(http.Dir("./web/static")))
-	r.Get("/static/*", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Cache-Control", "no-cache")
-		fileServer.ServeHTTP(w, r)
-	}).ServeHTTP)
+	// --- Admin routes (unauthenticated) ---
+	r.Get("/admin/login", adminH.LoginPage)
+	r.Post("/admin/login", adminH.LoginSubmit)
+	r.Get("/admin/logout", adminH.Logout)
 
+	// --- Admin routes (protected) ---
+	r.Group(func(r chi.Router) {
+		r.Use(adminH.AuthMiddleware)
+		r.Get("/admin", adminH.Dashboard)
+		r.Get("/admin/dashboard", adminH.Dashboard)
+		r.Get("/admin/sections", adminH.SectionsOverview)
+		r.Get("/admin/articles", adminH.ArticlesList)
+		r.Get("/admin/articles/new", adminH.ArticleNew)
+		r.Post("/admin/articles/new", adminH.ArticleCreate)
+		r.Get("/admin/articles/edit/{id}", adminH.ArticleEdit)
+		r.Post("/admin/articles/edit/{id}", adminH.ArticleUpdate)
+		r.Post("/admin/articles/delete/{id}", adminH.ArticleDelete)
+	})
+
+	// --- Static files ---
+	fileServer := http.StripPrefix("/static/", http.FileServer(http.Dir("./web/static")))
+	r.Get("/static/*", func(w http.ResponseWriter, r *http.Request) {
+		if cfg.Env != "development" {
+			w.Header().Set("Cache-Control", "public, max-age=86400")
+		}
+		fileServer.ServeHTTP(w, r)
+	})
+
+	// --- Health check ---
 	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("ok"))
 	})
 
-	slog.Info("starting server", "port", cfg.Port, "env", cfg.Env)
+	slog.Info("starting server", "port", cfg.Port, "env", cfg.Env, "db", cfg.DBType)
 	if err := http.ListenAndServe(":"+cfg.Port, r); err != nil {
 		slog.Error("server failed", "error", err)
 		os.Exit(1)

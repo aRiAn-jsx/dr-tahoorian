@@ -17,6 +17,12 @@ type Repository interface {
 	ListGallery(category string) ([]domain.GalleryItem, error)
 	ListStats() ([]domain.Stat, error)
 	GetContactInfo() (*domain.ContactInfo, error)
+	ListArticles() ([]domain.Article, error)
+	GetArticleByID(id int) (*domain.Article, error)
+	GetArticleBySlug(slug string) (*domain.Article, error)
+	CreateArticle(article *domain.Article) error
+	UpdateArticle(article *domain.Article) error
+	DeleteArticle(id int) error
 }
 
 type Service struct {
@@ -63,4 +69,58 @@ func (s *Service) ListStats() ([]domain.Stat, error) {
 
 func (s *Service) GetContactInfo() (*domain.ContactInfo, error) {
 	return s.repo.GetContactInfo()
+}
+
+
+func (s *Service) ListArticles() ([]domain.Article, error) {
+	return s.repo.ListArticles()
+}
+
+func (s *Service) ListPublishedArticles() ([]domain.Article, error) {
+	articles, err := s.repo.ListArticles()
+	if err != nil {
+		return nil, err
+	}
+	var published []domain.Article
+	for _, a := range articles {
+		if a.IsPublished {
+			published = append(published, a)
+		}
+	}
+	return published, nil
+}
+
+func (s *Service) GetArticleByID(id int) (*domain.Article, error) {
+	return s.repo.GetArticleByID(id)
+}
+
+func (s *Service) GetArticleBySlug(slug string) (*domain.Article, error) {
+	return s.repo.GetArticleBySlug(slug)
+}
+
+func (s *Service) CreateArticle(article *domain.Article) error {
+	if article.Title == "" {
+		return fmt.Errorf("عنوان مقاله الزامی است")
+	}
+	if article.Slug == "" {
+		article.Slug = fmt.Sprintf("article-%d", time.Now().Unix())
+	}
+	article.CreatedAt = time.Now()
+	article.UpdatedAt = time.Now()
+	return s.repo.CreateArticle(article)
+}
+
+func (s *Service) UpdateArticle(article *domain.Article) error {
+	if article.ID <= 0 {
+		return fmt.Errorf("شناسه مقاله نامعتبر است")
+	}
+	if article.Title == "" {
+		return fmt.Errorf("عنوان مقاله الزامی است")
+	}
+	article.UpdatedAt = time.Now()
+	return s.repo.UpdateArticle(article)
+}
+
+func (s *Service) DeleteArticle(id int) error {
+	return s.repo.DeleteArticle(id)
 }

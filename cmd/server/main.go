@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"log/slog"
 	"net/http"
 	"os"
@@ -10,6 +11,7 @@ import (
 	"github.com/tahoorian/tahoorian/internal/handler"
 	"github.com/tahoorian/tahoorian/internal/middleware"
 	memrepo "github.com/tahoorian/tahoorian/internal/repository/memory"
+	sqliterepo "github.com/tahoorian/tahoorian/internal/repository/sqlite"
 	"github.com/tahoorian/tahoorian/internal/service"
 
 	"github.com/go-chi/chi/v5"
@@ -24,9 +26,34 @@ func main() {
 	}))
 	slog.SetDefault(logger)
 
-	// --- Repository (in-memory) ---
-	repo := memrepo.New()
-	slog.Info("using in-memory repository")
+	// --- Repository selection ---
+	// SQLite is the production database. Set DB_TYPE=memory for ephemeral
+	// in-memory storage (convenient for development / testing).
+	var repo service.Repository
+	switch strings.ToLower(cfg.DBType) {
+	case "sqlite":
+		dsn := cfg.DBDSN
+		if dsn == "" {
+			dsn = "tahoorian.db"
+		}
+		db, err := sql.Open("sqlite", dsn)
+		if err != nil {
+			slog.Error("failed to open sqlite database", "dsn", dsn, "error", err)
+			os.Exit(1)
+		}
+		if err := sqliterepo.Migrate(db); err != nil {
+			slog.Error("database migration failed", "error", err)
+			os.Exit(1)
+		}
+		if err := sqliterepo.Seed(db); err != nil {
+			slog.Warn("database seed skipped", "error", err)
+		}
+		repo = sqliterepo.NewRepository(db)
+		slog.Info("using sqlite repository", "dsn", dsn)
+	default:
+		repo = memrepo.New()
+		slog.Info("using in-memory repository")
+	}
 
 	// --- Session manager ---
 	secret := cfg.SessionSecret

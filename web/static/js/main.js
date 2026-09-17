@@ -140,37 +140,72 @@ function initMobileNavDrag() {
         let startY = 0;
         handle.addEventListener('pointerdown', (event) => {
             startY = event.clientY;
-            handle.setPointerCapture(event.pointerId);
+            if (handle.setPointerCapture) {
+                try { handle.setPointerCapture(event.pointerId); } catch (_) {}
+            }
         });
         handle.addEventListener('pointerup', (event) => {
             if (event.clientY - startY > 45) {
-                const nav = handle.closest('nav');
-                const toggle = nav.querySelector('.menu-toggle');
-                if (nav.classList.contains('nav-sheet-open')) toggle.click();
+                const toggle = document.querySelector('.menu-toggle');
+                if (toggle && (document.body.classList.contains('nav-sheet-open') || document.querySelector('.nav-sheet-open'))) {
+                    toggle.click();
+                }
             }
         });
     });
 }
 
 function initMobileMenu() {
-    document.querySelectorAll('.site-nav').forEach((nav) => {
-        if (nav.dataset.menuBound === 'true') return;
-        nav.dataset.menuBound = 'true';
-        const toggle = nav.querySelector('.menu-toggle');
-        const sheet = nav.querySelector('.mobile-nav');
-        const close = () => {
-            nav.classList.remove('nav-sheet-open');
-            toggle.setAttribute('aria-expanded', 'false');
-        };
-        toggle.addEventListener('click', () => {
-            const isOpen = nav.classList.toggle('nav-sheet-open');
-            toggle.setAttribute('aria-expanded', String(isOpen));
-        });
-        sheet.querySelectorAll('a').forEach((link) => link.addEventListener('click', close));
-        document.addEventListener('click', (event) => {
-            if (!nav.contains(event.target)) close();
-        });
+    const nav = document.querySelector('.site-nav');
+    const toggle = document.querySelector('.menu-toggle');
+    const sheet = document.getElementById('mobile-navigation') || document.querySelector('.mobile-nav');
+    const overlay = document.querySelector('.nav-overlay');
+
+    if (!toggle || toggle.dataset.menuBound === 'true') return;
+    toggle.dataset.menuBound = 'true';
+
+    const close = () => {
+        document.body.classList.remove('nav-sheet-open');
+        if (nav) nav.classList.remove('nav-sheet-open');
+        toggle.setAttribute('aria-expanded', 'false');
+    };
+
+    const open = () => {
+        document.body.classList.add('nav-sheet-open');
+        if (nav) nav.classList.add('nav-sheet-open');
+        toggle.setAttribute('aria-expanded', 'true');
+    };
+
+    toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = document.body.classList.contains('nav-sheet-open') || (nav && nav.classList.contains('nav-sheet-open'));
+        if (isOpen) {
+            close();
+        } else {
+            open();
+        }
     });
+
+    if (overlay && overlay.dataset.menuBound !== 'true') {
+        overlay.dataset.menuBound = 'true';
+        overlay.addEventListener('click', close);
+    }
+
+    if (sheet && sheet.dataset.menuBound !== 'true') {
+        sheet.dataset.menuBound = 'true';
+        sheet.querySelectorAll('a').forEach((link) => {
+            link.addEventListener('click', close);
+        });
+    }
+
+    if (!window.mobileMenuGlobalBound) {
+        window.mobileMenuGlobalBound = true;
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && document.body.classList.contains('nav-sheet-open')) {
+                close();
+            }
+        });
+    }
 }
 
 function initScrollHeader() {
@@ -302,6 +337,74 @@ function initContactPageAnimations() {
         observer.observe(element);
     });
 }
+
+// ===== صفحه‌بار (لودر) =====
+// تضمین می‌کند لودر حتی با درخواست‌های سریع دیده شود (حداقل مدت نمایش ثابت)
+(function () {
+    var hideTimer = null;
+    function show() {
+        clearTimeout(hideTimer);
+        document.body.classList.add('page-loader--visible');
+    }
+    function hideSoon() {
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(function () {
+            document.body.classList.remove('page-loader--visible');
+        }, 350);
+    }
+    document.addEventListener('htmx:beforeRequest', show);
+    document.addEventListener('htmx:afterRequest', hideSoon);
+    document.addEventListener('htmx:sendError', hideSoon);
+})();
+
+// ===== توست نوتیفیکیشن شیشه‌ای (فرم تماس) =====
+function showToast(type, title, message) {
+    var stack = document.getElementById('toast-stack');
+    if (!stack) return;
+    var toast = document.createElement('div');
+    toast.setAttribute('role', 'status');
+    toast.className = 'toast toast--' + type;
+
+    var iconWrap = document.createElement('span');
+    iconWrap.className = 'toast__icon';
+    var icon = document.createElement('i');
+    icon.setAttribute('data-lucide', type === 'success' ? 'check-circle-2' : 'alert-circle');
+    iconWrap.appendChild(icon);
+
+    var msgWrap = document.createElement('div');
+    msgWrap.className = 'toast__msg';
+    var strong = document.createElement('strong');
+    strong.textContent = title;
+    var small = document.createElement('span');
+    small.textContent = message;
+    msgWrap.appendChild(strong);
+    msgWrap.appendChild(small);
+
+    toast.appendChild(iconWrap);
+    toast.appendChild(msgWrap);
+    stack.appendChild(toast);
+    if (window.lucide) lucide.createIcons();
+
+    setTimeout(function () { toast.classList.add('toast--leave'); }, 3300);
+    setTimeout(function () { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 3800);
+}
+
+// با پایان swap نتیجه فرم تماس، توست موفق/ناموفق نمایش داده می‌شود
+document.addEventListener('htmx:afterSwap', function (evt) {
+    var target = evt.detail && evt.detail.target;
+    if (!target || !target.matches || !target.matches('#contact-result')) return;
+    var box = target.querySelector('.contact-response');
+    if (!box) return;
+    var ok = box.classList.contains('success');
+    var titleEl = box.querySelector('strong');
+    var textEl = box.querySelector('p');
+    showToast(
+        ok ? 'success' : 'error',
+        ok ? 'پیام شما با موفقیت ثبت شد' : 'ارسال ناموفق بود',
+        textEl ? textEl.textContent : (titleEl ? titleEl.textContent : 'لطفاً دوباره امتحان کنید')
+    );
+    target.innerHTML = '';
+});
 
 document.addEventListener('DOMContentLoaded', () => {
     refreshIcons();

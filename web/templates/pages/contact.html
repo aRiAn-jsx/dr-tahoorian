@@ -9,142 +9,398 @@
 {{if .Content.Address}}{{$address = .Content.Address}}{{end}}
 {{if .Content.WorkHours}}{{$hours = .Content.WorkHours}}{{end}}
 
+<link rel="stylesheet" href="../../static/css/contant.css">
+
 <div class="contact-page">
-    <header class="contact-hero contact-hero-section">
-        <div class="contact-shell">
-            <div class="contact-hero__inner">
-                <span class="contact-badge">
-                    <span class="status-dot"></span>
-                    ارتباط مستقیم و گفت‌وگوی راهبردی
+    
+    <!-- ==================== BACKGROUND LAYER ==================== -->
+    <div class="bg-layer" aria-hidden="true">
+        <div class="glass-orb glass-orb--1" data-speed="0.15"></div>
+        <div class="glass-orb glass-orb--2" data-speed="-0.2"></div>
+        <div class="glass-orb glass-orb--3" data-speed="0.25"></div>
+        <div class="glass-orb glass-orb--4" data-speed="-0.15"></div>
+        <div class="glass-orb glass-orb--5" data-speed="0.3"></div>
+        <div class="soft-glow soft-glow--mint"></div>
+        <div class="soft-glow soft-glow--sage"></div>
+        <div class="soft-glow soft-glow--cream"></div>
+        <div class="bg-pattern"></div>
+    </div>
+
+    <!-- ==================== 1. HERO ==================== -->
+    <header class="contact-hero">
+        <div class="shell">
+            
+            <div class="contact-hero__top">
+                <span class="pill pill--green">
+                    <span class="pill__dot"></span>
+                    ارتباط مستقیم
                 </span>
-                <h1>راه ارتباطی با <em>دکتر حسین طهوریان</em></h1>
-                <p>مشاوره استراتژیک هلدینگ‌ها، بررسی فرصت‌های مشارکت و سرمایه‌گذاری، و همراهی کسب‌وکارها در مسیر توسعه پایدار.</p>
-                <ul class="contact-points">
-                    <li><i data-lucide="shield-check"></i> محرمانگی کامل اطلاعات</li>
-                    <li><i data-lucide="clock"></i> پاسخگویی زیر ۲۴ ساعت</li>
-                    <li><i data-lucide="award"></i> مشاوره سطح مدیران ارشد</li>
-                </ul>
+                <span class="pill pill--gold">
+                    <i data-lucide="clock"></i>
+                    پاسخ زیر ۲۴ ساعت
+                </span>
+            </div>
+
+            <div class="contact-hero__grid">
+                <!-- TEXT -->
+                <div class="contact-hero__text" data-reveal="right">
+                    <span class="kicker">
+                        <span class="kicker__line"></span>
+                        گفت‌وگوی راهبردی
+                    </span>
+                    
+                    <h1 class="contact-hero__title">
+                        <span class="line">راه ارتباطی با</span>
+                        <span class="line line--accent">دکتر حسین طهوریان</span>
+                    </h1>
+                    
+                    <p class="contact-hero__desc">
+                        مشاوره استراتژیک هلدینگ‌ها، بررسی فرصت‌های مشارکت و سرمایه‌گذاری، و همراهی کسب‌وکارها در مسیر توسعه پایدار.
+                    </p>
+
+                    <div class="contact-hero__points">
+                        <div class="point-glass">
+                            <span class="point-glass__icon"><i data-lucide="shield-check"></i></span>
+                            <div>
+                                <strong>محرمانگی کامل</strong>
+                                <small>اطلاعات شما نزد ما امن است</small>
+                            </div>
+                        </div>
+                        <div class="point-glass">
+                            <span class="point-glass__icon"><i data-lucide="clock"></i></span>
+                            <div>
+                                <strong>پاسخ سریع</strong>
+                                <small>زیر ۲۴ ساعت کاری</small>
+                            </div>
+                        </div>
+                        <div class="point-glass">
+                            <span class="point-glass__icon"><i data-lucide="award"></i></span>
+                            <div>
+                                <strong>سطح مدیران ارشد</strong>
+                                <small>راهبری و مشاوره تخصصی</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+ 
+                <!-- QUOTE CARD -->
+                <div class="contact-hero__visual" data-reveal="left">
+                    <div class="img-hero">
+                <img src="../../static/images/img-heroglass.webp" alt="c">
+            </div>
+                    <!-- <div class="glass-card glass-card--quote">
+                        <div class="glass-card__glow glass-card__glow--gold"></div>
+                        <span class="quote-mark">”</span>
+                        <p class="quote-text">
+                            تصمیم‌های کلیدی با یک گفت‌وگوی روشن آغاز می‌شوند. آماده شنیدن چشم‌انداز شما هستیم.
+                        </p>
+                        <div class="quote-author">
+                            <span class="quote-author__line"></span>
+                            <div>
+                                <strong>دکتر حسین طهوریان</strong>
+                                <small>مشاور و راهبر کسب‌وکار</small>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+
+           
+
+            <div class="hero__scroll">
+                <span class="hero__scroll-text">کانال‌های تماس</span>
+                <span class="hero__scroll-mouse">
+                    <span></span>
+                </span>
             </div>
         </div>
     </header>
 
-    <section class="contact-main">
-        <div class="contact-shell contact-layout">
-            <div class="contact-channels">
-                <span class="eyebrow">کانال‌های ارتباطی</span>
-                <h2>درگاه‌های مستقیم <em>تماس</em></h2>
-                <p class="contact-channels__lead">از هر یک از مسیرهای زیر می‌توانید با دفتر در ارتباط باشید. پذیرش حضوری فقط با هماهنگی قبلی انجام می‌شود.</p>
-
-                <a class="channel-card" href="tel:{{$phone}}">
-                    <span class="channel-card__icon"><i data-lucide="phone-call"></i></span>
-                    <span class="channel-card__body">
-                        <small>تماس تلفنی و هماهنگی</small>
-                        <strong>{{$phoneLabel}}</strong>
-                        <em>پاسخگویی شنبه تا چهارشنبه ۹ الی ۱۷</em>
-                    </span>
-                    <span class="channel-card__go" aria-hidden="true"><i data-lucide="arrow-up-left"></i></span>
-                </a>
-                <a class="channel-card" href="mailto:{{$email}}">
-                    <span class="channel-card__icon"><i data-lucide="mail"></i></span>
-                    <span class="channel-card__body">
-                        <small>مکاتبات رسمی</small>
-                        <strong dir="ltr">{{$email}}</strong>
-                        <em>ارسال پیشنهاد و دعوت‌نامه</em>
-                    </span>
-                    <span class="channel-card__go" aria-hidden="true"><i data-lucide="arrow-up-left"></i></span>
-                </a>
-                <div class="channel-card channel-card--static">
-                    <span class="channel-card__icon"><i data-lucide="map-pin"></i></span>
-                    <span class="channel-card__body">
-                        <small>دفتر مرکزی</small>
-                        <strong>{{$address}}</strong>
-                        <em>پذیرش حضوری فقط با وقت قبلی</em>
-                    </span>
-                </div>
-                <div class="channel-card channel-card--static">
-                    <span class="channel-card__icon"><i data-lucide="clock"></i></span>
-                    <span class="channel-card__body">
-                        <small>ساعات کاری</small>
-                        <strong>{{$hours}}</strong>
-                        <em>فرم سایت به‌صورت ۲۴ ساعته فعال است</em>
-                    </span>
-                </div>
-
-                <blockquote class="contact-note">
-                    <p>«تصمیم‌های کلیدی با یک گفت‌وگوی روشن آغاز می‌شوند. آماده شنیدن چشم‌انداز شما هستیم.»</p>
-                    <cite>دکتر حسین طهوریان</cite>
-                </blockquote>
+    <!-- ==================== 2. CHANNELS + FORM ==================== -->
+    <section class="section" id="channels">
+        <div class="shell">
+            
+            <div class="section__head" data-reveal="up">
+                <span class="section__badge">01</span>
+                <span class="section__label">کانال‌های ارتباطی</span>
+                <span class="section__line"></span>
             </div>
 
-            <div class="contact-form-card">
-                <div class="contact-form-card__head">
-                    <span class="form-chip"><i data-lucide="message-square-plus"></i> فرم درخواست</span>
-                    <h2>ارسال <em>پیام مستقیم</em></h2>
-                    <p>برای تنظیم جلسه یا طرح همکاری، اطلاعات زیر را تکمیل کنید.</p>
+            <div class="contact-layout">
+                
+                <!-- LEFT: CHANNELS -->
+                <div class="contact-channels" data-reveal="right">
+                    
+                    <span class="kicker">
+                        <span class="kicker__line"></span>
+                        DIRECT CHANNELS
+                    </span>
+                    <h2 class="contact-channels__title">
+                        درگاه‌های مستقیم <em>تماس</em>
+                    </h2>
+                    <p class="contact-channels__lead">
+                        از هر یک از مسیرهای زیر می‌توانید با دفتر در ارتباط باشید. پذیرش حضوری فقط با هماهنگی قبلی انجام می‌شود.
+                    </p>
+
+                    <!-- Phone -->
+                    <a class="channel-glass channel-glass--link" href="tel:{{$phone}}">
+                        <span class="channel-glass__icon">
+                            <i data-lucide="phone-call"></i>
+                            <span class="channel-glass__pulse"></span>
+                        </span>
+                        <div class="channel-glass__body">
+                            <small>تماس تلفنی و هماهنگی</small>
+                            <strong>{{$phoneLabel}}</strong>
+                            <em>پاسخگویی شنبه تا چهارشنبه</em>
+                        </div>
+                        <span class="channel-glass__go">
+                            <i data-lucide="arrow-up-left"></i>
+                        </span>
+                    </a>
+
+                    <!-- Email -->
+                    <a class="channel-glass channel-glass--link" href="mailto:{{$email}}">
+                        <span class="channel-glass__icon">
+                            <i data-lucide="mail"></i>
+                        </span>
+                        <div class="channel-glass__body">
+                            <small>مکاتبات رسمی</small>
+                            <strong dir="ltr">{{$email}}</strong>
+                            <em>ارسال پیشنهاد و دعوت‌نامه</em>
+                        </div>
+                        <span class="channel-glass__go">
+                            <i data-lucide="arrow-up-left"></i>
+                        </span>
+                    </a>
+
+                    <!-- Address -->
+                    <div class="channel-glass">
+                        <span class="channel-glass__icon">
+                            <i data-lucide="map-pin"></i>
+                        </span>
+                        <div class="channel-glass__body">
+                            <small>دفتر مرکزی</small>
+                            <strong>{{$address}}</strong>
+                            <em>پذیرش حضوری با وقت قبلی</em>
+                        </div>
+                    </div>
+
+                    <!-- Hours -->
+                    <div class="channel-glass">
+                        <span class="channel-glass__icon">
+                            <i data-lucide="clock"></i>
+                        </span>
+                        <div class="channel-glass__body">
+                            <small>ساعات کاری</small>
+                            <strong>{{$hours}}</strong>
+                            <em>فرم آنلاین ۲۴ ساعته فعال است</em>
+                        </div>
+                    </div>
+
                 </div>
-                <form class="contact-form" hx-post="/api/contact" hx-target="#contact-result" hx-swap="innerHTML">
-                    <div class="form-row">
-                        <label>
-                            نام و نام خانوادگی <span class="req">*</span>
-                            <input type="text" name="name" required placeholder="مثال: علیرضا محمدی" autocomplete="name">
-                        </label>
-                        <label>
-                            شماره تماس <span class="req">*</span>
-                            <input type="tel" name="phone" required placeholder="۰۹۱۲ ۱۲۳ ۴۵۶۷" autocomplete="tel">
-                        </label>
+
+                <!-- RIGHT: FORM -->
+                <div class="contact-form-wrap" data-reveal="left">
+                    <div class="glass-card glass-card--form">
+                        <div class="glass-card__glow"></div>
+                        
+                        <div class="form-head">
+                            <span class="kicker">
+                                <span class="kicker__line"></span>
+                                فرم درخواست
+                            </span>
+                            <h2 class="form-head__title">
+                                ارسال <em>پیام مستقیم</em>
+                            </h2>
+                            <p class="form-head__desc">
+                                برای تنظیم جلسه یا طرح همکاری، اطلاعات زیر را تکمیل کنید.
+                            </p>
+                        </div>
+                        
+                        <form class="contact-form-modern" hx-post="/api/contact" hx-target="#contact-result" hx-swap="innerHTML">
+                            
+                            <div class="form-row-2">
+                                <label class="form-field">
+                                    <span>نام و نام خانوادگی <b>*</b></span>
+                                    <input type="text" name="name" required placeholder="مثال: علیرضا محمدی" autocomplete="name">
+                                </label>
+                                
+                                <label class="form-field">
+                                    <span>شماره تماس <b>*</b></span>
+                                    <input type="tel" name="phone" required placeholder="۰۹۱۲ ۱۲۳ ۴۵۶۷" autocomplete="tel">
+                                </label>
+                            </div>
+                            
+                            <div class="form-row-2">
+                                <label class="form-field">
+                                    <span>پست الکترونیک</span>
+                                    <input type="email" name="email" placeholder="info@company.com" autocomplete="email">
+                                </label>
+                                
+                                <label class="form-field">
+                                    <span>موضوع درخواست</span>
+                                    <select name="subject">
+                                        <option value="مشاوره استراتژیک هلدینگ">مشاوره استراتژیک هلدینگ</option>
+                                        <option value="سرمایه‌گذاری و توسعه کسب‌وکار">سرمایه‌گذاری و توسعه کسب‌وکار</option>
+                                        <option value="همراهی و منتورینگ مدیریت">همراهی و منتورینگ مدیریت</option>
+                                        <option value="دعوت به سخنرانی و رویداد">دعوت به سخنرانی و رویداد</option>
+                                        <option value="سایر موضوعات">سایر موضوعات</option>
+                                    </select>
+                                </label>
+                            </div>
+                            
+                            <label class="form-field form-field--full">
+                                <span>شرح درخواست <b>*</b></span>
+                                <textarea name="message" rows="5" required placeholder="توضیح مختصر درباره کسب‌وکار یا موضوع جلسه..."></textarea>
+                            </label>
+                            
+                            <button type="submit" class="btn-glass btn-glass--dark btn-glass--submit">
+                                <span>ارسال پیام و ثبت درخواست</span>
+                                <i data-lucide="arrow-up-left"></i>
+                            </button>
+                            
+                            <div id="contact-result" class="contact-result-container"></div>
+                        </form>
                     </div>
-                    <div class="form-row">
-                        <label>
-                            پست الکترونیک
-                            <input type="email" name="email" placeholder="info@company.com" autocomplete="email">
-                        </label>
-                        <label>
-                            موضوع درخواست
-                            <select name="subject">
-                                <option value="مشاوره استراتژیک هلدینگ">مشاوره استراتژیک هلدینگ</option>
-                                <option value="سرمایه‌گذاری و توسعه کسب‌وکار">سرمایه‌گذاری و توسعه کسب‌وکار</option>
-                                <option value="همراهی و منتورینگ مدیریت">همراهی و منتورینگ مدیریت</option>
-                                <option value="دعوت به سخنرانی و رویداد">دعوت به سخنرانی و رویداد</option>
-                                <option value="سایر موضوعات">سایر موضوعات</option>
-                            </select>
-                        </label>
-                    </div>
-                    <label>
-                        شرح درخواست <span class="req">*</span>
-                        <textarea name="message" rows="5" required placeholder="توضیح مختصر درباره کسب‌وکار یا موضوع جلسه..."></textarea>
-                    </label>
-                    <button type="submit" class="contact-submit">ارسال پیام و ثبت درخواست <i data-lucide="arrow-up-left"></i></button>
-                    <div id="contact-result" class="contact-result-container"></div>
-                </form>
+                </div>
+                
             </div>
+
         </div>
     </section>
 
-    <section class="contact-faq">
-        <div class="contact-shell">
-            <div class="contact-faq__head">
-                <span class="eyebrow">سوالات متداول</span>
-                <h2>قبل از تماس <em>بدانید</em></h2>
+    <!-- ==================== 3. FAQ ==================== -->
+    <section class="section section--tint">
+        <div class="shell">
+            
+            <div class="section__head" data-reveal="up">
+                <span class="section__badge">02</span>
+                <span class="section__label">سوالات متداول</span>
+                <span class="section__line"></span>
             </div>
-            <div class="faq-list">
-                <details class="faq-item" open>
-                    <summary>جلسات مشاوره چگونه برگزار می‌شوند؟</summary>
-                    <p>جلسات بسته به توافق، حضوری در دفتر تهران یا به‌صورت جلسه تصویری اختصاصی برگزار می‌شود.</p>
+
+            <div class="faq-header" data-reveal="up">
+                <span class="kicker">
+                    <span class="kicker__line"></span>
+                    FAQ
+                </span>
+                <h2 class="faq-header__title">
+                    قبل از تماس <em>بدانید</em>
+                </h2>
+                <p class="faq-header__desc">
+                    پاسخ پرتکرارترین سوالات درباره جلسات، محرمانگی و روش‌های همکاری
+                </p>
+            </div>
+
+            <div class="faq-grid">
+                <details class="faq-glass" open data-reveal="right">
+                    <summary>
+                        <span class="faq-glass__num">۰۱</span>
+                        <span class="faq-glass__q">جلسات مشاوره چگونه برگزار می‌شوند؟</span>
+                        <span class="faq-glass__icon"><i data-lucide="plus"></i></span>
+                    </summary>
+                    <div class="faq-glass__body">
+                        <p>جلسات بسته به توافق، حضوری در دفتر تهران یا به‌صورت جلسه تصویری اختصاصی برگزار می‌شود. زمان و نحوه برگزاری پس از بررسی اولیه درخواست، با شما هماهنگ خواهد شد.</p>
+                    </div>
                 </details>
-                <details class="faq-item">
-                    <summary>زمینه‌های اصلی مشاوره چیست؟</summary>
-                    <p>راهبری استراتژیک هلدینگ‌ها، ساختار سازمانی مقیاس‌پذیر، زنجیره تامین و مشارکت در طرح‌های سرمایه‌گذاری.</p>
+
+                <details class="faq-glass" data-reveal="left">
+                    <summary>
+                        <span class="faq-glass__num">۰۲</span>
+                        <span class="faq-glass__q">زمینه‌های اصلی مشاوره چیست؟</span>
+                        <span class="faq-glass__icon"><i data-lucide="plus"></i></span>
+                    </summary>
+                    <div class="faq-glass__body">
+                        <p>راهبری استراتژیک هلدینگ‌ها، ساختار سازمانی مقیاس‌پذیر، زنجیره تامین و مشارکت در طرح‌های سرمایه‌گذاری. مشاوره‌های تخصصی در حوزه اختراعات و ثبت پتنت نیز انجام می‌شود.</p>
+                    </div>
                 </details>
-                <details class="faq-item">
-                    <summary>زمان پاسخ اولیه چقدر است؟</summary>
-                    <p>پیام‌ها معمولاً ظرف ۲۴ تا ۴۸ ساعت کاری بررسی می‌شوند و برای هماهنگی جلسه پاسخ داده می‌شود.</p>
+
+                <details class="faq-glass" data-reveal="right">
+                    <summary>
+                        <span class="faq-glass__num">۰۳</span>
+                        <span class="faq-glass__q">زمان پاسخ اولیه چقدر است؟</span>
+                        <span class="faq-glass__icon"><i data-lucide="plus"></i></span>
+                    </summary>
+                    <div class="faq-glass__body">
+                        <p>پیام‌ها معمولاً ظرف ۲۴ تا ۴۸ ساعت کاری بررسی می‌شوند و برای هماهنگی جلسه پاسخ داده می‌شود. اولویت‌بندی پاسخ‌ها بر اساس موضوع و فوریت درخواست انجام می‌گیرد.</p>
+                    </div>
                 </details>
-                <details class="faq-item">
-                    <summary>آیا اطلاعات ارسالی محرمانه می‌ماند؟</summary>
-                    <p>بله. ایده، آمار مالی و طرح‌های تجاری بر اساس استاندارد محرمانگی حرفه‌ای حفظ می‌شود.</p>
+
+                <details class="faq-glass" data-reveal="left">
+                    <summary>
+                        <span class="faq-glass__num">۰۴</span>
+                        <span class="faq-glass__q">آیا اطلاعات ارسالی محرمانه می‌ماند؟</span>
+                        <span class="faq-glass__icon"><i data-lucide="plus"></i></span>
+                    </summary>
+                    <div class="faq-glass__body">
+                        <p>بله. ایده، آمار مالی و طرح‌های تجاری شما بر اساس استاندارد محرمانگی حرفه‌ای حفظ می‌شود. تمامی گفت‌وگوها و اسناد در چارچوب یک توافق محرمانگی قابل تنظیم هستند.</p>
+                    </div>
                 </details>
             </div>
+
         </div>
     </section>
+
 </div>
+
+<!-- ==================== SCRIPT: REVEAL + ORBS ==================== -->
+<script>
+(function() {
+    /* ---------- Scroll Reveal ---------- */
+    const els = document.querySelectorAll('[data-reveal]');
+    if (els.length) {
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('is-visible');
+                    obs.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.12, rootMargin: '0px 0px -80px 0px' });
+        els.forEach(el => obs.observe(el));
+    }
+    
+    /* ---------- Floating Glass Orbs on Scroll ---------- */
+    const orbs = document.querySelectorAll('.glass-orb[data-speed]');
+    let ticking = false;
+    let lastScroll = 0;
+    
+    function updateOrbs() {
+        const scrollY = window.scrollY;
+        orbs.forEach((orb, i) => {
+            const speed = parseFloat(orb.dataset.speed);
+            const offset = scrollY * speed;
+            const driftX = Math.sin(scrollY * 0.002 + i) * 15;
+            const driftY = Math.cos(scrollY * 0.0015 + i) * 10;
+            orb.style.transform = `translate3d(${driftX}px, ${offset + driftY}px, 0)`;
+        });
+        lastScroll = scrollY;
+        ticking = false;
+    }
+    
+    function onScroll() {
+        if (!ticking) {
+            requestAnimationFrame(updateOrbs);
+            ticking = true;
+        }
+    }
+    
+    if (orbs.length) {
+        window.addEventListener('scroll', onScroll, { passive: true });
+        updateOrbs();
+    }
+    
+    /* ---------- FAQ Accordion (Only one open) ---------- */
+    const faqs = document.querySelectorAll('.faq-glass');
+    faqs.forEach(faq => {
+        faq.addEventListener('toggle', () => {
+            if (faq.open) {
+                faqs.forEach(other => {
+                    if (other !== faq) other.open = false;
+                });
+            }
+        });
+    });
+})();
+</script>
 {{end}}

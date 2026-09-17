@@ -16,19 +16,19 @@
             <span class="menu-lines menu-lines--open" aria-hidden="true"><span></span><span></span></span>
             <span class="menu-lines menu-lines--close" aria-hidden="true"><span></span><span></span></span>
         </button>
-        <button type="button" class="nav-overlay" tabindex="-1" aria-hidden="true"></button>
-        <div id="mobile-navigation" class="mobile-nav" role="dialog" aria-modal="true" aria-label="منوی اصلی">
-            <div class="mobile-nav__handle" aria-hidden="true"><span></span></div>
-            <div class="mobile-nav__heading"><span>منوی اصلی</span><small>طهوریان</small></div>
-            <a href="/" class="{{if eq .CurrentPath "/"}}is-active{{end}}" {{if eq .CurrentPath "/"}}aria-current="page"{{end}}><i data-lucide="house"></i><span>خانه</span><b>01</b></a>
-            <a href="/about" class="{{if eq .CurrentPath "/about"}}is-active{{end}}" {{if eq .CurrentPath "/about"}}aria-current="page"{{end}}><i data-lucide="user-round"></i><span>درباره من</span><b>02</b></a>
-            <a href="/articles" class="{{if or (eq .CurrentPath "/articles") (hasPrefix .CurrentPath "/articles/")}}is-active{{end}}" {{if or (eq .CurrentPath "/articles") (hasPrefix .CurrentPath "/articles/")}}aria-current="page"{{end}}><i data-lucide="newspaper"></i><span>مقالات</span><b>03</b></a>
-            <a href="/projects" class="{{if eq .CurrentPath "/projects"}}is-active{{end}}" {{if eq .CurrentPath "/projects"}}aria-current="page"{{end}}><i data-lucide="folder-kanban"></i><span>پروژه‌ها</span><b>04</b></a>
-            <a href="/team" class="{{if eq .CurrentPath "/team"}}is-active{{end}}" {{if eq .CurrentPath "/team"}}aria-current="page"{{end}}><i data-lucide="users-round"></i><span>تیم من</span><b>05</b></a>
-            <a href="/contact" class="{{if eq .CurrentPath "/contact"}}is-active{{end}}" {{if eq .CurrentPath "/contact"}}aria-current="page"{{end}}><i data-lucide="phone"></i><span>تماس با من</span><b>06</b></a>
-            <div class="mobile-nav__footer"><span>شروع یک همکاری تازه</span><i data-lucide="sparkles"></i></div>
-        </div>
     </nav>
 </header>
+<button type="button" class="nav-overlay" tabindex="-1" aria-hidden="true"></button>
+<div id="mobile-navigation" class="mobile-nav" role="dialog" aria-modal="true" aria-label="منوی اصلی">
+    <div class="mobile-nav__handle" aria-hidden="true"><span></span></div>
+    <div class="mobile-nav__heading"><span>منوی اصلی</span><small>طهوریان</small></div>
+    <a href="/" class="{{if eq .CurrentPath "/"}}is-active{{end}}" {{if eq .CurrentPath "/"}}aria-current="page"{{end}}><i data-lucide="house"></i><span>خانه</span><b>01</b></a>
+    <a href="/about" class="{{if eq .CurrentPath "/about"}}is-active{{end}}" {{if eq .CurrentPath "/about"}}aria-current="page"{{end}}><i data-lucide="user-round"></i><span>درباره من</span><b>02</b></a>
+    <a href="/articles" class="{{if or (eq .CurrentPath "/articles") (hasPrefix .CurrentPath "/articles/")}}is-active{{end}}" {{if or (eq .CurrentPath "/articles") (hasPrefix .CurrentPath "/articles/")}}aria-current="page"{{end}}><i data-lucide="newspaper"></i><span>مقالات</span><b>03</b></a>
+    <a href="/projects" class="{{if eq .CurrentPath "/projects"}}is-active{{end}}" {{if eq .CurrentPath "/projects"}}aria-current="page"{{end}}><i data-lucide="folder-kanban"></i><span>پروژه‌ها</span><b>04</b></a>
+    <a href="/team" class="{{if eq .CurrentPath "/team"}}is-active{{end}}" {{if eq .CurrentPath "/team"}}aria-current="page"{{end}}><i data-lucide="users-round"></i><span>تیم من</span><b>05</b></a>
+    <a href="/contact" class="{{if eq .CurrentPath "/contact"}}is-active{{end}}" {{if eq .CurrentPath "/contact"}}aria-current="page"{{end}}><i data-lucide="phone"></i><span>تماس با من</span><b>06</b></a>
+    <div class="mobile-nav__footer"><span>شروع یک همکاری تازه</span><i data-lucide="sparkles"></i></div>
+</div>
 <div class="header-spacer" aria-hidden="true"></div>
 {{end}}

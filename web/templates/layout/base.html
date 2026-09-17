@@ -7,10 +7,12 @@
     <title>{{.Title}}</title>
     <meta name="description" content="دکتر حسین طهوریان - تجربه ۲۰ ساله در مدیریت و هلدینگ‌ها">
     <link rel="icon" type="image/webp" href="/static/images/download%20(2).webp">
+    <!-- Tailwind is loaded from CDN (JIT engine compiles utility classes at runtime);
+         for a fully offline build, pre-compile Tailwind and link it locally. -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script defer src="/static/vendor/js/alpine.min.js"></script>
+    <script src="/static/vendor/js/htmx.min.js"></script>
+    <script src="/static/vendor/js/lucide.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/style.css">
     <style>
@@ -18,6 +20,8 @@
     </style>
 </head>
 <body class="bg-[#fbfbfd] text-[#17151d]" hx-boost="true" hx-target="#page-content" hx-select="#page-content" hx-swap="outerHTML">
+    <div class="page-loader" aria-hidden="true"><span class="page-loader__dot"></span><span class="page-loader__dot"></span><span class="page-loader__dot"></span></div>
+    <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
     {{template "header" .}}
     <main id="page-content">
         {{template "content" .}}

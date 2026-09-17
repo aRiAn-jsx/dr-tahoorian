@@ -167,11 +167,10 @@ func (a *AdminHandler) LoginPage(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	baseDir, _ := os.Getwd()
-	loginPath := filepath.Join(baseDir, "web", "templates", "admin", "login.html")
+	loginPath := filepath.Join(findRootDir(), "web", "templates", "admin", "login.html")
 	tmpl, err := template.ParseFiles(loginPath)
 	if err != nil {
-		http.Error(w, "Template error: "+err.Error(), http.StatusInternalServerError)
+		http.Error(w, "Template error: "+err.Error()+" ("+loginPath+")", http.StatusInternalServerError)
 		return
 	}
 	tmpl.Execute(w, AdminPageData{Title: "ورود به پنل مدیریت"})
@@ -214,9 +213,12 @@ func (a *AdminHandler) LoginSubmit(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	baseDir, _ := os.Getwd()
-	loginPath := filepath.Join(baseDir, "web", "templates", "admin", "login.html")
-	tmpl, _ := template.ParseFiles(loginPath)
+	loginPath := filepath.Join(findRootDir(), "web", "templates", "admin", "login.html")
+	tmpl, err := template.ParseFiles(loginPath)
+	if err != nil {
+		http.Error(w, "Template error: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
 	tmpl.Execute(w, AdminPageData{
 		Title: "ورود به پنل مدیریت",
 		Error: "نام کاربری یا رمز عبور اشتباه است",

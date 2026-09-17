@@ -23,6 +23,40 @@ func setupTestDB(t *testing.T) (*sql.DB, *sqlite.Repository) {
 	return db, repo
 }
 
+func TestSeed(t *testing.T) {
+	db, repo := setupTestDB(t)
+
+	// Seeding a brand-new database should populate all content tables.
+	if err := sqlite.Seed(db); err != nil {
+		t.Fatalf("failed to seed database: %v", err)
+	}
+
+	if about, _ := repo.GetAbout(); about == nil {
+		t.Fatalf("expected seeded about section")
+	}
+	if services, _ := repo.ListServices(); len(services) == 0 {
+		t.Fatalf("expected seeded services")
+	}
+	if stats, _ := repo.ListStats(); len(stats) == 0 {
+		t.Fatalf("expected seeded stats")
+	}
+	if art, _ := repo.ListArticles(); len(art) == 0 {
+		t.Fatalf("expected seeded articles")
+	}
+	if info, _ := repo.GetContactInfo(); info == nil {
+		t.Fatalf("expected seeded contact info")
+	}
+
+	// Seeding again must be idempotent (no duplicates).
+	before, _ := repo.ListArticles()
+	if err := sqlite.Seed(db); err != nil {
+		t.Fatalf("second seed failed: %v", err)
+	}
+	after, _ := repo.ListArticles()
+	if len(after) != len(before) {
+		t.Fatalf("seed is not idempotent: before=%d after=%d", len(before), len(after))
+	}
+}
 func TestSQLiteRepository(t *testing.T) {
 	db, repo := setupTestDB(t)
 	defer db.Close()

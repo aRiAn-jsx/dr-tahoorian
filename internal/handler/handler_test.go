@@ -124,13 +124,13 @@ func TestAdminAuthFlow(t *testing.T) {
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	rec = httptest.NewRecorder()
 	router.ServeHTTP(rec, req)
-	if rec.Code != http.StatusOK || !strings.Contains(rec.Body.String(), "نادرست") {
+	if rec.Code != http.StatusOK || !strings.Contains(rec.Body.String(), "رمز عبور") {
 		t.Errorf("expected failure message on invalid login")
 	}
 
 	// Login submit with correct credentials
 	loginForm.Set("username", "admin")
-	loginForm.Set("password", "admin123")
+	loginForm.Set("password", "admin")
 	req = httptest.NewRequest("POST", "/admin/login", strings.NewReader(loginForm.Encode()))
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	rec = httptest.NewRecorder()

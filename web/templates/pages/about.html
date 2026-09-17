@@ -1,63 +1,477 @@
 {{define "content"}}
 {{$data := .Content}}
+<link rel="stylesheet" href="/static/css/about.css">
 <section class="about-page">
-    <div class="about-hero">
-        <div class="about-atoms" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-        <div class="about-hero__grid"></div>
-        <div class="about-shell about-shell--hero">
-            {{if $data.About}}
-            <div class="about-copy about-copy--hero scroll-reveal">
-                <span class="about-kicker">درباره من / مسیر یک ایده</span>
-                <h1><span class="about-hero__static">فکر را به</span><br><em class="about-typed" data-typed-words="اثر ماندگار|اختراع تازه|تصمیم روشن">اثر ماندگار</em><span class="about-typed__cursor">|</span><br><span class="about-hero__static">تبدیل می‌کنم.</span></h1>
-                <div class="about-copy__rule"></div>
-                <div class="about-copy__text">{{$data.About.Content}}</div>
-                <div class="about-hero__metrics">
-                    <div><strong><b data-counter="5">۰</b></strong><span>اختراع ثبت‌شده</span></div>
-                    <div><strong><b data-counter="32">۰</b><small>+</small></strong><span>مدرک بین‌المللی</span></div>
-                    <div><strong><b data-counter="20">۰</b></strong><span>سال تجربه</span></div>
-                </div>
-                <a href="#achievements" class="about-hero__link">شناختن مسیر من <i data-lucide="arrow-down-left"></i></a>
-            </div>
-            <div class="about-visual about-visual--hero scroll-reveal">
-                <div class="about-visual__wash"></div><div class="about-orbit about-orbit--one"></div><div class="about-orbit about-orbit--two"></div>
-                <span class="about-visual__label">مشاور و راهبر کسب‌وکار</span>
-                <img src="/static/images/download%20(3).webp" alt="دکتر حسین طهوریان با گواهی‌نامه حرفه‌ای" class="about-portrait">
-                <div class="about-stamp"><strong>۱۷<small>+</small></strong><span>سال تجربه<br>حرفه‌ای</span></div>
-            </div>
-            {{else}}
-            <div class="about-empty"><span class="about-kicker">درباره من</span><h1>اطلاعات در حال به‌روزرسانی است.</h1></div>
-            {{end}}
-        </div>
-        <span class="about-hero__scroll">اسکرول کنید <i data-lucide="arrow-down"></i></span>
+    
+     <!-- Background layers - Floating Glass Circles -->
+    <div class="bg-layer" aria-hidden="true">
+        <!-- Glass circles -->
+        <div class="glass-orb glass-orb--1" data-speed="0.15"></div>
+        <div class="glass-orb glass-orb--2" data-speed="-0.2"></div>
+        <div class="glass-orb glass-orb--3" data-speed="0.25"></div>
+        <div class="glass-orb glass-orb--4" data-speed="-0.15"></div>
+        <div class="glass-orb glass-orb--5" data-speed="0.3"></div>
+        
+        <!-- Ambient blurred washes (very subtle) -->
+        <div class="soft-glow soft-glow--mint"></div>
+        <div class="soft-glow soft-glow--sage"></div>
+        <div class="soft-glow soft-glow--cream"></div>
+        
+        <!-- Dot pattern -->
+        <div class="bg-pattern"></div>
     </div>
-    <section class="about-inventions">
-        <div class="about-shell about-inventions__shell">
-            <div class="about-inventions__visual scroll-reveal"><div class="about-inventions__halo"></div><img src="/static/images/اختراعات-دکتر-سایت.png" alt="اختراعات دکتر حسین طهوریان" loading="lazy"><span class="about-inventions__stamp">PATENTS<br><b>۰۵</b></span></div>
-            <div class="about-inventions__copy scroll-reveal"><span class="about-kicker">اختراعات دکتر</span><h2>از یک پرسش<br><em>تا یک اختراع</em></h2><p>اختراع برای من فقط ثبت یک ایده نیست؛ راهی است برای دیدن یک مسئله از زاویه‌ای تازه و ساختن راه‌حلی که در جهان واقعی اثر بگذارد.</p><div class="about-inventions__line"><span></span><b>تحقیق / طراحی / اثر</b></div><a href="/contact">درباره مسیر اختراعات <i data-lucide="arrow-up-left"></i></a></div>
-        </div>
-    </section>
-    <section class="about-section about-section--stats" id="achievements">
-        <div class="about-shell"><div class="about-section__heading scroll-reveal"><span class="about-kicker">اعداد مسیر</span><h2>چیزهایی که<br><em>اندازه گرفته‌ایم</em></h2></div>
-            <div class="about-highlights about-highlights--large">
-                <div class="about-stat scroll-reveal"><strong><b data-counter="5">۰</b></strong><span>اختراع ثبت‌شده</span><small>ایده‌هایی که به محصول تبدیل شدند</small></div>
-                <div class="about-stat scroll-reveal"><strong><b data-counter="32">۰</b><small>+</small></strong><span>مدرک بین‌المللی</span><small>یادگیری مداوم، بدون توقف</small></div>
-                <div class="about-stat scroll-reveal"><strong><b data-counter="20">۰</b></strong><span>سال تجربه مدیریتی</span><small>از تصمیم تا ساختن</small></div>
+    <!-- ==================== 1. HERO ==================== -->
+    <div class="hero">
+        <div class="shell">
+            
+            <div class="hero__top">
+                <span class="pill pill--green">
+                    <span class="pill__dot"></span>
+                    درباره من
+                </span>
+                <span class="pill pill--gold">
+                    <i data-lucide="sparkles"></i>
+                    EST. 2003
+                </span>
             </div>
-        </div>
-    </section>
-    <section class="about-section about-section--works">
-        <div class="about-shell"><header class="about-section__header scroll-reveal"><div><span class="about-kicker">آثار و روایت‌ها</span><h2>چیزی که از ذهن<br><em>بیرون آمده است</em></h2></div><p>بخشی از مسیر فکری من در اختراع، نوشتن و گفت‌وگو با آدم‌هایی که به آینده فکر می‌کنند.</p></header>
-            <article class="about-invention-feature scroll-reveal"><div class="about-invention-feature__image"><img src="/static/images/اختراعات-دکتر-سایت.png" alt="اختراعات دکتر طهوریان" loading="lazy"></div><div class="about-invention-feature__copy"><span>01 / اختراعات</span><h3>ایده‌هایی برای <em>حل مسئله</em></h3><p>از مسئله‌های واقعی شروع می‌کنم و با تحقیق، نمونه‌سازی و جسارت به راه‌حل می‌رسم.</p><a href="/contact">گفت‌وگو درباره ایده <i data-lucide="arrow-up-left"></i></a></div></article>
-            <div class="about-works-grid">
-                <article class="about-work about-work--books scroll-reveal"><div class="about-work__image"></div><div class="about-work__content"><span>02 / کتاب‌ها</span><h3>نوشتن برای<br><em>روشن‌تر دیدن</em></h3><p>هر کتاب، تلاشی برای تبدیل تجربه‌های پراکنده به یک مسیر قابل استفاده است.</p><a href="/contact">دیدن مجموعه کتاب‌ها <i data-lucide="arrow-up-left"></i></a></div></article>
-                <article class="about-work about-work--podcast scroll-reveal"><div class="about-work__pulse"><i data-lucide="mic-2"></i></div><div class="about-work__content"><span>03 / پادکست</span><h3>تصمیم‌های<br><em>روشن</em></h3><p>گفت‌وگوهایی درباره رهبری، کسب‌وکار و لحظه‌ای که یک فکر جدی می‌شود.</p><a href="/contact">شنیدن قسمت‌ها <i data-lucide="arrow-up-left"></i></a></div></article>
+            
+            <div class="hero__grid">
+                
+                <!-- TEXT -->
+                <div class="hero__text" data-reveal="right">
+                    <span class="kicker">
+                        <span class="kicker__line"></span>
+                        مشاور و راهبر کسب‌وکار
+                    </span>
+                    
+                    <h1 class="hero__title">
+                        <span class="line">فکر را به</span>
+                        <span class="line line--accent">
+                            <span class="typed" x-data="{ words: ['اثر ماندگار', 'اختراع تازه', 'تصمیم روشن'], current: 0 }" x-init="setInterval(() => current = (current + 1) % words.length, 2800)">
+                                <span x-text="words[current]"></span>
+                            </span>
+                            <span class="typed__cursor">|</span>
+                        </span>
+                        <span class="line line--outline">تبدیل می‌کنم.</span>
+                    </h1>
+                    
+                    <p class="hero__desc">
+                        من دکتر حسین طهوریان هستم؛ مشاور و راهبر کسب‌وکار با تمرکز بر ساختن مسیرهایی روشن برای رشد پایدار. بیش از ۲۰ سال است که در عرصه مدیریت و توسعه کسب‌وکار فعالیت می‌کنم.
+                    </p>
+                    
+                    <div class="hero__actions">
+                        <a href="#ssi" class="btn-glass btn-glass--dark">
+                            <span>کشف مسیر من</span>
+                            <i data-lucide="arrow-down"></i>
+                        </a>
+                        <a href="/contact" class="btn-glass btn-glass--light">
+                            <span>شروع گفت‌وگو</span>
+                            <i data-lucide="arrow-up-left"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- IMAGE (standalone, no glass card) -->
+                <div class="hero__visual" data-reveal="left">
+                    <div class="hero__frame">
+                        <img src="/static/images/download%20(3).webp" alt="دکتر حسین طهوریان" class="hero__img">
+                    </div>
+                    
+                    <!-- Years of experience badge -->
+                    <div class="float-badge float-badge--exp">
+                        <span class="float-badge__num">۱۷</span>
+                        <div class="float-badge__text">
+                            <strong>سال</strong>
+                            <small>تجربه حرفه‌ای</small>
+                        </div>
+                    </div>
+                    
+                    <!-- Stats -->
+                    <div class="glass-strip">
+                        <div class="glass-strip__item">
+                            <strong>۲۰<span>+</span></strong>
+                            <small>سال تجربه</small>
+                        </div>
+                        <div class="glass-strip__divider"></div>
+                        <div class="glass-strip__item">
+                            <strong>۵</strong>
+                            <small>اختراع</small>
+                        </div>
+                        <div class="glass-strip__divider"></div>
+                        <div class="glass-strip__item">
+                            <strong>۳۲<span>+</span></strong>
+                            <small>مدرک</small>
+                        </div>
+                    </div>
+                </div>
+                
             </div>
+            
+            <div class="hero__scroll">
+                <span class="hero__scroll-text">اسکرول کنید</span>
+                <span class="hero__scroll-mouse">
+                    <span></span>
+                </span>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- ==================== 2. SSI HOLDING ==================== -->
+    <section class="section" id="ssi">
+        <div class="shell">
+            
+            <div class="section__head" data-reveal="up">
+                <span class="section__badge">01</span>
+                <span class="section__label">هلدینگ سرآمد سرمایه ایلیا</span>
+                <span class="section__line"></span>
+            </div>
+            
+            <div class="split">
+                
+                <div class="split__text" data-reveal="right">
+                    <span class="kicker">
+                        <span class="kicker__line"></span>
+                        SSI HOLDING
+                    </span>
+                    <h2 class="split__title">
+                        ساختن مجموعه‌هایی<br>
+                        برای <em>آینده</em>
+                    </h2>
+                    <p class="split__desc">
+                        <strong>هلدینگ سرآمد سرمایه ایلیا (SSI)</strong> یک شرکت خصوصی و دانش‌بنیان است که از تاریخ ۸/۸/۸۸ به‌عنوان نهادی مستقل و پیشرو در عرصه خدمات مختلف فعالیت می‌کند.
+                    </p>
+                    
+                    <div class="feature-glass">
+                        <div class="feature-glass__item">
+                            <span class="feature-glass__icon">
+                                <i data-lucide="trending-up"></i>
+                            </span>
+                            <div>
+                                <strong>سرمایه‌گذاری و توسعه</strong>
+                                <small>شناسایی فرصت‌های رشد و راهبری پروژه‌ها</small>
+                            </div>
+                        </div>
+                        <div class="feature-glass__item">
+                            <span class="feature-glass__icon">
+                                <i data-lucide="briefcase"></i>
+                            </span>
+                            <div>
+                                <strong>خدمات مشاوره‌ای تخصصی</strong>
+                                <small>راهکارهای راهبردی در حوزه‌های مختلف</small>
+                            </div>
+                        </div>
+                        <div class="feature-glass__item">
+                            <span class="feature-glass__icon">
+                                <i data-lucide="cpu"></i>
+                            </span>
+                            <div>
+                                <strong>توسعه فناوری و نوآوری</strong>
+                                <small>تبدیل ایده‌های فناورانه به محصول</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="/contact" class="btn-glass btn-glass--dark">
+                        <span>آشنایی برای همکاری</span>
+                        <i data-lucide="arrow-left"></i>
+                    </a>
+                </div>
+                
+                <div class="split__visual" data-reveal="left">
+                    <div class="glass-card glass-card--image">
+                        <div class="glass-card__glow"></div>
+                        <div class="image-frame">
+                            <img src="/static/images/شرکت.png" alt="هلدینگ سرآمد سرمایه ایلیا" loading="lazy">
+                        </div>
+                        <span class="glass-tag glass-tag--gold">SSI / از ۱۳۸۸</span>
+                    </div>
+                </div>
+                
+            </div>
+            
         </div>
     </section>
-    <section class="about-section about-section--gallery">
-        <div class="about-shell"><header class="about-section__header scroll-reveal"><div><span class="about-kicker">گالری مسیر</span><h2>لحظه‌هایی از<br><em>ساختن</em></h2></div></header>
-            <div class="about-gallery"><figure class="about-gallery__item about-gallery__item--wide scroll-reveal"><img src="/static/images/کتاب-های-سایت-دکتر-طهوریان-1024x569.jpg" alt="کتاب‌های دکتر طهوریان" loading="lazy"><figcaption>دانش، وقتی به اشتراک گذاشته می‌شود زنده می‌ماند.</figcaption></figure><figure class="about-gallery__item scroll-reveal"><img src="/static/images/اختراعات-دکتر-سایت.png" alt="اختراعات دکتر طهوریان" loading="lazy"><figcaption>اختراع، شکل دیگری از مسئولیت است.</figcaption></figure><figure class="about-gallery__item scroll-reveal"><img src="/static/images/شرکت.png" alt="مسیر کسب‌وکار و هلدینگ" loading="lazy"><figcaption>هر ساختن، با یک تصمیم آغاز می‌شود.</figcaption></figure></div>
+
+    <!-- ==================== 3. INVENTIONS ==================== -->
+    <section class="section section--tint">
+        <div class="shell">
+            
+            <div class="section__head" data-reveal="up">
+                <span class="section__badge">02</span>
+                <span class="section__label">اختراعات و نوآوری‌ها</span>
+                <span class="section__line"></span>
+            </div>
+            
+            <div class="split split--reverse">
+                
+                <div class="split__visual" data-reveal="right">
+                    <div class="glass-card glass-card--image">
+                        <div class="glass-card__glow"></div>
+                        <div class="image-frame">
+                            <img src="/static/images/اختراعات-دکتر-سایت.png" alt="اختراعات دکتر طهوریان" loading="lazy">
+                        </div>
+                        <span class="glass-tag glass-tag--green">PATENTS / ۰۵</span>
+                    </div>
+                </div>
+                
+                <div class="split__text" data-reveal="left">
+                    <span class="kicker">
+                        <span class="kicker__line"></span>
+                        INVENTIONS
+                    </span>
+                    <h2 class="split__title">
+                        از یک پرسش<br>
+                        تا یک <em>اختراع</em>
+                    </h2>
+                    <p class="split__desc">
+                        اختراع برای من فقط ثبت یک ایده نیست؛ راهی است برای دیدن یک مسئله از زاویه‌ای تازه و ساختن راه‌حلی که در جهان واقعی اثر بگذارد.
+                    </p>
+                    
+                    <div class="inv-grid">
+                        <article class="inv-glass">
+                            <span class="inv-glass__num">۰۱</span>
+                            <h4>دستگاه بیستوری ایمن برای شاپ و پلانت دایسکشن</h4>
+                        </article>
+                        <article class="inv-glass">
+                            <span class="inv-glass__num">۰۲</span>
+                            <h4>سرنگ ایمن انیموتومی با قابلیت انفوزیون واینیل</h4>
+                        </article>
+                        <article class="inv-glass">
+                            <span class="inv-glass__num">۰۳</span>
+                            <h4>لوله آزمایش درب دار حاوی گوی‌های شیشه‌ای</h4>
+                        </article>
+                        <article class="inv-glass">
+                            <span class="inv-glass__num">۰۴</span>
+                            <h4>پماد از نیش زنبور عسل برای درمان آرتروز</h4>
+                        </article>
+                    </div>
+                </div>
+                
+            </div>
+            
         </div>
     </section>
+
+    <!-- ==================== 4. AWARDS ==================== -->
+    <section class="section">
+        <div class="shell">
+            
+            <div class="section__head" data-reveal="up">
+                <span class="section__badge">03</span>
+                <span class="section__label">افتخارات بین‌المللی</span>
+                <span class="section__line"></span>
+            </div>
+            
+            <div class="awards">
+                
+                <div class="awards__text" data-reveal="right">
+                    <span class="kicker">
+                        <span class="kicker__line"></span>
+                        AWARDS &amp; RECOGNITION
+                    </span>
+                    <h2 class="awards__title">
+                        افتخارات<br>
+                        <em>بین‌المللی</em>
+                    </h2>
+                    <p class="awards__desc">
+                        کسب مدال طلا در رقابت‌های جهانی مخترعان در سوئیس (۲۰۲۳) و انتشار مقالات علمی در مجلات بین‌المللی از جمله مجله Academic Journal of Health Sciences Medicina Balear (اسپانیا).
+                    </p>
+                    
+                    <div class="awards__stats">
+                        <div class="awards__stat">
+                            <strong>۲۰۲۳</strong>
+                            <small>مدال طلا سوئیس</small>
+                        </div>
+                        <div class="awards__stat">
+                            <strong>۰۲</strong>
+                            <small>مقاله بین‌المللی</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="awards__visual" data-reveal="left">
+                    <div class="glass-card glass-card--image glass-card--dark">
+                        <div class="glass-card__glow glass-card__glow--gold"></div>
+                        <div class="image-frame">
+                            <img src="/static/images/کتاب-های-سایت-دکتر-طهوریان-1024x569.jpg" alt="گواهی‌های بین‌المللی" loading="lazy">
+                        </div>
+                        <span class="glass-tag glass-tag--gold">AWARD / ۲۰۲۳</span>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- ==================== 5. BOOKS & PODCAST ==================== -->
+    <section class="section section--tint">
+        <div class="shell">
+            
+            <div class="section__head" data-reveal="up">
+                <span class="section__badge">04</span>
+                <span class="section__label">کتاب‌ها و گفت‌وگوها</span>
+                <span class="section__line"></span>
+            </div>
+            
+            <div class="bp-grid">
+                
+                <!-- BOOKS -->
+                <article class="glass-card glass-card--content" data-reveal="right">
+                    <div class="glass-card__glow"></div>
+                    <span class="kicker">
+                        <span class="kicker__line"></span>
+                        PUBLICATIONS
+                    </span>
+                    <h3 class="bp-title">نوشتن برای<br><em>روشن‌تر دیدن</em></h3>
+                    <p class="bp-desc">هر کتاب، تلاشی برای تبدیل تجربه‌های پراکنده به یک مسیر قابل استفاده است. باور دارم دانش وقتی به اشتراک گذاشته می‌شود، زنده می‌ماند.</p>
+                    
+                    <ul class="book-glass-list">
+                        <li class="book-glass">
+                            <span class="book-glass__icon">
+                                <i data-lucide="book-open"></i>
+                            </span>
+                            <div>
+                                <h4>میراث مستند تندرستی</h4>
+                                <small>درآمدی بر طب سنتی | جهاد دانشگاهی | ۱۳۲ صفحه</small>
+                            </div>
+                        </li>
+                        <li class="book-glass">
+                            <span class="book-glass__icon">
+                                <i data-lucide="book-open"></i>
+                            </span>
+                            <div>
+                                <h4>راهنمای کاربردی طرح‌واره درمانی برای زوجین</h4>
+                                <small>نشر ارشک</small>
+                            </div>
+                        </li>
+                    </ul>
+                </article>
+                
+                <!-- PODCAST -->
+                <article class="glass-card glass-card--dark glass-card--content" data-reveal="left">
+                    <div class="glass-card__glow glass-card__glow--gold"></div>
+                    
+                    <div class="podcast-icon">
+                        <i data-lucide="headphones"></i>
+                        <span class="podcast-icon__pulse"></span>
+                    </div>
+                    
+                    <span class="kicker kicker--gold">
+                        <span class="kicker__line"></span>
+                        PODCAST
+                    </span>
+                    <h3 class="bp-title bp-title--light">تصمیم‌های<br><em>روشن</em></h3>
+                    <p class="bp-desc bp-desc--light">فضایی برای گفت‌وگوهایی عمیق درباره رهبری، کسب‌وکار و لحظه‌ای که یک فکر جدی می‌شود و به اقدام تبدیل می‌شود.</p>
+                    
+                    <div class="glass-tags">
+                        <span>رهبری سازمانی</span>
+                        <span>استراتژی رشد</span>
+                        <span>تعادل کار و زندگی</span>
+                        <span>سیستم‌سازی</span>
+                    </div>
+                    
+                    <a href="/contact" class="btn-glass btn-glass--gold">
+                        <span>شنیدن قسمت‌ها</span>
+                        <i data-lucide="headphones"></i>
+                    </a>
+                </article>
+                
+            </div>
+            
+        </div>
+    </section>
+
 </section>
+
+<!-- ==================== SCROLL REVEAL ==================== -->
+<script>
+(function() {
+    /* ---------- Scroll Reveal ---------- */
+    const els = document.querySelectorAll('[data-reveal]');
+    if (els.length) {
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('is-visible');
+                    obs.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -100px 0px' });
+        els.forEach(el => obs.observe(el));
+    }
+    
+    /* ---------- Floating Glass Orbs on Scroll ---------- */
+    const orbs = document.querySelectorAll('.glass-orb[data-speed]');
+    let ticking = false;
+    let lastScroll = 0;
+    
+    function updateOrbs() {
+        const scrollY = window.scrollY;
+        const delta = scrollY - lastScroll;
+        
+        orbs.forEach((orb, i) => {
+            const speed = parseFloat(orb.dataset.speed);
+            const offset = scrollY * speed;
+            
+            // Combine scroll movement + gentle drift
+            const driftX = Math.sin(scrollY * 0.002 + i) * 15;
+            const driftY = Math.cos(scrollY * 0.0015 + i) * 10;
+            
+            orb.style.transform = `translate3d(${driftX}px, ${offset + driftY}px, 0)`;
+        });
+        
+        lastScroll = scrollY;
+        ticking = false;
+    }
+    
+    function onScroll() {
+        if (!ticking) {
+            requestAnimationFrame(updateOrbs);
+            ticking = true;
+        }
+    }
+    
+    if (orbs.length) {
+        window.addEventListener('scroll', onScroll, { passive: true });
+        updateOrbs(); // initial position
+    }
+    
+    /* ---------- Mouse Parallax (Subtle) ---------- */
+    let mouseX = 0, mouseY = 0;
+    let currentX = 0, currentY = 0;
+    
+    document.addEventListener('mousemove', (e) => {
+        mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+        mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+    });
+    
+    function animateParallax() {
+        currentX += (mouseX - currentX) * 0.05;
+        currentY += (mouseY - currentY) * 0.05;
+        
+        orbs.forEach((orb, i) => {
+            const depth = 8 + (i * 4);
+            const px = currentX * depth;
+            const py = currentY * depth;
+            
+            // Get existing transform and add mouse offset
+            const scrollY = window.scrollY;
+            const speed = parseFloat(orb.dataset.speed);
+            const offset = scrollY * speed;
+            const driftX = Math.sin(scrollY * 0.002 + i) * 15;
+            const driftY = Math.cos(scrollY * 0.0015 + i) * 10;
+            
+            orb.style.transform = `translate3d(${driftX + px}px, ${offset + driftY + py}px, 0)`;
+        });
+        
+        requestAnimationFrame(animateParallax);
+    }
+    
+    if (orbs.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        animateParallax();
+    }
+})();
+</script>
 {{end}}

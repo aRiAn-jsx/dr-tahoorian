@@ -8,7 +8,7 @@ import (
 )
 
 func (r *Repository) GetAbout() (*domain.About, error) {
-	row := r.db.QueryRow(`SELECT id, title, content, image_url, created_at, updated_at FROM about LIMIT 1`)
+	row := r.db.QueryRow(`SELECT id, title, content, COALESCE(image_url, ''), created_at, updated_at FROM about LIMIT 1`)
 	about := &domain.About{}
 	err := row.Scan(&about.ID, &about.Title, &about.Content, &about.ImageURL, &about.CreatedAt, &about.UpdatedAt)
 	if err == sql.ErrNoRows {
@@ -27,7 +27,7 @@ func (r *Repository) SaveAbout(about *domain.About) error {
 }
 
 func (r *Repository) ListServices() ([]domain.Service, error) {
-	rows, err := r.db.Query(`SELECT id, title, slug, description, content, image_url, is_active, created_at, updated_at FROM services WHERE is_active = 1 ORDER BY id DESC`)
+	rows, err := r.db.Query(`SELECT id, title, slug, COALESCE(description, ''), COALESCE(content, ''), COALESCE(image_url, ''), is_active, created_at, updated_at FROM services WHERE is_active = 1 ORDER BY id DESC`)
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +45,7 @@ func (r *Repository) ListServices() ([]domain.Service, error) {
 }
 
 func (r *Repository) GetServiceBySlug(slug string) (*domain.Service, error) {
-	row := r.db.QueryRow(`SELECT id, title, slug, description, content, image_url, is_active, created_at, updated_at FROM services WHERE slug = ? AND is_active = 1`, slug)
+	row := r.db.QueryRow(`SELECT id, title, slug, COALESCE(description, ''), COALESCE(content, ''), COALESCE(image_url, ''), is_active, created_at, updated_at FROM services WHERE slug = ? AND is_active = 1`, slug)
 	s := &domain.Service{}
 	err := row.Scan(&s.ID, &s.Title, &s.Slug, &s.Description, &s.Content, &s.ImageURL, &s.IsActive, &s.CreatedAt, &s.UpdatedAt)
 	if err == sql.ErrNoRows {
@@ -63,9 +63,9 @@ func (r *Repository) ListGallery(category string) ([]domain.GalleryItem, error) 
 	var rows *sql.Rows
 	var err error
 	if category != "" {
-		rows, err = r.db.Query(`SELECT id, title, image_url, category, sort_order, created_at FROM gallery WHERE category = ? ORDER BY sort_order ASC`, category)
+		rows, err = r.db.Query(`SELECT id, title, image_url, COALESCE(category, ''), sort_order, created_at FROM gallery WHERE category = ? ORDER BY sort_order ASC`, category)
 	} else {
-		rows, err = r.db.Query(`SELECT id, title, image_url, category, sort_order, created_at FROM gallery ORDER BY sort_order ASC`)
+		rows, err = r.db.Query(`SELECT id, title, image_url, COALESCE(category, ''), sort_order, created_at FROM gallery ORDER BY sort_order ASC`)
 	}
 	if err != nil {
 		return nil, err
@@ -84,7 +84,7 @@ func (r *Repository) ListGallery(category string) ([]domain.GalleryItem, error) 
 }
 
 func (r *Repository) ListStats() ([]domain.Stat, error) {
-	rows, err := r.db.Query(`SELECT id, label, value, suffix FROM stats ORDER BY id ASC`)
+	rows, err := r.db.Query(`SELECT id, label, value, COALESCE(suffix, '') FROM stats ORDER BY id ASC`)
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +102,7 @@ func (r *Repository) ListStats() ([]domain.Stat, error) {
 }
 
 func (r *Repository) GetContactInfo() (*domain.ContactInfo, error) {
-	row := r.db.QueryRow(`SELECT address, phone, email, work_hours FROM contact_info LIMIT 1`)
+	row := r.db.QueryRow(`SELECT address, phone, email, COALESCE(work_hours, '') FROM contact_info LIMIT 1`)
 	info := &domain.ContactInfo{}
 	err := row.Scan(&info.Address, &info.Phone, &info.Email, &info.WorkHours)
 	if err == sql.ErrNoRows {
@@ -112,7 +112,7 @@ func (r *Repository) GetContactInfo() (*domain.ContactInfo, error) {
 }
 
 func (r *Repository) ListArticles() ([]domain.Article, error) {
-	rows, err := r.db.Query(`SELECT id, title, slug, summary, content, image_url, author, is_published, created_at, updated_at FROM articles ORDER BY id DESC`)
+	rows, err := r.db.Query(`SELECT id, title, slug, COALESCE(summary, ''), content, COALESCE(image_url, ''), COALESCE(author, ''), is_published, created_at, updated_at FROM articles ORDER BY id DESC`)
 	if err != nil {
 		return nil, err
 	}
@@ -130,7 +130,7 @@ func (r *Repository) ListArticles() ([]domain.Article, error) {
 }
 
 func (r *Repository) GetArticleByID(id int) (*domain.Article, error) {
-	row := r.db.QueryRow(`SELECT id, title, slug, summary, content, image_url, author, is_published, created_at, updated_at FROM articles WHERE id = ?`, id)
+	row := r.db.QueryRow(`SELECT id, title, slug, COALESCE(summary, ''), content, COALESCE(image_url, ''), COALESCE(author, ''), is_published, created_at, updated_at FROM articles WHERE id = ?`, id)
 	a := &domain.Article{}
 	err := row.Scan(&a.ID, &a.Title, &a.Slug, &a.Summary, &a.Content, &a.ImageURL, &a.Author, &a.IsPublished, &a.CreatedAt, &a.UpdatedAt)
 	if err == sql.ErrNoRows {
@@ -140,7 +140,7 @@ func (r *Repository) GetArticleByID(id int) (*domain.Article, error) {
 }
 
 func (r *Repository) GetArticleBySlug(slug string) (*domain.Article, error) {
-	row := r.db.QueryRow(`SELECT id, title, slug, summary, content, image_url, author, is_published, created_at, updated_at FROM articles WHERE slug = ?`, slug)
+	row := r.db.QueryRow(`SELECT id, title, slug, COALESCE(summary, ''), content, COALESCE(image_url, ''), COALESCE(author, ''), is_published, created_at, updated_at FROM articles WHERE slug = ?`, slug)
 	a := &domain.Article{}
 	err := row.Scan(&a.ID, &a.Title, &a.Slug, &a.Summary, &a.Content, &a.ImageURL, &a.Author, &a.IsPublished, &a.CreatedAt, &a.UpdatedAt)
 	if err == sql.ErrNoRows {

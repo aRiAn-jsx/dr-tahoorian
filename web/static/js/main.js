@@ -338,6 +338,168 @@ function initContactPageAnimations() {
     });
 }
 
+// ===== اسکرول سکشن‌به‌سکشنِ صفحه درباره‌ما =====
+// هر حرکت چرخ موس یا ترک‌پد — چه یک تیک، چه ده تیک — فقط یک سکشن جابه‌جا
+// می‌کند. سکشن‌هایی که از صفحه بلندترند اول به اندازه یک صفحه خوانده می‌شوند
+// و بعد سکشن بعدی می‌آیند. روی لمسی، اسنپ ملایم CSS (proximity) فعال می‌شود
+// تا اسکرول طبیعی دست‌نخورده باقی بماند.
+// توجه: listenerها یک‌بار روی window/document بسته می‌شوند و در هر رویداد
+// عناصر را دوباره جستجو می‌کنند، پس با htmx swapها مشکلی پیش نمی‌آید.
+function initAboutSectionSnap() {
+    if (window.__aboutSnapBound) return;
+    if (!document.querySelector('.about-page')) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    window.__aboutSnapBound = true;
+
+    var SNAP_OFFSET = 80; // ارتفاع هدر شناور (هماهنگ با scroll-padding-top)
+    var snapAnimating = false;
+    var gestureActive = false;
+    var gestureTimer = null;
+    var wheelAccum = 0;
+
+    function smoothScrollTo(targetY, duration) {
+        var startY = window.scrollY || window.pageYOffset || 0;
+        var distance = targetY - startY;
+        if (Math.abs(distance) < 2) return;
+        snapAnimating = true;
+        var t0 = performance.now();
+
+        function ease(t) {
+            return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        }
+
+        function step(now) {
+            var t = Math.min(1, (now - t0) / duration);
+            window.scrollTo(0, startY + distance * ease(t));
+            if (t < 1) requestAnimationFrame(step);
+            else snapAnimating = false;
+        }
+
+        requestAnimationFrame(step);
+    }
+
+    function getSnapEls() {
+        var page = document.querySelector('.about-page');
+        if (!page) return [];
+        // فقط hero + سکشن‌های شماره‌دار نقطه توقف بشن؛ manifesto جزء
+        // نمای اولیه است (با hero یک نما محسوب می‌شود) و توقفِ جدا ندارد.
+        return Array.prototype.slice.call(page.children).filter(function (el) {
+            return (el.matches('header.hero, section')) &&
+                   !el.classList.contains('manifesto');
+        });
+    }
+
+    function nearestSnapIndex(els) {
+        var best = 0;
+        var bestDist = Infinity;
+        for (var i = 0; i < els.length; i++) {
+            var d = Math.abs(els[i].getBoundingClientRect().top - SNAP_OFFSET);
+            if (d < bestDist) { bestDist = d; best = i; }
+        }
+        return best;
+    }
+
+    function goSnap(dir) {
+        var els = getSnapEls();
+        if (els.length < 2) return;
+        var i = nearestSnapIndex(els);
+        var el = els[i];
+        var free = window.innerHeight - SNAP_OFFSET;
+
+        // سکشن بلندتر از صفحه: اول بقیه‌اش را نشان بده، بعد برو بعدی
+        if (el && el.offsetHeight > free + 8) {
+            var rect = el.getBoundingClientRect();
+            if (dir > 0 && rect.bottom > window.innerHeight + 8) {
+                smoothScrollTo((window.scrollY || 0) + Math.min(free, rect.bottom - window.innerHeight + 4), 650);
+                return;
+            }
+            if (dir < 0 && rect.top < SNAP_OFFSET - 8) {
+                smoothScrollTo(rect.top + (window.scrollY || 0) - SNAP_OFFSET, 650);
+                return;
+            }
+        }
+
+        var next = i + dir;
+        if (next < 0 || next >= els.length) return;
+        smoothScrollTo(els[next].getBoundingClientRect().top + (window.scrollY || 0) - SNAP_OFFSET, 760);
+    }
+
+    function lockGesture() {
+        gestureActive = true;
+        clearTimeout(gestureTimer);
+        gestureTimer = setTimeout(function () { gestureActive = false; }, 220);
+    }
+
+    // چرخ موس / ترک‌پد: تیک‌ها را جمع می‌کنیم تا هر رگبار حرکت = یک سکشن
+    window.addEventListener('wheel', function (e) {
+        if (e.ctrlKey) return; // پینچ‌زوم دست‌نخورده بماند
+        if (!e.target || !e.target.closest) return;
+        if (e.target.closest('.site-header, .mobile-nav, [data-no-snap]')) return;
+        if (!document.querySelector('.about-page')) return;
+        e.preventDefault();
+
+        wheelAccum += e.deltaY;
+        if (snapAnimating || gestureActive) { wheelAccum = 0; return; }
+        if (Math.abs(wheelAccum) < 12) return;
+
+        var dir = wheelAccum > 0 ? 1 : -1;
+        wheelAccum = 0;
+        lockGesture();
+        goSnap(dir);
+    }, { passive: false });
+
+    // کیبورد: هر کلید = یک سکشن
+    window.addEventListener('keydown', function (e) {
+        if (!document.querySelector('.about-page')) return;
+        var tag = (e.target && e.target.tagName) || '';
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' ||
+            (e.target && e.target.isContentEditable)) return;
+
+        var dir = 0;
+        if (e.key === 'ArrowDown' || e.key === 'PageDown') dir = 1;
+        else if (e.key === 'ArrowUp' || e.key === 'PageUp') dir = -1;
+        else if (e.key === 'Home') {
+            e.preventDefault();
+            if (!snapAnimating) smoothScrollTo(0, 700);
+            return;
+        } else if (e.key === 'End') {
+            e.preventDefault();
+            var els = getSnapEls();
+            if (!snapAnimating && els.length) {
+                smoothScrollTo(els[els.length - 1].getBoundingClientRect().top + (window.scrollY || 0) - SNAP_OFFSET, 700);
+            }
+            return;
+        } else {
+            return;
+        }
+
+        e.preventDefault();
+        if (e.repeat || snapAnimating || gestureActive) return;
+        lockGesture();
+        goSnap(dir);
+    });
+
+    // لمسی: اسنپ ملایم (proximity) — اسکرول طبیعی سرجایش می‌ماند
+    document.documentElement.classList.add('about-snap');
+
+    // لینک‌های لنگرِ داخل صفحه با همان سیستم اسکرول می‌شوند (delegation
+    // است تا بعد از htmx swap هم روی لینک‌های تازه کار کند)
+    document.addEventListener('click', function (e) {
+        var a = e.target && e.target.closest &&
+            e.target.closest('.about-page [data-anchor], .about-page a[href^="#"]');
+        if (!a) return;
+        var href = a.getAttribute('href') || '';
+        if (href.length < 2 || href.charAt(0) !== '#') return;
+        var target = document.querySelector(href);
+        if (!target) return;
+        e.preventDefault();
+        if (snapAnimating) return;
+        var startY = window.scrollY || window.pageYOffset || 0;
+        var endY = target.getBoundingClientRect().top + startY - SNAP_OFFSET;
+        smoothScrollTo(endY, Math.min(1400, Math.max(600, Math.abs(endY - startY) * 0.55)));
+    });
+}
+
 // ===== صفحه‌بار (لودر) =====
 // تضمین می‌کند لودر حتی با درخواست‌های سریع دیده شود (حداقل مدت نمایش ثابت)
 (function () {
@@ -418,6 +580,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileMenu();
     initScrollHeader();
     initContactPageAnimations();
+    initAboutCardSlider();
 });
 document.addEventListener('htmx:afterSettle', () => {
     refreshIcons();
@@ -431,6 +594,223 @@ document.addEventListener('htmx:afterSettle', () => {
     initMobileMenu();
     initScrollHeader();
     initContactPageAnimations();
+    initAboutCardSlider();
 });
 window.addEventListener('popstate', updateActiveNavigation);
+
+// ===================================================================
+//  اسلایدر کارتی تمام‌صفحه — صفحه درباره‌ما
+//  هر سکشن یک «کارت» با ارتفاع دقیقاً 100% ارتفاع نما. به‌جای اسکرول،
+//  هر حرکت چرخ موس/ترک‌پد (چه یک تیک، چه ده تیک) فقط یک کارت را با
+//  انیمیشن بالا/پایین می‌بره. لمسی با swipe هندل می‌شود. listenerها
+//  یک‌بار بسته می‌شن و عناصر هر گام دوباره جستجو می‌شن (برای htmx swapها).
+// ===================================================================
+var aboutSlider = {
+    current: 0,
+    animating: false,
+    gesture: false,
+    timer: null,
+    unlockTimer: null,
+    accum: 0
+};
+var aboutSliderBound = false;
+var aboutMQBound = false;
+
+function getAboutSlides() {
+    var page = document.querySelector('.about-page');
+    if (!page) return [];
+    return Array.prototype.slice.call(page.children).filter(function (el) {
+        return el.matches('header.hero, section');
+    });
+}
+
+function layoutAboutSlides() {
+    var slides = getAboutSlides();
+    for (var i = 0; i < slides.length; i++) {
+        slides[i].style.transform = 'translateY(' + (i - aboutSlider.current) * 100 + 'vh)';
+    }
+}
+
+// حالت کارت تمام‌صفحه فقط وقتی معنا دارد که چیدمان دوستونه باشد
+// (عرض ≥ 1101px) و ارتفاع پنجره برای یک نمای کامل کافی باشد (≥ 720px).
+// زیر این مقادیر — موبایل و تبلت — سکشن‌ها تک‌ستونه و بلندتر از یک
+// نما می‌شوند؛ کارتی آنجا هم محتوای زیرِ viewport را می‌بُرد و اسکرول
+// لمسی را خراب می‌کند. پس صفحه به اسکرول عادی برمی‌گردد و فوتر دوباره
+// دیده می‌شود (کلاس about-active هم گذاشته نمی‌شود).
+var aboutCardMQ = (typeof window.matchMedia === 'function')
+    ? window.matchMedia('(min-width: 1101px) and (min-height: 720px)')
+    : { matches: true };
+
+function aboutCardEnabled() {
+    if (!aboutCardMQ.matches) return false;
+    return !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+// خروج از حالت کارتی (مثلاً وقتی پنجره را تا عرض موبایل کوچک می‌کنیم):
+// ترنسفورم‌های inline که سکشن‌ها را جابه‌جا کرده‌اند پاک می‌شوند تا
+// سکشن‌ها در جریان عادی سند برگردند و هیچ محتوایی بریده نماند.
+function clearAboutSlideLayout() {
+    var slides = getAboutSlides();
+    for (var i = 0; i < slides.length; i++) {
+        slides[i].style.transform = '';
+    }
+    aboutSlider.current = 0;
+    aboutSlider.animating = false;
+    clearTimeout(aboutSlider.unlockTimer);
+}
+
+function aboutSliderGo(dir) {
+    var slides = getAboutSlides();
+    if (slides.length < 2) return;
+    var target = aboutSlider.current + dir;
+    if (target < 0 || target >= slides.length) return;
+    aboutSlider.animating = true;
+    aboutSlider.current = target;
+    layoutAboutSlides();
+    setTimeout(function () { animateAboutCard(getAboutSlides()[target]); }, 160);
+    clearTimeout(aboutSlider.unlockTimer);
+    aboutSlider.unlockTimer = setTimeout(function () { aboutSlider.animating = false; }, 860);
+}
+
+function lockAboutGesture() {
+    aboutSlider.gesture = true;
+    clearTimeout(aboutSlider.timer);
+    aboutSlider.timer = setTimeout(function () { aboutSlider.gesture = false; }, 240);
+}
+
+// Reveal ورود هر کارت: اجزاء [data-reveal] آن با تأخیر پله‌پله (stagger)
+// ظاهر می‌شن. قبل از افشودن، حالت مخفی (is-armed) دوباره برقرار می‌شود
+// تا با دوباره ورود به کارت، انیمیشن تکرار پذیرد.
+function animateAboutCard(cardEl) {
+    if (!cardEl) return;
+    var els = Array.prototype.slice.call(cardEl.querySelectorAll('[data-reveal]'));
+    els.forEach(function (el, i) {
+        el.classList.remove('is-visible');
+        el.classList.add('is-armed');
+        el.style.transitionDelay = (80 + i * 90) + 'ms';
+        void el.offsetHeight; // force reflow تا حالت مخفی اعمال شود
+        requestAnimationFrame(function () {
+            el.classList.add('is-visible');
+        });
+    });
+}
+
+function initAboutCardSlider() {
+    // فوتر (که بعد از انرژی درباره در قالب است) نباید در این نما دیده شود؛
+    // چون .about-page فیکس است، این کلاس روی body فوتر را در این صفحه مخفی می‌کند
+    // (با htmx boost که فوتر را دوباره رندر نمیکند، این روش امن است).
+    // فقط در حالت کارتی (دسکتاپ) گذاشته می‌شود؛ در موبایل فوتر باید برگردد.
+    var hasPage = !!document.querySelector('.about-page');
+    var cardMode = hasPage && aboutCardEnabled();
+    document.body.classList.toggle('about-active', cardMode);
+
+    // عبور از مرز عرض/ارتفاع (resize، چرخش گوشی) → این تابع دوباره صدا
+    // زده می‌شود و حالت درست را انتخاب می‌کند. باید قبل از هر return
+    // ثبت شود، وگرنه اگر صفحه اول روی موبایل باز شود هرگز ثبت نمی‌شود.
+    if (!aboutMQBound && typeof aboutCardMQ.addEventListener === 'function') {
+        aboutMQBound = true;
+        aboutCardMQ.addEventListener('change', initAboutCardSlider);
+    } else if (!aboutMQBound && typeof aboutCardMQ.addListener === 'function') {
+        aboutMQBound = true;
+        aboutCardMQ.addListener(initAboutCardSlider);
+    }
+
+    if (!hasPage) return;
+
+    // موبایل / تبلت / پنجره‌ی کوتاه / حرکت محدود:
+    // اسکرول عادی، بدون هیچ دخالتی
+    if (!cardMode) {
+        clearAboutSlideLayout();
+        return;
+    }
+
+    // در هر ورود به صفحه از کارت اول شروع و موقعیت را به‌روز کن
+    aboutSlider.current = 0;
+    layoutAboutSlides();
+    animateAboutCard(getAboutSlides()[0]);
+
+    if (aboutSliderBound) return;
+    aboutSliderBound = true;
+
+    // چرخ موس / ترک‌پد: تیک‌ها جمع می‌شن؛ هر رگبار حرکت = یک کارت
+    window.addEventListener('wheel', function (e) {
+        if (!aboutCardEnabled()) return;
+        if (e.ctrlKey) return; // پینچ‌زوم دست‌نخورده بماند
+        if (!e.target || !e.target.closest) return;
+        if (e.target.closest('.site-header, .mobile-nav, [data-no-snap]')) return;
+        if (!document.querySelector('.about-page')) return;
+        e.preventDefault();
+        aboutSlider.accum += e.deltaY;
+        if (aboutSlider.animating || aboutSlider.gesture) { aboutSlider.accum = 0; return; }
+        if (Math.abs(aboutSlider.accum) < 12) return;
+        var dir = aboutSlider.accum > 0 ? 1 : -1;
+        aboutSlider.accum = 0;
+        lockAboutGesture();
+        aboutSliderGo(dir);
+    }, { passive: false });
+
+    // لمسی: swipe بالا/پایین = یک کارت (فقط در حالت کارتی؛
+    // در موبایل اسکرول طبیعی نباید دستکاری شود)
+    var tsY = null;
+    window.addEventListener('touchstart', function (e) {
+        if (!aboutCardEnabled()) { tsY = null; return; }
+        if (e.target && e.target.closest && e.target.closest('.site-header, .mobile-nav')) { tsY = null; return; }
+        tsY = e.touches[0].clientY;
+    }, { passive: true });
+    window.addEventListener('touchend', function (e) {
+        if (tsY === null) return;
+        if (!aboutCardEnabled()) { tsY = null; return; }
+        var dy = tsY - (e.changedTouches[0].clientY || tsY);
+        tsY = null;
+        if (Math.abs(dy) < 40 || aboutSlider.animating || aboutSlider.gesture) return;
+        aboutSliderGo(dy > 0 ? 1 : -1);
+    }, { passive: true });
+
+    // کیبورد: هر کلید = یک کارت
+    window.addEventListener('keydown', function (e) {
+        if (!aboutCardEnabled()) return;
+        if (!document.querySelector('.about-page')) return;
+        var tag = (e.target && e.target.tagName) || '';
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' ||
+            (e.target && e.target.isContentEditable)) return;
+        var dir = 0;
+        if (e.key === 'ArrowDown' || e.key === 'PageDown') dir = 1;
+        else if (e.key === 'ArrowUp' || e.key === 'PageUp') dir = -1;
+        else if (e.key === 'Home') {
+            e.preventDefault();
+            if (!aboutSlider.animating) { aboutSlider.current = 0; layoutAboutSlides(); }
+            return;
+        } else if (e.key === 'End') {
+            e.preventDefault();
+            var els = getAboutSlides();
+            if (!aboutSlider.animating && els.length) { aboutSlider.current = els.length - 1; layoutAboutSlides(); }
+            return;
+        } else {
+            return;
+        }
+        e.preventDefault();
+        if (e.repeat || aboutSlider.animating || aboutSlider.gesture) return;
+        lockAboutGesture();
+        aboutSliderGo(dir);
+    });
+
+    // لنگر داخل کارت (مثل #ssi): پریدن به همان کارت
+    document.addEventListener('click', function (e) {
+        if (!aboutCardEnabled()) return;
+        var a = e.target && e.target.closest &&
+            e.target.closest('.about-page [data-anchor], .about-page a[href^="#"]');
+        if (!a) return;
+        var href = a.getAttribute('href') || '';
+        if (href.length < 2 || href.charAt(0) !== '#') return;
+        var target = document.querySelector(href);
+        if (!target) return;
+        e.preventDefault();
+        var slides = getAboutSlides();
+        var idx = slides.indexOf(target);
+        if (idx >= 0 && !aboutSlider.animating) {
+            aboutSlider.current = idx;
+            layoutAboutSlides();
+        }
+    });
+}
 

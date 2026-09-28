@@ -6,6 +6,7 @@ type Article struct {
 	ID          int       `json:"id" db:"id"`
 	Title       string    `json:"title" db:"title"`
 	Slug        string    `json:"slug" db:"slug"`
+	Category    string    `json:"category" db:"category"`
 	Summary     string    `json:"summary" db:"summary"`
 	Content     string    `json:"content" db:"content"`
 	ImageURL    string    `json:"image_url" db:"image_url"`
@@ -22,6 +23,16 @@ type About struct {
 	ImageURL    string    `json:"image_url" db:"image_url"`
 	CreatedAt   time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at" db:"updated_at"`
+}
+
+// ArticleCategory is a user-manageable category applied to articles. Unlike the
+// old hard-coded category list, admins can add/rename/remove categories and the
+// public site renders them (chips + card badges) dynamically from the database.
+type ArticleCategory struct {
+	ID        int       `json:"id" db:"id"`
+	Slug      string    `json:"slug" db:"slug"`   // machine name (url-safe), unique
+	Title     string    `json:"title" db:"title"` // display label (Persian / any)
+	CreatedAt time.Time `json:"created_at" db:"created_at"`
 }
 
 type Service struct {

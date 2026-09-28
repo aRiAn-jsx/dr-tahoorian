@@ -50,6 +50,30 @@
 
         <div>
             <label class="block text-xs font-bold text-slate-700 mb-2">
+                دسته‌بندی مقاله
+            </label>
+            <select name="category" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 text-sm focus:outline-none focus:border-amber-500 focus:bg-white transition">
+                <option value="">بدون دسته‌بندی</option>
+                {{if $data.Categories}}
+                {{range $c := $data.Categories}}
+                <option value="{{$c.Slug}}" {{if eq $art.Category $c.Slug}}selected{{end}}>{{$c.Title}}</option>
+                {{end}}
+                {{else}}
+                <option value="business">کسب‌وکار</option>
+                <option value="leadership">رهبری</option>
+                <option value="strategy">استراتژی</option>
+                <option value="innovation">نوآوری</option>
+                {{end}}
+            </select>
+            <div class="mt-1.5 flex items-center gap-1.5 text-[11px] text-slate-400">
+                <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                <span>برای افزودن یا مدیریت دسته‌بندی‌ها به صفحهٔ
+                    <a href="/admin/categories" class="text-amber-600 font-bold hover:underline">دسته‌بندی مقالات</a> بروید.</span>
+            </div>
+        </div>
+
+        <div>
+            <label class="block text-xs font-bold text-slate-700 mb-2">
                 آدرس تصویر شاخص (Image URL)
             </label>
             <input type="text" name="image_url" value="{{$art.ImageURL}}" placeholder="/static/images/کتاب-های-سایت-دکتر-طهوریان-1024x569.jpg" dir="ltr" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 text-sm font-mono focus:outline-none focus:border-amber-500 focus:bg-white transition">

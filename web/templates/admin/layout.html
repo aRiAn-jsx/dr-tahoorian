@@ -50,6 +50,13 @@
                     </div>
                     <span class="text-xs px-2 py-0.5 rounded-full {{if eq .CurrentPath "/admin/articles"}}bg-slate-950 text-white{{else}}bg-emerald-500/20 text-emerald-400 border border-emerald-500/30{{end}} font-bold">فعال</span>
                 </a>
+<a href="/admin/categories" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors {{if or (eq .CurrentPath "/admin/categories") (eq .CurrentPath "/admin/categories/new")}}bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20{{else}}text-slate-300 hover:bg-slate-800 hover:text-white{{end}}">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="tags" class="w-5 h-5"></i>
+                        <span>دسته‌بندی مقالات</span>
+                    </div>
+                    <span class="text-xs px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">جدید</span>
+                </a>
 
                 <div class="pt-6 px-3 pb-2 text-[11px] font-bold text-slate-400 uppercase tracking-wider">سایر بخش‌های سایت</div>
 

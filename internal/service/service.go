@@ -3,6 +3,7 @@ package service
 import (
 	"fmt"
 	"log/slog"
+	"strings"
 	"time"
 
 	"github.com/tahoorian/tahoorian/internal/domain"
@@ -23,6 +24,9 @@ type Repository interface {
 	CreateArticle(article *domain.Article) error
 	UpdateArticle(article *domain.Article) error
 	DeleteArticle(id int) error
+	ListCategories() ([]domain.ArticleCategory, error)
+	CreateCategory(cat *domain.ArticleCategory) error
+	DeleteCategory(id int) error
 }
 
 type Service struct {
@@ -123,4 +127,56 @@ func (s *Service) UpdateArticle(article *domain.Article) error {
 
 func (s *Service) DeleteArticle(id int) error {
 	return s.repo.DeleteArticle(id)
+}
+
+func (s *Service) ListCategories() ([]domain.ArticleCategory, error) {
+	return s.repo.ListCategories()
+}
+
+func (s *Service) CreateCategory(cat *domain.ArticleCategory) error {
+	cat.Slug = strings.TrimSpace(cat.Slug)
+	cat.Title = strings.TrimSpace(cat.Title)
+	if cat.Title == "" {
+		return fmt.Errorf("عنوان دسته‌بندی الزامی است")
+	}
+	if cat.Slug == "" {
+		// build an ascii/url-safe slug from the title as a fallback
+		cat.Slug = slugify(cat.Title)
+	}
+	// Normalize the slug so "کسب و کار" / "کسب‌وکار" don't create duplicates.
+	cat.Slug = normalizeSlug(cat.Slug)
+	if cat.Slug == "" {
+		return fmt.Errorf("نامک (slug) دسته‌بندی معتبر نیست")
+	}
+	cat.CreatedAt = time.Now()
+	return s.repo.CreateCategory(cat)
+}
+
+func (s *Service) DeleteCategory(id int) error {
+	return s.repo.DeleteCategory(id)
+}
+
+// slugify creates a simple, lower-case, url-safe slug from an input string.
+func slugify(s string) string {
+	return normalizeSlug(strings.ToLower(s))
+}
+
+// normalizeSlug keeps only lowercase ascii letters, digits and dashes, and
+// collapses consecutive separators — this is the format stored in articles.category.
+func normalizeSlug(s string) string {
+	var b strings.Builder
+	lastDash := false
+	for _, r := range s {
+		switch {
+		case r >= 'a' && r <= 'z', r >= '0' && r <= '9':
+			b.WriteRune(r)
+			lastDash = false
+		default:
+			if b.Len() > 0 && !lastDash {
+				b.WriteByte('-')
+				lastDash = true
+			}
+		}
+	}
+	return strings.Trim(b.String(), "-")
 }

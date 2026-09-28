@@ -1,337 +1,178 @@
 {{define "content"}}
-<link rel="stylesheet" href="../../static/css/team.css">
+<link rel="stylesheet" href="/static/css/team.css">
 
 <section class="team-page">
-    
-    <!-- ==================== BACKGROUND LAYER ==================== -->
-    <div class="bg-layer" aria-hidden="true">
-        <div class="glass-orb glass-orb--1" data-speed="0.15"></div>
-        <div class="glass-orb glass-orb--2" data-speed="-0.2"></div>
-        <div class="glass-orb glass-orb--3" data-speed="0.25"></div>
-        <div class="glass-orb glass-orb--4" data-speed="-0.15"></div>
-        <div class="glass-orb glass-orb--5" data-speed="0.3"></div>
-        <div class="soft-glow soft-glow--mint"></div>
-        <div class="soft-glow soft-glow--sage"></div>
-        <div class="soft-glow soft-glow--cream"></div>
-        <div class="bg-pattern"></div>
-    </div>
 
-    <!-- ==================== 1. HERO ==================== -->
+    <!-- ==================== HERO ==================== -->
     <header class="team-hero">
         <div class="shell">
-            
-            <div class="team-hero__top">
-                <span class="pill pill--green">
-                    <span class="pill__dot"></span>
-                    تیم ما
-                </span>
-                <span class="pill pill--gold">
-                    <i data-lucide="users"></i>
-                    ۱۰ متخصص
-                </span>
-            </div>
-
-            <div class="team-hero__content" data-reveal="up">
-                <span class="kicker">
-                    <span class="kicker__line"></span>
-                    OUR TEAM
-                </span>
-                <h1 class="team-hero__title">
-                    آدم‌هایی که<br>
-                    <span class="line--accent">مسیر را می‌سازند</span>
-                </h1>
-                <p class="team-hero__desc">
-                    رشد واقعی با یک نگاه تنها ساخته نمی‌شود؛ با آدم‌های متخصص، همراه و مسئول شکل می‌گیرد. ساختار تیم ما بر پایه سه لایه تخصصی بنا شده است.
-                </p>
-            </div>
-
-            <!-- Level Legend -->
-            <div class="team-legend" data-reveal="up">
-                <div class="legend-item">
-                    <span class="legend-item__dot legend-item__dot--ceo"></span>
-                    <div>
-                        <strong>سطح راهبری</strong>
-                        <small>مدیرعامل</small>
-                    </div>
-                </div>
-                <div class="legend-item">
-                    <span class="legend-item__dot legend-item__dot--manager"></span>
-                    <div>
-                        <strong>سطح مدیریت</strong>
-                        <small>مدیران ارشد</small>
-                    </div>
-                </div>
-                <div class="legend-item">
-                    <span class="legend-item__dot legend-item__dot--expert"></span>
-                    <div>
-                        <strong>سطح تخصص</strong>
-                        <small>متخصصان</small>
-                    </div>
-                </div>
-            </div>
-
+            <span class="team-hero__kicker">
+                <span class="team-hero__kicker-line"></span>
+                تیم ما
+            </span>
+            <h1 class="team-hero__title">
+                آدم‌هایی که <em>مسیر را می‌سازند</em>
+            </h1>
+            <p class="team-hero__desc">
+                رشد واقعی با یک نگاه تنها ساخته نمی‌شود؛ با آدم‌های متخصص و همراه شکل می‌گیرد.
+            </p>
         </div>
     </header>
 
-    <!-- ==================== 2. TEAM TREE ==================== -->
-    <section class="section section--team">
+    <!-- ==================== TREE ==================== -->
+    <section class="tree-wrap">
         <div class="shell">
-            
-            <!-- LEVEL 1: CEO -->
-            <div class="level level--1">
-                <div class="level__badge" data-reveal="up">
-                    <span class="level__num">01</span>
-                    <span class="level__label">سطح راهبری</span>
-                </div>
+            <div class="org" id="org">
+                <!-- SVG lines overlay -->
+                <svg class="org__svg" id="orgSvg" aria-hidden="true"></svg>
 
-                <div class="level__grid level__grid--1col">
-                    
-                    <!-- CEO CARD -->
-                    <article class="member-card member-card--ceo" data-reveal="zoom">
-                        <div class="member-card__glow member-card__glow--gold"></div>
+                <!-- LEVEL 1: CEO -->
+                <div class="org__row org__row--ceo">
+                    <article class="team-card team-card--ceo" data-id="ceo">
+                        <span class="team-card__corner team-card__corner--tl"></span>
+                        <span class="team-card__corner team-card__corner--tr"></span>
+                        <span class="team-card__corner team-card__corner--bl"></span>
+                        <span class="team-card__corner team-card__corner--br"></span>
                         
-                        <div class="member-card__badge">
+                        <span class="team-card__badge">
                             <i data-lucide="crown"></i>
                             مدیرعامل
+                        </span>
+
+                        <div class="team-card__avatar team-card__avatar--lg">
+                            <img src="../../static/images/download (1).webp" alt="دکتر حسین طهوریان">
                         </div>
-                        
-                        <div class="member-card__avatar">
-                            <img src="/static/images/download%20(3).webp" alt="دکتر حسین طهوریان">
-                            <span class="member-card__ring"></span>
-                        </div>
-                        
-                        <div class="member-card__info">
-                            <h3 class="member-card__name">دکتر حسین طهوریان</h3>
-                            <span class="member-card__role">بنیان‌گذار و مدیرعامل</span>
-                            <p class="member-card__bio">
+
+                        <div class="team-card__body">
+                            <h3 class="team-card__name">دکتر حسین طهوریان</h3>
+                            <span class="team-card__role">بنیان‌گذار و مدیرعامل</span>
+                            <p class="team-card__bio">
                                 راهبری مجموعه‌ای از کسب‌وکارها با تمرکز بر تصمیم‌های روشن و ساختن تیم‌هایی که ایده را به نتیجه می‌رسانند.
                             </p>
-                            
-                            <div class="member-card__tags">
-                                <span>استراتژی</span>
-                                <span>رهبری</span>
-                                <span>توسعه کسب‌وکار</span>
-                            </div>
                         </div>
-
-                        <a href="/about" class="member-card__link">
-                            <span>پروفایل کامل</span>
-                            <i data-lucide="arrow-up-left"></i>
-                        </a>
                     </article>
-
-                </div>
-            </div>
-
-            <!-- CONNECTOR: CEO to Managers -->
-            <div class="connector connector--v" aria-hidden="true">
-                <span class="connector__line"></span>
-                <span class="connector__dot"></span>
-            </div>
-
-            <!-- LEVEL 2: MANAGERS -->
-            <div class="level level--2">
-                <div class="level__badge" data-reveal="up">
-                    <span class="level__num">02</span>
-                    <span class="level__label">سطح مدیریت</span>
                 </div>
 
-                <div class="level__grid level__grid--3col">
+                <!-- LEVEL 2: Managers -->
+                <div class="org__row org__row--managers">
                     
-                    <!-- Manager 1 -->
-                    <article class="member-card member-card--manager" data-reveal="right">
-                        <div class="member-card__glow"></div>
-                        
-                        <div class="member-card__badge member-card__badge--sm">
-                            <i data-lucide="briefcase"></i>
-                            مدیر ارشد
+                    <article class="team-card team-card--manager" data-id="m1" data-parent="ceo">
+                        <div class="team-card__avatar">
+                            <span class="team-card__initial">م</span>
+                            <span class="team-card__ring"></span>
                         </div>
-                        
-                        <div class="member-card__avatar member-card__avatar--sm">
-                            <span class="member-card__initial">م</span>
-                            <span class="member-card__ring"></span>
-                        </div>
-                        
-                        <div class="member-card__info">
-                            <h3 class="member-card__name">مهندس محمدرضا کریمی</h3>
-                            <span class="member-card__role">مدیر عملیات</span>
-                            <p class="member-card__bio">
-                                طراحی و پیاده‌سازی فرآیندهای عملیاتی هلدینگ با تمرکز بر بهینه‌سازی منابع و افزایش بهره‌وری.
-                            </p>
+                        <div class="team-card__body">
+                            <h3 class="team-card__name">مهندس محمدرضا کریمی</h3>
+                            <span class="team-card__role">مدیر عملیات</span>
+                            <p class="team-card__bio">بهینه‌سازی فرآیندها و افزایش بهره‌وری سازمانی.</p>
                         </div>
                     </article>
 
-                    <!-- Manager 2 -->
-                    <article class="member-card member-card--manager" data-reveal="up">
-                        <div class="member-card__glow"></div>
-                        
-                        <div class="member-card__badge member-card__badge--sm">
-                            <i data-lucide="chart-line"></i>
-                            مدیر ارشد
+                    <article class="team-card team-card--manager" data-id="m2" data-parent="ceo">
+                        <div class="team-card__avatar">
+                            <span class="team-card__initial">س</span>
+                            <span class="team-card__ring"></span>
                         </div>
-                        
-                        <div class="member-card__avatar member-card__avatar--sm">
-                            <span class="member-card__initial">س</span>
-                            <span class="member-card__ring"></span>
-                        </div>
-                        
-                        <div class="member-card__info">
-                            <h3 class="member-card__name">دکتر سارا احمدی</h3>
-                            <span class="member-card__role">مدیر سرمایه‌گذاری</span>
-                            <p class="member-card__bio">
-                                ارزیابی فرصت‌های سرمایه‌گذاری و مدیریت پرتفوی پروژه‌های توسعه‌ای هلدینگ با نگاه ریسک‌محور.
-                            </p>
+                        <div class="team-card__body">
+                            <h3 class="team-card__name">دکتر سارا احمدی</h3>
+                            <span class="team-card__role">مدیر سرمایه‌گذاری</span>
+                            <p class="team-card__bio">ارزیابی فرصت‌ها و مدیریت پرتفوی پروژه‌های توسعه‌ای.</p>
                         </div>
                     </article>
 
-                    <!-- Manager 3 -->
-                    <article class="member-card member-card--manager" data-reveal="left">
-                        <div class="member-card__glow"></div>
-                        
-                        <div class="member-card__badge member-card__badge--sm">
-                            <i data-lucide="scale"></i>
-                            مدیر ارشد
+                    <article class="team-card team-card--manager" data-id="m3" data-parent="ceo">
+                        <div class="team-card__avatar">
+                            <span class="team-card__initial">ع</span>
+                            <span class="team-card__ring"></span>
                         </div>
-                        
-                        <div class="member-card__avatar member-card__avatar--sm">
-                            <span class="member-card__initial">ع</span>
-                            <span class="member-card__ring"></span>
-                        </div>
-                        
-                        <div class="member-card__info">
-                            <h3 class="member-card__name">علی رضایی</h3>
-                            <span class="member-card__role">مدیر حقوقی</span>
-                            <p class="member-card__bio">
-                                راهبری امور حقوقی، تدوین قراردادهای راهبردی و پیشگیری از ریسک‌های قانونی در سطح هلدینگ.
-                            </p>
+                        <div class="team-card__body">
+                            <h3 class="team-card__name">علی رضایی</h3>
+                            <span class="team-card__role">مدیر حقوقی</span>
+                            <p class="team-card__bio">راهبری امور حقوقی و پیشگیری از ریسک‌های قانونی.</p>
                         </div>
                     </article>
 
                 </div>
-            </div>
 
-            <!-- CONNECTOR: Managers to Experts -->
-            <div class="connector connector--v" aria-hidden="true">
-                <span class="connector__line"></span>
-                <span class="connector__dot"></span>
-            </div>
-
-            <!-- LEVEL 3: EXPERTS -->
-            <div class="level level--3">
-                <div class="level__badge" data-reveal="up">
-                    <span class="level__num">03</span>
-                    <span class="level__label">سطح تخصص</span>
-                </div>
-
-                <div class="level__grid level__grid--3col">
+                <!-- LEVEL 3: Experts -->
+                <div class="org__row org__row--experts">
                     
-                    <!-- Expert 1 -->
-                    <article class="member-card member-card--expert" data-reveal="right">
-                        <div class="member-card__avatar member-card__avatar--xs">
-                            <span class="member-card__initial">ن</span>
+                    <article class="team-card team-card--expert" data-id="e1" data-parent="m1">
+                        <div class="team-card__avatar team-card__avatar--sm">
+                            <span class="team-card__initial">ن</span>
                         </div>
-                        <div class="member-card__info">
-                            <h4 class="member-card__name member-card__name--sm">نگار موسوی</h4>
-                            <span class="member-card__role member-card__role--sm">کارشناس ارشد برندینگ</span>
-                            <p class="member-card__bio member-card__bio--sm">
-                                توسعه هویت بصری و راهبرد برند برای شرکت‌های زیرمجموعه هلدینگ.
-                            </p>
+                        <div class="team-card__body">
+                            <h3 class="team-card__name">نگار موسوی</h3>
+                            <span class="team-card__role">کارشناس برندینگ</span>
                         </div>
                     </article>
 
-                    <!-- Expert 2 -->
-                    <article class="member-card member-card--expert" data-reveal="up">
-                        <div class="member-card__avatar member-card__avatar--xs">
-                            <span class="member-card__initial">ر</span>
+                    <article class="team-card team-card--expert" data-id="e2" data-parent="m1">
+                        <div class="team-card__avatar team-card__avatar--sm">
+                            <span class="team-card__initial">ر</span>
                         </div>
-                        <div class="member-card__info">
-                            <h4 class="member-card__name member-card__name--sm">رضا نیکخواه</h4>
-                            <span class="member-card__role member-card__role--sm">کارشناس مالی</span>
-                            <p class="member-card__bio member-card__bio--sm">
-                                تحلیل صورت‌های مالی و مدل‌سازی مالی پروژه‌های سرمایه‌گذاری.
-                            </p>
+                        <div class="team-card__body">
+                            <h3 class="team-card__name">رضا نیکخواه</h3>
+                            <span class="team-card__role">کارشناس مالی</span>
                         </div>
                     </article>
 
-                    <!-- Expert 3 -->
-                    <article class="member-card member-card--expert" data-reveal="left">
-                        <div class="member-card__avatar member-card__avatar--xs">
-                            <span class="member-card__initial">ف</span>
+                    <article class="team-card team-card--expert" data-id="e3" data-parent="m2">
+                        <div class="team-card__avatar team-card__avatar--sm">
+                            <span class="team-card__initial">ف</span>
                         </div>
-                        <div class="member-card__info">
-                            <h4 class="member-card__name member-card__name--sm">فاطمه صادقی</h4>
-                            <span class="member-card__role member-card__role--sm">کارشناس منابع انسانی</span>
-                            <p class="member-card__bio member-card__bio--sm">
-                                جذب، توسعه و نگهداشت استعدادها در سطح تمام شرکت‌های هلدینگ.
-                            </p>
+                        <div class="team-card__body">
+                            <h3 class="team-card__name">فاطمه صادقی</h3>
+                            <span class="team-card__role">منابع انسانی</span>
                         </div>
                     </article>
 
-                    <!-- Expert 4 -->
-                    <article class="member-card member-card--expert" data-reveal="right">
-                        <div class="member-card__avatar member-card__avatar--xs">
-                            <span class="member-card__initial">ا</span>
+                    <article class="team-card team-card--expert" data-id="e4" data-parent="m2">
+                        <div class="team-card__avatar team-card__avatar--sm">
+                            <span class="team-card__initial">ا</span>
                         </div>
-                        <div class="member-card__info">
-                            <h4 class="member-card__name member-card__name--sm">امیر حسینی</h4>
-                            <span class="member-card__role member-card__role--sm">کارشناس فناوری</span>
-                            <p class="member-card__bio member-card__bio--sm">
-                                پیاده‌سازی زیرساخت‌های فناوری و راهبری پروژه‌های تحول دیجیتال.
-                            </p>
+                        <div class="team-card__body">
+                            <h3 class="team-card__name">امیر حسینی</h3>
+                            <span class="team-card__role">کارشناس فناوری</span>
                         </div>
                     </article>
 
-                    <!-- Expert 5 -->
-                    <article class="member-card member-card--expert" data-reveal="up">
-                        <div class="member-card__avatar member-card__avatar--xs">
-                            <span class="member-card__initial">م</span>
+                    <article class="team-card team-card--expert" data-id="e5" data-parent="m3">
+                        <div class="team-card__avatar team-card__avatar--sm">
+                            <span class="team-card__initial">م</span>
                         </div>
-                        <div class="member-card__info">
-                            <h4 class="member-card__name member-card__name--sm">مریم کاظمی</h4>
-                            <span class="member-card__role member-card__role--sm">کارشناس دیجیتال مارکتینگ</span>
-                            <p class="member-card__bio member-card__bio--sm">
-                                راهبرد بازاریابی آنلاین و مدیریت کانال‌های دیجیتال مجموعه.
-                            </p>
+                        <div class="team-card__body">
+                            <h3 class="team-card__name">مریم کاظمی</h3>
+                            <span class="team-card__role">دیجیتال مارکتینگ</span>
                         </div>
                     </article>
 
-                    <!-- Expert 6 -->
-                    <article class="member-card member-card--expert" data-reveal="left">
-                        <div class="member-card__avatar member-card__avatar--xs">
-                            <span class="member-card__initial">ح</span>
+                    <article class="team-card team-card--expert" data-id="e6" data-parent="m3">
+                        <div class="team-card__avatar team-card__avatar--sm">
+                            <span class="team-card__initial">ح</span>
                         </div>
-                        <div class="member-card__info">
-                            <h4 class="member-card__name member-card__name--sm">حسین طاهری</h4>
-                            <span class="member-card__role member-card__role--sm">کارشناس تحقیق و توسعه</span>
-                            <p class="member-card__bio member-card__bio--sm">
-                                پژوهش و توسعه محصولات نوآورانه و راهبری پروژه‌های اختراع.
-                            </p>
+                        <div class="team-card__body">
+                            <h3 class="team-card__name">حسین طاهری</h3>
+                            <span class="team-card__role">تحقیق و توسعه</span>
                         </div>
                     </article>
 
                 </div>
             </div>
-
         </div>
     </section>
 
-    <!-- ==================== 3. CTA ==================== -->
-    <section class="section section--tint">
+    <!-- ==================== CTA ==================== -->
+    <section class="team-cta">
         <div class="shell">
-            <div class="team-cta" data-reveal="up">
+            <div class="team-cta__inner">
                 <div class="team-cta__text">
-                    <span class="kicker kicker--gold">
-                        <span class="kicker__line"></span>
-                        JOIN US
-                    </span>
+                    <span class="team-cta__kicker">— JOIN US</span>
                     <h2 class="team-cta__title">
                         می‌خواهید به تیم ما <em>بپیوندید؟</em>
                     </h2>
-                    <p class="team-cta__desc">
-                        اگر به دنبال محیطی حرفه‌ای، یادگیری مستمر و پروژه‌های چالشی هستید، رزومه خود را برای ما ارسال کنید.
-                    </p>
                 </div>
-                <a href="/contact" class="btn-glass btn-glass--dark">
+                <a href="/contact" class="team-cta__btn">
                     <span>ارسال رزومه</span>
                     <i data-lucide="arrow-up-left"></i>
                 </a>
@@ -343,44 +184,94 @@
 
 <script>
 (function() {
-    /* ---------- Scroll Reveal ---------- */
-    const els = document.querySelectorAll('[data-reveal]');
-    if (els.length) {
-        const obs = new IntersectionObserver((entries) => {
-            entries.forEach(e => {
-                if (e.isIntersecting) {
-                    e.target.classList.add('is-visible');
-                    obs.unobserve(e.target);
-                }
-            });
-        }, { threshold: 0.12, rootMargin: '0px 0px -80px 0px' });
-        els.forEach(el => obs.observe(el));
-    }
-    
-    /* ---------- Floating Glass Orbs ---------- */
-    const orbs = document.querySelectorAll('.glass-orb[data-speed]');
-    let ticking = false;
-    function updateOrbs() {
-        const scrollY = window.scrollY;
-        orbs.forEach((orb, i) => {
-            const speed = parseFloat(orb.dataset.speed);
-            const offset = scrollY * speed;
-            const driftX = Math.sin(scrollY * 0.002 + i) * 15;
-            const driftY = Math.cos(scrollY * 0.0015 + i) * 10;
-            orb.style.transform = `translate3d(${driftX}px, ${offset + driftY}px, 0)`;
-        });
-        ticking = false;
-    }
-    function onScroll() {
-        if (!ticking) {
-            requestAnimationFrame(updateOrbs);
-            ticking = true;
+    const org = document.getElementById('org');
+    const svg = document.getElementById('orgSvg');
+    if (!org || !svg) return;
+
+    /* ========== Build Tree Lines ========== */
+    function buildTree() {
+        const cards = org.querySelectorAll('.team-card');
+        if (!cards.length) return;
+
+        // Skip if mobile view
+        if (window.innerWidth < 900) {
+            svg.innerHTML = '';
+            return;
         }
+
+        const orgRect = org.getBoundingClientRect();
+        svg.setAttribute('viewBox', `0 0 ${orgRect.width} ${orgRect.height}`);
+        svg.innerHTML = '';
+
+        // Map card positions
+        const map = {};
+        cards.forEach(c => {
+            const r = c.getBoundingClientRect();
+            map[c.dataset.id] = {
+                cx: r.left - orgRect.left + r.width / 2,
+                top: r.top - orgRect.top,
+                bottom: r.top - orgRect.top + r.height,
+            };
+        });
+
+        // Draw paths
+        cards.forEach(c => {
+            const parentId = c.dataset.parent;
+            if (!parentId || !map[parentId]) return;
+
+            const parent = map[parentId];
+            const child = map[c.dataset.id];
+            const startX = parent.cx;
+            const startY = parent.bottom;
+            const endX = child.cx;
+            const endY = child.top;
+            const midY = startY + (endY - startY) * 0.55;
+
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            let d;
+            if (Math.abs(endX - startX) < 6) {
+                d = `M ${startX} ${startY} L ${endX} ${endY}`;
+            } else {
+                d = `M ${startX} ${startY} L ${startX} ${midY} L ${endX} ${midY} L ${endX} ${endY}`;
+            }
+            path.setAttribute('d', d);
+            path.setAttribute('data-child', c.dataset.id);
+            path.setAttribute('data-parent', parentId);
+            path.classList.add('tree-line');
+            svg.appendChild(path);
+        });
     }
-    if (orbs.length) {
-        window.addEventListener('scroll', onScroll, { passive: true });
-        updateOrbs();
-    }
+
+    /* ========== Hover Handlers (delegated) ========== */
+    org.addEventListener('mouseover', (e) => {
+        const card = e.target.closest('.team-card');
+        if (!card || (e.relatedTarget && card.contains(e.relatedTarget))) return;
+
+        const id = card.dataset.id;
+        svg.querySelectorAll('.tree-line').forEach(p => {
+            const match = p.dataset.parent === id || p.dataset.child === id;
+            p.classList.toggle('is-active', match);
+        });
+    });
+
+    org.addEventListener('mouseout', (e) => {
+        const card = e.target.closest('.team-card');
+        if (!card || (e.relatedTarget && card.contains(e.relatedTarget))) return;
+        svg.querySelectorAll('.tree-line').forEach(p => p.classList.remove('is-active'));
+    });
+
+    /* ========== Init & Resize ========== */
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(buildTree, 100);
+    });
+
+    window.addEventListener('load', buildTree);
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(buildTree, 200);
+    });
 })();
 </script>
 {{end}}

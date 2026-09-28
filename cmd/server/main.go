@@ -112,6 +112,9 @@ func main() {
 		r.Get("/admin/articles/edit/{id}", adminH.ArticleEdit)
 		r.Post("/admin/articles/edit/{id}", adminH.ArticleUpdate)
 		r.Post("/admin/articles/delete/{id}", adminH.ArticleDelete)
+		r.Get("/admin/categories", adminH.CategoriesList)
+		r.Post("/admin/categories/new", adminH.CategoryCreate)
+		r.Post("/admin/categories/delete/{id}", adminH.CategoryDelete)
 	})
 
 	// --- Static files ---

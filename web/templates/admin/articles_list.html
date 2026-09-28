@@ -26,6 +26,7 @@
                         <th class="px-6 py-4">عنوان و آدرس مقاله</th>
                         <th class="px-6 py-4">نویسنده</th>
                         <th class="px-6 py-4">وضعیت انتشار</th>
+                        <th class="px-6 py-4">دسته</th>
                         <th class="px-6 py-4">تاریخ ثبت</th>
                         <th class="px-6 py-4 text-left">عملیات</th>
                     </tr>
@@ -56,6 +57,7 @@
                             {{end}}
                         </td>
                         <td class="px-6 py-4 text-xs text-slate-500 whitespace-nowrap">{{formatDateShort $art.CreatedAt}}</td>
+                        <td class="px-6 py-4 text-slate-500 text-xs whitespace-nowrap">{{if $art.Category}}{{$art.Category}}{{else}}<span class="text-slate-300">—</span>{{end}}</td>
                         <td class="px-6 py-4 text-left whitespace-nowrap">
                             <div class="inline-flex items-center gap-1.5">
                                 <a href="/articles/{{$art.Slug}}" target="_blank" class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition" title="مشاهده در سایت">
@@ -75,7 +77,7 @@
                     </tr>
                     {{else}}
                     <tr>
-                        <td colspan="6" class="px-6 py-16 text-center text-slate-400 text-sm">
+                        <td colspan="7" class="px-6 py-16 text-center text-slate-400 text-sm">
                             <i data-lucide="newspaper" class="w-10 h-10 mx-auto mb-3 text-slate-300"></i>
                             <div>هنوز هیچ مقاله‌ای ثبت نشده است.</div>
                             <a href="/admin/articles/new" class="inline-block mt-3 px-4 py-2 bg-amber-500 text-slate-950 font-bold text-xs rounded-xl hover:bg-amber-400 transition">

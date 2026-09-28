@@ -17,17 +17,27 @@ type Repository struct {
 	contactInfo   *domain.ContactInfo
 	articles      []domain.Article
 	nextArticleID int
+	categories    []domain.ArticleCategory
+	nextCatID     int
 }
 
 func New() *Repository {
 	now := time.Now()
 	return &Repository{
 		nextArticleID: 4,
+		nextCatID:     5,
+		categories: []domain.ArticleCategory{
+			{ID: 1, Slug: "business", Title: "کسب‌وکار", CreatedAt: now.AddDate(0, -3, 0)},
+			{ID: 2, Slug: "leadership", Title: "رهبری", CreatedAt: now.AddDate(0, -3, 0)},
+			{ID: 3, Slug: "strategy", Title: "استراتژی", CreatedAt: now.AddDate(0, -3, 0)},
+			{ID: 4, Slug: "innovation", Title: "نوآوری", CreatedAt: now.AddDate(0, -3, 0)},
+		},
 		articles: []domain.Article{
 			{
 				ID:          1,
 				Title:       "اصول بنیادین در مدیریت استراتژیک هلدینگ‌ها",
 				Slug:        "principles-of-strategic-holding-management",
+				Category:    "strategy",
 				Summary:     "چگونه شرکت‌های مادر و هلدینگ‌ها می‌توانند هم‌افزایی ارزش را بین شرکت‌های تابعه ایجاد و هدایت کنند.",
 				Content:     "مدیریت استراتژیک در هلدینگ‌ها نیازمند تفکیک دقیق میان سطح استراتژی کسب‌وکار و سطح استراتژی شرکتی است. در یک گروه اقتصادی موفق، هدایت سرمایه‌ها بر مبنای تحلیل دقیق جریان‌های نقدی، هم‌افزایی میان‌رشته‌ای، و توانمندسازی مدیران ارشد شرکت‌های تابعه انجام می‌پذیرد...",
 				ImageURL:    "/static/images/کتاب-های-سایت-دکتر-طهوریان-1024x569.jpg",
@@ -40,6 +50,7 @@ func New() *Repository {
 				ID:          2,
 				Title:       "تبدیل نوآوری به ثبت اختراع و محصول تجاری",
 				Slug:        "turning-innovation-into-patents-and-products",
+				Category:    "innovation",
 				Summary:     "مسیر تجاری‌سازی ایده‌ها و اختراعات از فرضیه تا تولید صنعتی و ورود به بازار رقابتی.",
 				Content:     "ایده‌ها تا زمانی که به یک مدل قابل اتکا و تکرارپذیر تبدیل نشوند، صرفاً در حد پتانسیل باقی می‌مانند. تجربه ثبت بیش از ۵ اختراع و پیاده‌سازی صنعتی نشان می‌دهد که فرآیند تحقیق و توسعه باید با نیازمندی‌های بازار و تحلیل زنجیره ارزش پیوند نزدیک داشته باشد...",
 				ImageURL:    "/static/images/اختراعات-دکتر-سایت.png",
@@ -52,6 +63,7 @@ func New() *Repository {
 				ID:          3,
 				Title:       "رهبری تیم‌های ارزش‌آفرین در شرایط ابهام",
 				Slug:        "leadership-in-uncertainty",
+				Category:    "leadership",
 				Summary:     "ابزارهای کلیدی یک مدیر در تصمیم‌گیری‌های حساس و هدایت انگیزه سازمان در شرایط نااطمینانی اقتصادی.",
 				Content:     "رهبری در شرایط ابهام صرفاً پیش‌بینی دقیق آینده نیست؛ بلکه خلق قابلیت انطباق‌پذیری بالا در سازمان است. تیم‌هایی که شفافیت هدف و استقلال در تصمیم‌گیری دارند، بحران‌ها را به سکوی پرتاب تبدیل می‌کنند...",
 				ImageURL:    "/static/images/شرکت.png",
@@ -219,6 +231,35 @@ func (r *Repository) DeleteArticle(id int) error {
 	for i, a := range r.articles {
 		if a.ID == id {
 			r.articles = append(r.articles[:i], r.articles[i+1:]...)
+			return nil
+		}
+	}
+	return nil
+}
+
+func (r *Repository) ListCategories() ([]domain.ArticleCategory, error) {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+	res := make([]domain.ArticleCategory, len(r.categories))
+	copy(res, r.categories)
+	return res, nil
+}
+
+func (r *Repository) CreateCategory(cat *domain.ArticleCategory) error {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	cat.ID = r.nextCatID
+	r.nextCatID++
+	r.categories = append(r.categories, *cat)
+	return nil
+}
+
+func (r *Repository) DeleteCategory(id int) error {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	for i, c := range r.categories {
+		if c.ID == id {
+			r.categories = append(r.categories[:i], r.categories[i+1:]...)
 			return nil
 		}
 	}

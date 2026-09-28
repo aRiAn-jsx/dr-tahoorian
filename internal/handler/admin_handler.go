@@ -1,8 +1,11 @@
-package handler
+﻿package handler
 
 import (
+	"crypto/subtle"
 	"fmt"
 	"html/template"
+	"log/slog"
+	"net"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -18,13 +21,26 @@ import (
 )
 
 type AdminHandler struct {
-	svc       *service.Service
-	sm        *middleware.SessionManager
-	tmplCache map[string]*template.Template
-	tmplMu    sync.RWMutex
-	baseDir   string
-	devMode   bool
+	svc          *service.Service
+	sm           *middleware.SessionManager
+	tmplCache    map[string]*template.Template
+	tmplMu       sync.RWMutex
+	baseDir      string
+	devMode      bool
+	loginMu      sync.Mutex
+	loginAttempts map[string]*loginAttempt
 }
+
+type loginAttempt struct {
+	count    int
+	lockedAt time.Time
+}
+
+// Rate limiting for admin login attempts
+const (
+	loginMaxAttempts = 5
+	loginLockout     = 15 * time.Minute
+)
 
 type AdminPageData struct {
 	Title       string
@@ -63,11 +79,12 @@ var adminFuncs = template.FuncMap{
 func NewAdmin(svc *service.Service, sm *middleware.SessionManager, devMode bool) *AdminHandler {
 	baseDir := findRootDir()
 	return &AdminHandler{
-		svc:       svc,
-		sm:        sm,
-		tmplCache: make(map[string]*template.Template),
-		baseDir:   baseDir,
-		devMode:   devMode,
+		svc:           svc,
+		sm:            sm,
+		tmplCache:     make(map[string]*template.Template),
+		baseDir:       baseDir,
+		devMode:       devMode,
+		loginAttempts: make(map[string]*loginAttempt),
 	}
 }
 
@@ -182,6 +199,19 @@ func (a *AdminHandler) LoginSubmit(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// --- Brute-force protection (per-IP) ---
+	clientIP := r.RemoteAddr
+	if host, _, err := net.SplitHostPort(clientIP); err == nil {
+		clientIP = host
+	}
+	if forwarded := r.Header.Get("X-Forwarded-For"); forwarded != "" {
+		clientIP = strings.TrimSpace(strings.Split(forwarded, ",")[0])
+	}
+	if a.loginLocked(clientIP) {
+		http.Error(w, "تعداد تلاش‌ها زیاد شد؛ لطفاً ۱۵ دقیقه بعد دوباره تلاش کنید", http.StatusTooManyRequests)
+		return
+	}
+
 	username := r.FormValue("username")
 	password := r.FormValue("password")
 
@@ -192,37 +222,87 @@ func (a *AdminHandler) LoginSubmit(w http.ResponseWriter, r *http.Request) {
 	expectedPass := os.Getenv("ADMIN_PASS")
 	if expectedPass == "" {
 		expectedPass = "admin"
+		slog.Warn("ADMIN_PASS not set — using weak default 'admin'. Set ADMIN_PASS env var in production!")
 	}
 
-	if username == expectedUser && password == expectedPass {
+	// Constant-time comparison to prevent timing attacks
+	userMatch := subtle.ConstantTimeCompare([]byte(username), []byte(expectedUser)) == 1
+	passMatch := subtle.ConstantTimeCompare([]byte(password), []byte(expectedPass)) == 1
+
+	if userMatch && passMatch {
+		// Reset attempts on success
+		a.recordLoginAttempt(clientIP, true)
+
 		session := a.sm.Create()
 		session.Data["authenticated"] = true
 		session.Data["username"] = username
 		// Generate a CSRF token for this session
 		session.Data["csrf_token"] = session.ID[:16]
 
-		http.SetCookie(w, &http.Cookie{
+		cookie := &http.Cookie{
 			Name:     "admin_session",
 			Value:    session.ID,
 			Path:     "/",
 			HttpOnly: true,
+			Secure:  true,
+			SameSite: http.SameSiteStrictMode,
 			MaxAge:   86400 * 7,
-			SameSite: http.SameSiteLaxMode,
-		})
+		}
+		// In development (no TLS) Secure would block the cookie; only set Secure if TLS is in use.
+		if strings.ToLower(os.Getenv("ENV")) != "production" && strings.ToLower(os.Getenv("ENV")) != "prod" {
+			cookie.Secure = false
+		}
+		http.SetCookie(w, cookie)
 		http.Redirect(w, r, "/admin/dashboard", http.StatusSeeOther)
 		return
 	}
 
+	// Failed attempt — record and add artificial delay
+	a.recordLoginAttempt(clientIP, false)
+	time.Sleep(500 * time.Millisecond) // mitigate user enumeration via timing
+
 	loginPath := filepath.Join(findRootDir(), "web", "templates", "admin", "login.html")
 	tmpl, err := template.ParseFiles(loginPath)
 	if err != nil {
-		http.Error(w, "Template error: "+err.Error(), http.StatusInternalServerError)
+		http.Error(w, "Template error: "+err.Error()+" ("+loginPath+")", http.StatusInternalServerError)
 		return
 	}
 	tmpl.Execute(w, AdminPageData{
 		Title: "ورود به پنل مدیریت",
 		Error: "نام کاربری یا رمز عبور اشتباه است",
 	})
+}
+
+func (a *AdminHandler) loginLocked(ip string) bool {
+	a.loginMu.Lock()
+	defer a.loginMu.Unlock()
+	at, ok := a.loginAttempts[ip]
+	if !ok {
+		return false
+	}
+	if time.Since(at.lockedAt) > loginLockout {
+		delete(a.loginAttempts, ip)
+		return false
+	}
+	return at.count >= loginMaxAttempts
+}
+
+func (a *AdminHandler) recordLoginAttempt(ip string, success bool) {
+	a.loginMu.Lock()
+	defer a.loginMu.Unlock()
+	if success {
+		delete(a.loginAttempts, ip)
+		return
+	}
+	at := a.loginAttempts[ip]
+	if at == nil {
+		at = &loginAttempt{}
+		a.loginAttempts[ip] = at
+	}
+	at.count++
+	if at.count >= loginMaxAttempts {
+		at.lockedAt = time.Now()
+	}
 }
 
 func (a *AdminHandler) Logout(w http.ResponseWriter, r *http.Request) {
@@ -307,12 +387,14 @@ func (a *AdminHandler) ArticlesList(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *AdminHandler) ArticleNew(w http.ResponseWriter, r *http.Request) {
+	cats, _ := a.svc.ListCategories()
 	a.render(w, r, "article_form", AdminPageData{
 		Title:     "افزودن مقاله جدید | طهوریان",
 		CSRFToken: a.csrfToken(r),
 		Data: map[string]interface{}{
-			"IsNew":   true,
-			"Article": domain.Article{Author: "دکتر حسین طهوریان", IsPublished: true},
+			"IsNew":      true,
+			"Article":    domain.Article{Author: "دکتر حسین طهوریان", IsPublished: true},
+			"Categories": cats,
 		},
 	})
 }
@@ -330,6 +412,7 @@ func (a *AdminHandler) ArticleCreate(w http.ResponseWriter, r *http.Request) {
 
 	title := strings.TrimSpace(r.FormValue("title"))
 	slug := strings.TrimSpace(r.FormValue("slug"))
+	category := strings.TrimSpace(r.FormValue("category"))
 	summary := strings.TrimSpace(r.FormValue("summary"))
 	content := strings.TrimSpace(r.FormValue("content"))
 	imageURL := strings.TrimSpace(r.FormValue("image_url"))
@@ -349,6 +432,7 @@ func (a *AdminHandler) ArticleCreate(w http.ResponseWriter, r *http.Request) {
 				"Article": domain.Article{
 					Title:       title,
 					Slug:        slug,
+					Category:    category,
 					Summary:     summary,
 					Content:     content,
 					ImageURL:    imageURL,
@@ -367,6 +451,7 @@ func (a *AdminHandler) ArticleCreate(w http.ResponseWriter, r *http.Request) {
 	article := &domain.Article{
 		Title:       title,
 		Slug:        slug,
+		Category:    category,
 		Summary:     summary,
 		Content:     content,
 		ImageURL:    imageURL,
@@ -404,12 +489,14 @@ func (a *AdminHandler) ArticleEdit(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	cats, _ := a.svc.ListCategories()
 	a.render(w, r, "article_form", AdminPageData{
 		Title:     fmt.Sprintf("ویرایش مقاله: %s", article.Title),
 		CSRFToken: a.csrfToken(r),
 		Data: map[string]interface{}{
-			"IsNew":   false,
-			"Article": *article,
+			"IsNew":      false,
+			"Article":    *article,
+			"Categories": cats,
 		},
 	})
 }
@@ -434,6 +521,7 @@ func (a *AdminHandler) ArticleUpdate(w http.ResponseWriter, r *http.Request) {
 
 	title := strings.TrimSpace(r.FormValue("title"))
 	slug := strings.TrimSpace(r.FormValue("slug"))
+	category := strings.TrimSpace(r.FormValue("category"))
 	summary := strings.TrimSpace(r.FormValue("summary"))
 	content := strings.TrimSpace(r.FormValue("content"))
 	imageURL := strings.TrimSpace(r.FormValue("image_url"))
@@ -447,6 +535,7 @@ func (a *AdminHandler) ArticleUpdate(w http.ResponseWriter, r *http.Request) {
 		ID:          id,
 		Title:       title,
 		Slug:        slug,
+		Category:    category,
 		Summary:     summary,
 		Content:     content,
 		ImageURL:    imageURL,
@@ -487,4 +576,77 @@ func (a *AdminHandler) ArticleDelete(w http.ResponseWriter, r *http.Request) {
 
 	_ = a.svc.DeleteArticle(id)
 	http.Redirect(w, r, "/admin/articles?msg=deleted", http.StatusSeeOther)
+}
+
+// CategoriesList renders the category management page. It reads the success/failure
+// message from the querystring (set by redirect after create/delete).
+func (a *AdminHandler) CategoriesList(w http.ResponseWriter, r *http.Request) {
+	cats, _ := a.svc.ListCategories()
+	successMsg := ""
+	switch r.URL.Query().Get("msg") {
+	case "created":
+		successMsg = "دسته‌بندی جدید با موفقیت ایجاد شد."
+	case "deleted":
+		successMsg = "دسته‌بندی حذف شد."
+	}
+	a.render(w, r, "categories", AdminPageData{
+		Title:     "دسته‌بندی مقالات | طهوریان",
+		Success:   successMsg,
+		CSRFToken: a.csrfToken(r),
+		Data: map[string]interface{}{
+			"Categories": cats,
+		},
+	})
+}
+
+// CategoryCreate adds a new article category. The slug is validated/normalized in
+// the service layer so a human-readable title can be turned into a url-safe slug.
+func (a *AdminHandler) CategoryCreate(w http.ResponseWriter, r *http.Request) {
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "Invalid form data", http.StatusBadRequest)
+		return
+	}
+	if !a.validateCSRF(r) {
+		http.Error(w, "درخواست نامعتبر (CSRF)", http.StatusForbidden)
+		return
+	}
+
+	cat := &domain.ArticleCategory{
+		Slug:  strings.TrimSpace(r.FormValue("slug")),
+		Title: strings.TrimSpace(r.FormValue("title")),
+	}
+	if err := a.svc.CreateCategory(cat); err != nil {
+		cats, _ := a.svc.ListCategories()
+		a.render(w, r, "categories", AdminPageData{
+			Title:     "دسته‌بندی مقالات | طهوریان",
+			Error:     "خطا در ایجاد دسته‌بندی: " + err.Error(),
+			CSRFToken: a.csrfToken(r),
+			Data: map[string]interface{}{
+				"Categories": cats,
+				"FormTitle":  cat.Title,
+				"FormSlug":   cat.Slug,
+			},
+		})
+		return
+	}
+	http.Redirect(w, r, "/admin/categories?msg=created", http.StatusSeeOther)
+}
+
+// CategoryDelete removes a category. Deleting a category does not remove articles
+// that referenced it; their card simply falls back to displaying the slug.
+func (a *AdminHandler) CategoryDelete(w http.ResponseWriter, r *http.Request) {
+	idStr := chi.URLParam(r, "id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		http.Redirect(w, r, "/admin/categories", http.StatusSeeOther)
+		return
+	}
+	if err := r.ParseForm(); err == nil {
+		if !a.validateCSRF(r) {
+			http.Error(w, "درخواست نامعتبر (CSRF)", http.StatusForbidden)
+			return
+		}
+	}
+	_ = a.svc.DeleteCategory(id)
+	http.Redirect(w, r, "/admin/categories?msg=deleted", http.StatusSeeOther)
 }

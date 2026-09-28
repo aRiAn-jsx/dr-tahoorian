@@ -1,135 +1,171 @@
 {{define "content"}}
 {{$data := .Content}}
 <link rel="stylesheet" href="/static/css/about.css">
+
 <section class="about-page">
-    
-     <!-- Background layers - Floating Glass Circles -->
+
+    <!-- ============================================================
+         BACKGROUND: Liquid glass orbs + gold veins + noise
+         ============================================================ -->
     <div class="bg-layer" aria-hidden="true">
-        <!-- Glass circles -->
-        <div class="glass-orb glass-orb--1" data-speed="0.15"></div>
-        <div class="glass-orb glass-orb--2" data-speed="-0.2"></div>
-        <div class="glass-orb glass-orb--3" data-speed="0.25"></div>
-        <div class="glass-orb glass-orb--4" data-speed="-0.15"></div>
+        <div class="glass-orb glass-orb--1" data-speed="0.12"></div>
+        <div class="glass-orb glass-orb--2" data-speed="-0.18"></div>
+        <div class="glass-orb glass-orb--3" data-speed="0.24"></div>
+        <div class="glass-orb glass-orb--4" data-speed="-0.14"></div>
         <div class="glass-orb glass-orb--5" data-speed="0.3"></div>
-        
-        <!-- Ambient blurred washes (very subtle) -->
         <div class="soft-glow soft-glow--mint"></div>
         <div class="soft-glow soft-glow--sage"></div>
         <div class="soft-glow soft-glow--cream"></div>
-        
-        <!-- Dot pattern -->
+        <div class="bg-veins"></div>
         <div class="bg-pattern"></div>
     </div>
-    <!-- ==================== 1. HERO ==================== -->
-    <div class="hero">
+
+    <!-- ============================================================
+         1. HERO — Editorial split
+         ============================================================ -->
+    <header class="hero" id="top">
         <div class="shell">
-            
-            <div class="hero__top">
-                <span class="pill pill--green">
-                    <span class="pill__dot"></span>
+
+            <div class="hero__ribbon" data-reveal="up">
+                <span class="ribbon-pill">
+                    <span class="ribbon-pill__dot"></span>
                     درباره من
                 </span>
-                <span class="pill pill--gold">
-                    <i data-lucide="sparkles"></i>
-                    EST. 2003
-                </span>
+                <span class="ribbon-line"></span>
+                <span class="ribbon-meta">EST. 2003 · TEHRAN</span>
             </div>
-            
+
             <div class="hero__grid">
-                
-                <!-- TEXT -->
-                <div class="hero__text" data-reveal="right">
-                    <span class="kicker">
-                        <span class="kicker__line"></span>
+
+                <div class="hero__copy" data-reveal="right">
+                    <span class="hero__eyebrow">
+                        <span class="hero__eyebrow-line"></span>
                         مشاور و راهبر کسب‌وکار
                     </span>
-                    
+
                     <h1 class="hero__title">
-                        <span class="line">فکر را به</span>
-                        <span class="line line--accent">
-                            <span class="typed" x-data="{ words: ['اثر ماندگار', 'اختراع تازه', 'تصمیم روشن'], current: 0 }" x-init="setInterval(() => current = (current + 1) % words.length, 2800)">
+                        <span class="hero__title-line">فکر را به</span>
+                        <span class="hero__title-line hero__title-line--accent">
+                            <span class="typewriter"
+                                  x-data="{ words: ['اثر ماندگار', 'اختراع تازه', 'تصمیم روشن'], current: 0 }"
+                                  x-init="setInterval(() => current = (current + 1) % words.length, 2800)">
                                 <span x-text="words[current]"></span>
                             </span>
-                            <span class="typed__cursor">|</span>
+                            <span class="typewriter__caret">|</span>
                         </span>
-                        <span class="line line--outline">تبدیل می‌کنم.</span>
+                        <span class="hero__title-line hero__title-line--ghost">تبدیل می‌کنم.</span>
                     </h1>
-                    
-                    <p class="hero__desc">
-                        من دکتر حسین طهوریان هستم؛ مشاور و راهبر کسب‌وکار با تمرکز بر ساختن مسیرهایی روشن برای رشد پایدار. بیش از ۲۰ سال است که در عرصه مدیریت و توسعه کسب‌وکار فعالیت می‌کنم.
+
+                    <p class="hero__lead">
+                        من دکتر حسین طهوریان هستم؛ مشاور و راهبر کسب‌وکار با تمرکز بر ساختن
+                        مسیرهایی روشن برای رشد پایدار. بیش از ۲۰ سال در عرصه مدیریت،
+                        توسعه کسب‌وکار و نوآوری فناورانه فعال بوده‌ام.
                     </p>
-                    
-                    <div class="hero__actions">
-                        <a href="#ssi" class="btn-glass btn-glass--dark">
+
+                    <div class="hero__cta">
+                        <a href="#ssi" class="btn-glass btn-glass--primary" data-anchor>
                             <span>کشف مسیر من</span>
-                            <i data-lucide="arrow-down"></i>
+                            <span class="btn-glass__icon">
+                                <i data-lucide="arrow-down"></i>
+                            </span>
                         </a>
-                        <a href="/contact" class="btn-glass btn-glass--light">
+                        <a href="/contact" class="btn-glass btn-glass--ghost">
                             <span>شروع گفت‌وگو</span>
-                            <i data-lucide="arrow-up-left"></i>
+                            <span class="btn-glass__icon">
+                                <i data-lucide="arrow-up-left"></i>
+                            </span>
                         </a>
                     </div>
                 </div>
-                
-                <!-- IMAGE (standalone, no glass card) -->
+
                 <div class="hero__visual" data-reveal="left">
-                    <div class="hero__frame">
-                        <img src="/static/images/download%20(3).webp" alt="دکتر حسین طهوریان" class="hero__img">
+                    <div class="hero__portrait">
+                        <img src="/static/images/download-dr.webp"
+                             alt="دکتر حسین طهوریان"
+                             class="clean-photo"
+                             loading="eager">
                     </div>
-                    
-                    <!-- Years of experience badge -->
-                    <div class="float-badge float-badge--exp">
-                        <span class="float-badge__num">۱۷</span>
+
+                    <!-- Floating badge -->
+                    <div class="float-badge">
+                        <span class="float-badge__number" data-count="17">۱۷</span>
                         <div class="float-badge__text">
                             <strong>سال</strong>
                             <small>تجربه حرفه‌ای</small>
                         </div>
                     </div>
-                    
-                    <!-- Stats -->
-                    <div class="glass-strip">
-                        <div class="glass-strip__item">
-                            <strong>۲۰<span>+</span></strong>
-                            <small>سال تجربه</small>
-                        </div>
-                        <div class="glass-strip__divider"></div>
-                        <div class="glass-strip__item">
-                            <strong>۵</strong>
-                            <small>اختراع</small>
-                        </div>
-                        <div class="glass-strip__divider"></div>
-                        <div class="glass-strip__item">
-                            <strong>۳۲<span>+</span></strong>
-                            <small>مدرک</small>
-                        </div>
+                </div>
+
+            </div>
+
+            <!-- Stat strip (full width, sits below hero grid) -->
+            <div class="hero__strip" data-reveal="up">
+                <div class="stat-strip">
+                    <div class="stat-strip__item">
+                        <span class="stat-strip__value">
+                            <span data-count="20">۲۰</span><small>+</small>
+                        </span>
+                        <span class="stat-strip__label">سال تجربه</span>
+                    </div>
+                    <div class="stat-strip__sep"></div>
+                    <div class="stat-strip__item">
+                        <span class="stat-strip__value">
+                            <span data-count="5">۵</span>
+                        </span>
+                        <span class="stat-strip__label">اختراع ثبت‌شده</span>
+                    </div>
+                    <div class="stat-strip__sep"></div>
+                    <div class="stat-strip__item">
+                        <span class="stat-strip__value">
+                            <span data-count="32">۳۲</span><small>+</small>
+                        </span>
+                        <span class="stat-strip__label">مدرک بین‌المللی</span>
                     </div>
                 </div>
-                
             </div>
-            
+
             <div class="hero__scroll">
                 <span class="hero__scroll-text">اسکرول کنید</span>
-                <span class="hero__scroll-mouse">
-                    <span></span>
-                </span>
+                <span class="hero__scroll-line"></span>
             </div>
-            
-        </div>
-    </div>
 
-    <!-- ==================== 2. SSI HOLDING ==================== -->
+        </div>
+    </header>
+
+    <!-- ============================================================
+         2. MANIFESTO — Short bold statement
+         ============================================================ -->
+    <section class="manifesto">
+        <div class="shell">
+            <div class="manifesto__inner">
+                <span class="manifesto__index" data-reveal="up">— MANIFESTO</span>
+                <p class="manifesto__text" data-reveal="up">
+                    رشد پایدار، نتیجه‌ی <em>تصمیم‌های روشن</em> است،
+                    نه تلاش‌های پراکنده.
+                </p>
+                <p class="manifesto__sub" data-reveal="up">
+                    در دو دهه گذشته، همراه کسب‌وکارها، هلدینگ‌ها و استارتاپ‌ها بوده‌ام
+                    تا از ایده‌های مبهم، مسیرهای قابل اجرا بسازم.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         3. SSI HOLDING
+         ============================================================ -->
     <section class="section" id="ssi">
         <div class="shell">
-            
-            <div class="section__head" data-reveal="up">
-                <span class="section__badge">01</span>
+
+            <header class="section__head" data-reveal="up">
+                <span class="section__index">01</span>
                 <span class="section__label">هلدینگ سرآمد سرمایه ایلیا</span>
-                <span class="section__line"></span>
-            </div>
-            
+                <span class="section__rule"></span>
+            </header>
+
             <div class="split">
-                
-                <div class="split__text" data-reveal="right">
+
+                <div class="split__copy" data-reveal="right">
                     <span class="kicker">
                         <span class="kicker__line"></span>
                         SSI HOLDING
@@ -138,84 +174,90 @@
                         ساختن مجموعه‌هایی<br>
                         برای <em>آینده</em>
                     </h2>
-                    <p class="split__desc">
-                        <strong>هلدینگ سرآمد سرمایه ایلیا (SSI)</strong> یک شرکت خصوصی و دانش‌بنیان است که از تاریخ ۸/۸/۸۸ به‌عنوان نهادی مستقل و پیشرو در عرصه خدمات مختلف فعالیت می‌کند.
+                    <p class="split__lead">
+                        <strong>هلدینگ سرآمد سرمایه ایلیا (SSI)</strong> یک شرکت خصوصی و دانش‌بنیان است
+                        که از ۸/۸/۸۸ به‌عنوان نهادی مستقل و پیشرو در عرصه خدمات مختلف فعالیت می‌کند.
                     </p>
-                    
-                    <div class="feature-glass">
-                        <div class="feature-glass__item">
-                            <span class="feature-glass__icon">
-                                <i data-lucide="trending-up"></i>
-                            </span>
-                            <div>
+
+                    <div class="features">
+                        <div class="feature">
+                            <span class="feature__icon"><i data-lucide="trending-up"></i></span>
+                            <div class="feature__body">
                                 <strong>سرمایه‌گذاری و توسعه</strong>
                                 <small>شناسایی فرصت‌های رشد و راهبری پروژه‌ها</small>
                             </div>
                         </div>
-                        <div class="feature-glass__item">
-                            <span class="feature-glass__icon">
-                                <i data-lucide="briefcase"></i>
-                            </span>
-                            <div>
+                        <div class="feature">
+                            <span class="feature__icon"><i data-lucide="briefcase"></i></span>
+                            <div class="feature__body">
                                 <strong>خدمات مشاوره‌ای تخصصی</strong>
                                 <small>راهکارهای راهبردی در حوزه‌های مختلف</small>
                             </div>
                         </div>
-                        <div class="feature-glass__item">
-                            <span class="feature-glass__icon">
-                                <i data-lucide="cpu"></i>
-                            </span>
-                            <div>
+                        <div class="feature">
+                            <span class="feature__icon"><i data-lucide="cpu"></i></span>
+                            <div class="feature__body">
                                 <strong>توسعه فناوری و نوآوری</strong>
                                 <small>تبدیل ایده‌های فناورانه به محصول</small>
                             </div>
                         </div>
                     </div>
-                    
-                    <a href="/contact" class="btn-glass btn-glass--dark">
+
+                    <a href="/contact" class="btn-glass btn-glass--primary">
                         <span>آشنایی برای همکاری</span>
-                        <i data-lucide="arrow-left"></i>
+                        <span class="btn-glass__icon"><i data-lucide="arrow-left"></i></span>
                     </a>
                 </div>
-                
+
                 <div class="split__visual" data-reveal="left">
-                    <div class="glass-card glass-card--image">
-                        <div class="glass-card__glow"></div>
-                        <div class="image-frame">
-                            <img src="/static/images/شرکت.png" alt="هلدینگ سرآمد سرمایه ایلیا" loading="lazy">
+                    <img class="clean-photo"
+                         src="/static/images/بنر ssi copy.webp"
+                         alt="هلدینگ سرآمد سرمایه ایلیا"
+                         loading="lazy">
+
+                    <!-- <div class="ssi-logos">
+                        <div class="ssi-logos__chip">
+                            <img src="/static/images/virgol_icon-03.webp" alt="سرمایه‌گذاری" loading="lazy">
                         </div>
-                        <span class="glass-tag glass-tag--gold">SSI / از ۱۳۸۸</span>
+                        <div class="ssi-logos__chip">
+                            <img src="/static/images/virgol_icon-03.webp" alt="مشاوره" loading="lazy">
+                        </div>
+                        <div class="ssi-logos__chip">
+                            <img src="/static/images/virgol_icon-03.webp" alt="فناوری" loading="lazy">
+                        </div>
+                        <div class="ssi-logos__chip">
+                            <img src="/static/images/virgol_icon-03.webp" alt="نوآوری" loading="lazy">
+                        </div>
                     </div>
-                </div>
-                
+                </div> -->
+
             </div>
-            
+
         </div>
     </section>
 
-    <!-- ==================== 3. INVENTIONS ==================== -->
+    <!-- ============================================================
+         4. INVENTIONS
+         ============================================================ -->
     <section class="section section--tint">
         <div class="shell">
-            
-            <div class="section__head" data-reveal="up">
-                <span class="section__badge">02</span>
+
+            <header class="section__head" data-reveal="up">
+                <span class="section__index">02</span>
                 <span class="section__label">اختراعات و نوآوری‌ها</span>
-                <span class="section__line"></span>
-            </div>
-            
+                <span class="section__rule"></span>
+            </header>
+
             <div class="split split--reverse">
-                
+
                 <div class="split__visual" data-reveal="right">
-                    <div class="glass-card glass-card--image">
-                        <div class="glass-card__glow"></div>
-                        <div class="image-frame">
-                            <img src="/static/images/اختراعات-دکتر-سایت.png" alt="اختراعات دکتر طهوریان" loading="lazy">
-                        </div>
-                        <span class="glass-tag glass-tag--green">PATENTS / ۰۵</span>
-                    </div>
+                    <img class="clean-photo"
+                         src="/static/images/اختراعات-دکتر-سایت.webp"
+                         alt="اختراعات دکتر طهوریان"
+                         loading="lazy">
                 </div>
-                
-                <div class="split__text" data-reveal="left">
+
+                <div class="split__copy" data-reveal="left">
                     <span class="kicker">
                         <span class="kicker__line"></span>
                         INVENTIONS
@@ -224,49 +266,52 @@
                         از یک پرسش<br>
                         تا یک <em>اختراع</em>
                     </h2>
-                    <p class="split__desc">
-                        اختراع برای من فقط ثبت یک ایده نیست؛ راهی است برای دیدن یک مسئله از زاویه‌ای تازه و ساختن راه‌حلی که در جهان واقعی اثر بگذارد.
+                    <p class="split__lead">
+                        اختراع برای من فقط ثبت یک ایده نیست؛ راهی است برای دیدن یک مسئله
+                        از زاویه‌ای تازه و ساختن راه‌حلی که در جهان واقعی اثر بگذارد.
                     </p>
-                    
-                    <div class="inv-grid">
-                        <article class="inv-glass">
-                            <span class="inv-glass__num">۰۱</span>
-                            <h4>دستگاه بیستوری ایمن برای شاپ و پلانت دایسکشن</h4>
+
+                    <div class="inv-list">
+                        <article class="inv-item">
+                            <span class="inv-item__index">۰۱</span>
+                            <h4 class="inv-item__title">دستگاه بیستوری ایمن برای شاپ و پلانت دایسکشن</h4>
                         </article>
-                        <article class="inv-glass">
-                            <span class="inv-glass__num">۰۲</span>
-                            <h4>سرنگ ایمن انیموتومی با قابلیت انفوزیون واینیل</h4>
+                        <article class="inv-item">
+                            <span class="inv-item__index">۰۲</span>
+                            <h4 class="inv-item__title">سرنگ ایمن انیموتومی با قابلیت انفوزیون واینیل</h4>
                         </article>
-                        <article class="inv-glass">
-                            <span class="inv-glass__num">۰۳</span>
-                            <h4>لوله آزمایش درب دار حاوی گوی‌های شیشه‌ای</h4>
+                        <article class="inv-item">
+                            <span class="inv-item__index">۰۳</span>
+                            <h4 class="inv-item__title">لوله آزمایش درب‌دار حاوی گوی‌های شیشه‌ای</h4>
                         </article>
-                        <article class="inv-glass">
-                            <span class="inv-glass__num">۰۴</span>
-                            <h4>پماد از نیش زنبور عسل برای درمان آرتروز</h4>
+                        <article class="inv-item">
+                            <span class="inv-item__index">۰۴</span>
+                            <h4 class="inv-item__title">پماد از نیش زنبور عسل برای درمان آرتروز</h4>
                         </article>
                     </div>
                 </div>
-                
+
             </div>
-            
+
         </div>
     </section>
 
-    <!-- ==================== 4. AWARDS ==================== -->
-    <section class="section">
+    <!-- ============================================================
+         5. AWARDS — Dark editorial
+         ============================================================ -->
+    <section class="awards-section">
+        <div class="awards-section__bg" aria-hidden="true"></div>
         <div class="shell">
-            
-            <div class="section__head" data-reveal="up">
-                <span class="section__badge">03</span>
+
+            <header class="section__head section__head--light" data-reveal="up">
+                <span class="section__index section__index--gold">03</span>
                 <span class="section__label">افتخارات بین‌المللی</span>
-                <span class="section__line"></span>
-            </div>
-            
+                <span class="section__rule"></span>
+            </header>
+
             <div class="awards">
-                
-                <div class="awards__text" data-reveal="right">
-                    <span class="kicker">
+                <div class="awards__copy" data-reveal="right">
+                    <span class="kicker kicker--gold">
                         <span class="kicker__line"></span>
                         AWARDS &amp; RECOGNITION
                     </span>
@@ -274,203 +319,286 @@
                         افتخارات<br>
                         <em>بین‌المللی</em>
                     </h2>
-                    <p class="awards__desc">
-                        کسب مدال طلا در رقابت‌های جهانی مخترعان در سوئیس (۲۰۲۳) و انتشار مقالات علمی در مجلات بین‌المللی از جمله مجله Academic Journal of Health Sciences Medicina Balear (اسپانیا).
+                    <p class="awards__lead">
+                        کسب مدال طلا در رقابت‌های جهانی مخترعان در سوئیس (۲۰۲۳)
+                        و انتشار مقالات علمی در مجلات بین‌المللی از جمله
+                        Academic Journal of Health Sciences Medicina Balear (اسپانیا).
                     </p>
-                    
-                    <div class="awards__stats">
-                        <div class="awards__stat">
-                            <strong>۲۰۲۳</strong>
-                            <small>مدال طلا سوئیس</small>
+
+                    <div class="awards__grid">
+                        <div class="award-card">
+                            <span class="award-card__year">۲۰۲۳</span>
+                            <span class="award-card__title">مدال طلا سوئیس</span>
+                            <span class="award-card__meta">Global Inventors Competition</span>
                         </div>
-                        <div class="awards__stat">
-                            <strong>۰۲</strong>
-                            <small>مقاله بین‌المللی</small>
+                        <div class="award-card">
+                            <span class="award-card__year">۰۲</span>
+                            <span class="award-card__title">مقاله بین‌المللی</span>
+                            <span class="award-card__meta">Academic Journals</span>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="awards__visual" data-reveal="left">
-                    <div class="glass-card glass-card--image glass-card--dark">
-                        <div class="glass-card__glow glass-card__glow--gold"></div>
-                        <div class="image-frame">
-                            <img src="/static/images/کتاب-های-سایت-دکتر-طهوریان-1024x569.jpg" alt="گواهی‌های بین‌المللی" loading="lazy">
-                        </div>
-                        <span class="glass-tag glass-tag--gold">AWARD / ۲۰۲۳</span>
-                    </div>
+                    <img class="clean-photo"
+                         src="/static/images/کتاب-های-سایت-دکتر-طهوریان-1024x569.webp"
+                         alt="گواهی‌های بین‌المللی"
+                         loading="lazy">
                 </div>
-                
             </div>
-            
+
         </div>
     </section>
 
-    <!-- ==================== 5. BOOKS & PODCAST ==================== -->
+    <!-- ============================================================
+         6. BOOKS & PODCAST
+         ============================================================ -->
     <section class="section section--tint">
         <div class="shell">
-            
-            <div class="section__head" data-reveal="up">
-                <span class="section__badge">04</span>
+
+            <header class="section__head" data-reveal="up">
+                <span class="section__index">04</span>
                 <span class="section__label">کتاب‌ها و گفت‌وگوها</span>
-                <span class="section__line"></span>
-            </div>
-            
+                <span class="section__rule"></span>
+            </header>
+
             <div class="bp-grid">
-                
-                <!-- BOOKS -->
-                <article class="glass-card glass-card--content" data-reveal="right">
-                    <div class="glass-card__glow"></div>
+
+                <article class="panel panel--light" data-reveal="right">
+                    <div class="panel__glow"></div>
                     <span class="kicker">
                         <span class="kicker__line"></span>
                         PUBLICATIONS
                     </span>
-                    <h3 class="bp-title">نوشتن برای<br><em>روشن‌تر دیدن</em></h3>
-                    <p class="bp-desc">هر کتاب، تلاشی برای تبدیل تجربه‌های پراکنده به یک مسیر قابل استفاده است. باور دارم دانش وقتی به اشتراک گذاشته می‌شود، زنده می‌ماند.</p>
-                    
-                    <ul class="book-glass-list">
-                        <li class="book-glass">
-                            <span class="book-glass__icon">
-                                <i data-lucide="book-open"></i>
-                            </span>
-                            <div>
+                    <h3 class="panel__title">نوشتن برای<br><em>روشن‌تر دیدن</em></h3>
+                    <p class="panel__lead">
+                        هر کتاب، تلاشی برای تبدیل تجربه‌های پراکنده به یک مسیر قابل استفاده است.
+                        باور دارم دانش وقتی به اشتراک گذاشته می‌شود، زنده می‌ماند.
+                    </p>
+
+                    <ul class="book-list">
+                        <li class="book-item">
+                            <span class="book-item__icon"><i data-lucide="book-open"></i></span>
+                            <div class="book-item__body">
                                 <h4>میراث مستند تندرستی</h4>
                                 <small>درآمدی بر طب سنتی | جهاد دانشگاهی | ۱۳۲ صفحه</small>
                             </div>
                         </li>
-                        <li class="book-glass">
-                            <span class="book-glass__icon">
-                                <i data-lucide="book-open"></i>
-                            </span>
-                            <div>
+                        <li class="book-item">
+                            <span class="book-item__icon"><i data-lucide="book-open"></i></span>
+                            <div class="book-item__body">
                                 <h4>راهنمای کاربردی طرح‌واره درمانی برای زوجین</h4>
                                 <small>نشر ارشک</small>
                             </div>
                         </li>
                     </ul>
                 </article>
-                
-                <!-- PODCAST -->
-                <article class="glass-card glass-card--dark glass-card--content" data-reveal="left">
-                    <div class="glass-card__glow glass-card__glow--gold"></div>
-                    
+
+                <article class="panel panel--dark" data-reveal="left">
+                    <div class="panel__glow panel__glow--gold"></div>
+
                     <div class="podcast-icon">
                         <i data-lucide="headphones"></i>
                         <span class="podcast-icon__pulse"></span>
                     </div>
-                    
+
                     <span class="kicker kicker--gold">
                         <span class="kicker__line"></span>
                         PODCAST
                     </span>
-                    <h3 class="bp-title bp-title--light">تصمیم‌های<br><em>روشن</em></h3>
-                    <p class="bp-desc bp-desc--light">فضایی برای گفت‌وگوهایی عمیق درباره رهبری، کسب‌وکار و لحظه‌ای که یک فکر جدی می‌شود و به اقدام تبدیل می‌شود.</p>
-                    
-                    <div class="glass-tags">
+                    <h3 class="panel__title panel__title--light">تصمیم‌های<br><em>روشن</em></h3>
+                    <p class="panel__lead panel__lead--light">
+                        فضایی برای گفت‌وگوهایی عمیق درباره رهبری، کسب‌وکار
+                        و لحظه‌ای که یک فکر جدی می‌شود و به اقدام تبدیل می‌شود.
+                    </p>
+
+                    <div class="tags">
                         <span>رهبری سازمانی</span>
                         <span>استراتژی رشد</span>
                         <span>تعادل کار و زندگی</span>
                         <span>سیستم‌سازی</span>
                     </div>
-                    
+
                     <a href="/contact" class="btn-glass btn-glass--gold">
                         <span>شنیدن قسمت‌ها</span>
-                        <i data-lucide="headphones"></i>
+                        <span class="btn-glass__icon"><i data-lucide="headphones"></i></span>
                     </a>
                 </article>
-                
+
             </div>
-            
+
+        </div>
+    </section>
+
+    <!-- ============================================================
+         7. CTA — Final
+         ============================================================ -->
+    <section class="cta">
+        <div class="shell">
+            <div class="cta__card" data-reveal="up">
+                <div class="cta__glow"></div>
+                <span class="kicker kicker--gold">
+                    <span class="kicker__line"></span>
+                    گفت‌وگوی تخصصی
+                </span>
+                <h2 class="cta__title">
+                    ایده و چشم‌انداز شما،<br>
+                    <em>با هم ساخته می‌شود.</em>
+                </h2>
+                <p class="cta__lead">
+                    برای مشاوره راهبردی، ارزیابی طرح‌های توسعه یا هماهنگی جلسه حضوری،
+                    همین‌جا یک قدم بردارید.
+                </p>
+                <a href="/contact" class="btn-glass btn-glass--gold">
+                    <span>درخواست مشاوره</span>
+                    <span class="btn-glass__icon"><i data-lucide="arrow-up-left"></i></span>
+                </a>
+            </div>
         </div>
     </section>
 
 </section>
 
-<!-- ==================== SCROLL REVEAL ==================== -->
+<!-- ============================================================
+     SCRIPT — Reveal · Parallax · Counters · Smooth Anchor Scroll
+     ============================================================ -->
 <script>
-(function() {
-    /* ---------- Scroll Reveal ---------- */
-    const els = document.querySelectorAll('[data-reveal]');
-    if (els.length) {
-        const obs = new IntersectionObserver((entries) => {
-            entries.forEach(e => {
-                if (e.isIntersecting) {
-                    e.target.classList.add('is-visible');
-                    obs.unobserve(e.target);
-                }
+(function () {
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* -----------------------------------------------------------
+       Reveal on scroll (staggered, smooth)
+    ----------------------------------------------------------- */
+    var revealEls = Array.prototype.slice.call(document.querySelectorAll('[data-reveal]'));
+    if (revealEls.length && 'IntersectionObserver' in window && !reduceMotion) {
+        var revealObs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('is-visible');
+                revealObs.unobserve(entry.target);
             });
-        }, { threshold: 0.15, rootMargin: '0px 0px -100px 0px' });
-        els.forEach(el => obs.observe(el));
-    }
-    
-    /* ---------- Floating Glass Orbs on Scroll ---------- */
-    const orbs = document.querySelectorAll('.glass-orb[data-speed]');
-    let ticking = false;
-    let lastScroll = 0;
-    
-    function updateOrbs() {
-        const scrollY = window.scrollY;
-        const delta = scrollY - lastScroll;
-        
-        orbs.forEach((orb, i) => {
-            const speed = parseFloat(orb.dataset.speed);
-            const offset = scrollY * speed;
-            
-            // Combine scroll movement + gentle drift
-            const driftX = Math.sin(scrollY * 0.002 + i) * 15;
-            const driftY = Math.cos(scrollY * 0.0015 + i) * 10;
-            
-            orb.style.transform = `translate3d(${driftX}px, ${offset + driftY}px, 0)`;
+        }, { threshold: 0.12, rootMargin: '0px 0px -80px 0px' });
+
+        revealEls.forEach(function (el) {
+            el.classList.add('is-armed');
+            revealObs.observe(el);
         });
-        
-        lastScroll = scrollY;
-        ticking = false;
+    } else {
+        revealEls.forEach(function (el) { el.classList.add('is-visible'); });
     }
-    
-    function onScroll() {
-        if (!ticking) {
-            requestAnimationFrame(updateOrbs);
-            ticking = true;
+
+    /* -----------------------------------------------------------
+       Floating glass orbs — scroll + mouse parallax
+    ----------------------------------------------------------- */
+    var orbs = Array.prototype.slice.call(document.querySelectorAll('.glass-orb[data-speed]'));
+    /* روی دستگاه لمسی mousemove اصلاً رخ نمی‌دهد و listener اسکرول فقط
+       لایه‌ی fixed پس‌زمینه را هر فریم repaint می‌کند؛ پس پارالاکس فقط
+       برای اشاره‌گر دقیق (موس/ترک‌پد) فعال می‌شود. */
+    var finePointer = !window.matchMedia || window.matchMedia('(pointer: fine)').matches;
+    var targetX = 0, targetY = 0;
+    var currentX = 0, currentY = 0;
+    var scrollY = 0;
+    var rafId = null;
+
+    function renderOrbs() {
+        currentX += (targetX - currentX) * 0.06;
+        currentY += (targetY - currentY) * 0.06;
+
+        orbs.forEach(function (orb, i) {
+            var speed = parseFloat(orb.dataset.speed) || 0;
+            var drift = scrollY * speed;
+            var driftX = Math.sin(scrollY * 0.002 + i) * 14;
+            var driftY = Math.cos(scrollY * 0.0016 + i) * 10;
+            var depth = 6 + i * 5;
+            var px = currentX * depth;
+            var py = currentY * depth;
+
+            orb.style.transform =
+                'translate3d(' + (driftX + px) + 'px,' +
+                (drift + driftY + py) + 'px,0)';
+        });
+
+        rafId = null;
+    }
+
+    function scheduleOrbs() {
+        if (rafId === null) rafId = requestAnimationFrame(renderOrbs);
+    }
+
+    if (orbs.length && !reduceMotion && finePointer) {
+        window.addEventListener('scroll', function () {
+            scrollY = window.scrollY || window.pageYOffset || 0;
+            scheduleOrbs();
+        }, { passive: true });
+
+        window.addEventListener('mousemove', function (e) {
+            targetX = (e.clientX / window.innerWidth - 0.5) * 2;
+            targetY = (e.clientY / window.innerHeight - 0.5) * 2;
+            scheduleOrbs();
+        }, { passive: true });
+
+        scrollY = window.scrollY || 0;
+        scheduleOrbs();
+    }
+
+    /* -----------------------------------------------------------
+       Number counters — animate when visible
+    ----------------------------------------------------------- */
+    var counters = Array.prototype.slice.call(document.querySelectorAll('[data-count]'));
+    if (counters.length && 'IntersectionObserver' in window && !reduceMotion) {
+        var counterObs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (!entry.isIntersecting) return;
+                animateCounter(entry.target);
+                counterObs.unobserve(entry.target);
+            });
+        }, { threshold: 0.5 });
+
+        counters.forEach(function (el) { counterObs.observe(el); });
+    }
+
+    function toPersianDigits(str) {
+        var map = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+        return String(str).replace(/\d/g, function (d) { return map[+d]; });
+    }
+
+    function animateCounter(el) {
+        var target = parseInt(el.getAttribute('data-count'), 10);
+        if (isNaN(target)) return;
+        var duration = 1400;
+        var start = performance.now();
+
+        function step(now) {
+            var t = Math.min(1, (now - start) / duration);
+            var eased = 1 - Math.pow(1 - t, 3);
+            var value = Math.round(target * eased);
+            el.textContent = toPersianDigits(value);
+            if (t < 1) requestAnimationFrame(step);
+            else el.textContent = toPersianDigits(target);
+        }
+        requestAnimationFrame(step);
+    }
+
+    /* -----------------------------------------------------------
+       Smooth anchor scroll — در حالت کارتی (دسکتاپ) هندلر click
+       داخل initAboutCardSlider (main.js) پریدن به همان کارت را
+       انجام می‌دهد؛ در موبایل/تبلت که حالت کارتی خاموش است،
+       پرش لنگر کاملاً طبیعی مرورگر اجرا می‌شود (با scroll-padding-top).
+    ----------------------------------------------------------- */
+
+    /* -----------------------------------------------------------
+       Lucide icons
+    ----------------------------------------------------------- */
+    function refreshLucide() {
+        if (window.lucide && typeof window.lucide.createIcons === 'function') {
+            window.lucide.createIcons();
         }
     }
-    
-    if (orbs.length) {
-        window.addEventListener('scroll', onScroll, { passive: true });
-        updateOrbs(); // initial position
-    }
-    
-    /* ---------- Mouse Parallax (Subtle) ---------- */
-    let mouseX = 0, mouseY = 0;
-    let currentX = 0, currentY = 0;
-    
-    document.addEventListener('mousemove', (e) => {
-        mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-        mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-    });
-    
-    function animateParallax() {
-        currentX += (mouseX - currentX) * 0.05;
-        currentY += (mouseY - currentY) * 0.05;
-        
-        orbs.forEach((orb, i) => {
-            const depth = 8 + (i * 4);
-            const px = currentX * depth;
-            const py = currentY * depth;
-            
-            // Get existing transform and add mouse offset
-            const scrollY = window.scrollY;
-            const speed = parseFloat(orb.dataset.speed);
-            const offset = scrollY * speed;
-            const driftX = Math.sin(scrollY * 0.002 + i) * 15;
-            const driftY = Math.cos(scrollY * 0.0015 + i) * 10;
-            
-            orb.style.transform = `translate3d(${driftX + px}px, ${offset + driftY + py}px, 0)`;
-        });
-        
-        requestAnimationFrame(animateParallax);
-    }
-    
-    if (orbs.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        animateParallax();
+    refreshLucide();
+
+    /* Handle case where lucide loads after this script */
+    if (document.readyState !== 'complete') {
+        window.addEventListener('load', refreshLucide);
     }
 })();
 </script>

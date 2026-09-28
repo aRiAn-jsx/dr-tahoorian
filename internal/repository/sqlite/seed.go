@@ -90,29 +90,47 @@ func Seed(db *sql.DB) error {
 		}
 	}
 
+	// --- Article categories ---
+	if countRows(db, "categories") == 0 {
+		defaultCats := []struct{ slug, title string }{
+			{"business", "کسب‌وکار"},
+			{"leadership", "رهبری"},
+			{"strategy", "استراتژی"},
+			{"innovation", "نوآوری"},
+		}
+		for _, c := range defaultCats {
+			if _, err := db.Exec(`INSERT INTO categories (slug, title) VALUES (?, ?)`, c.slug, c.title); err != nil {
+				return err
+			}
+		}
+	}
+
 	// --- Articles ---
 	if countRows(db, "articles") == 0 {
-		if _, err := db.Exec(`INSERT INTO articles (title, slug, summary, content, image_url, author, is_published) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+		if _, err := db.Exec(`INSERT INTO articles (title, slug, category, summary, content, image_url, author, is_published) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
 			"اصول بنیادین در مدیریت استراتژیک هلدینگ‌ها",
 			"principles-of-strategic-holding-management",
+			"strategy",
 			"چگونه شرکت‌های مادر و هلدینگ‌ها می‌توانند هم‌افزایی ارزش را بین شرکت‌های تابعه ایجاد و هدایت کنند.",
 			"مدیریت استراتژیک در هلدینگ‌ها نیازمند تفکیک دقیق میان سطح استراتژی کسب‌وکار و سطح استراتژی شرکتی است.",
 			"/static/images/کتاب-های-سایت-دکتر-طهوریان-1024x569.jpg",
 			"دکتر حسین طهوریان", 1); err != nil {
 			return err
 		}
-		if _, err := db.Exec(`INSERT INTO articles (title, slug, summary, content, image_url, author, is_published) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+		if _, err := db.Exec(`INSERT INTO articles (title, slug, category, summary, content, image_url, author, is_published) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
 			"تبدیل نوآوری به ثبت اختراع و محصول تجاری",
 			"turning-innovation-into-patents-and-products",
+			"innovation",
 			"مسیر تجاری‌سازی ایده‌ها و اختراعات از فرضیه تا تولید صنعتی و ورود به بازار رقابتی.",
 			"ایده‌ها تا زمانی که به یک مدل قابل اتکا و تکرارپذیر تبدیل نشوند، صرفاً در حد پتانسیل باقی می‌مانند.",
 			"/static/images/اختراعات-دکتر-سایت.png",
 			"دکتر حسین طهوریان", 1); err != nil {
 			return err
 		}
-		if _, err := db.Exec(`INSERT INTO articles (title, slug, summary, content, image_url, author, is_published) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+		if _, err := db.Exec(`INSERT INTO articles (title, slug, category, summary, content, image_url, author, is_published) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
 			"رهبری تیم‌های ارزش‌آفرین در شرایط ابهام",
 			"leadership-in-uncertainty",
+			"leadership",
 			"ابزارهای کلیدی یک مدیر در تصمیم‌گیری‌های حساس و هدایت انگیزه سازمان در شرایط نااطمینانی اقتصادی.",
 			"رهبری در شرایط ابهام صرفاً پیش‌بینی دقیق آینده نیست؛ بلکه خلق قابلیت انطباق‌پذیری بالا در سازمان است.",
 			"/static/images/شرکت.png",

@@ -112,7 +112,7 @@ func (r *Repository) GetContactInfo() (*domain.ContactInfo, error) {
 }
 
 func (r *Repository) ListArticles() ([]domain.Article, error) {
-	rows, err := r.db.Query(`SELECT id, title, slug, COALESCE(summary, ''), content, COALESCE(image_url, ''), COALESCE(author, ''), is_published, created_at, updated_at FROM articles ORDER BY id DESC`)
+	rows, err := r.db.Query(`SELECT id, title, slug, COALESCE(category, ''), COALESCE(summary, ''), content, COALESCE(image_url, ''), COALESCE(author, ''), is_published, created_at, updated_at FROM articles ORDER BY id DESC`)
 	if err != nil {
 		return nil, err
 	}
@@ -121,7 +121,7 @@ func (r *Repository) ListArticles() ([]domain.Article, error) {
 	var articles []domain.Article
 	for rows.Next() {
 		var a domain.Article
-		if err := rows.Scan(&a.ID, &a.Title, &a.Slug, &a.Summary, &a.Content, &a.ImageURL, &a.Author, &a.IsPublished, &a.CreatedAt, &a.UpdatedAt); err != nil {
+		if err := rows.Scan(&a.ID, &a.Title, &a.Slug, &a.Category, &a.Summary, &a.Content, &a.ImageURL, &a.Author, &a.IsPublished, &a.CreatedAt, &a.UpdatedAt); err != nil {
 			return nil, err
 		}
 		articles = append(articles, a)
@@ -130,9 +130,9 @@ func (r *Repository) ListArticles() ([]domain.Article, error) {
 }
 
 func (r *Repository) GetArticleByID(id int) (*domain.Article, error) {
-	row := r.db.QueryRow(`SELECT id, title, slug, COALESCE(summary, ''), content, COALESCE(image_url, ''), COALESCE(author, ''), is_published, created_at, updated_at FROM articles WHERE id = ?`, id)
+	row := r.db.QueryRow(`SELECT id, title, slug, COALESCE(category, ''), COALESCE(summary, ''), content, COALESCE(image_url, ''), COALESCE(author, ''), is_published, created_at, updated_at FROM articles WHERE id = ?`, id)
 	a := &domain.Article{}
-	err := row.Scan(&a.ID, &a.Title, &a.Slug, &a.Summary, &a.Content, &a.ImageURL, &a.Author, &a.IsPublished, &a.CreatedAt, &a.UpdatedAt)
+	err := row.Scan(&a.ID, &a.Title, &a.Slug, &a.Category, &a.Summary, &a.Content, &a.ImageURL, &a.Author, &a.IsPublished, &a.CreatedAt, &a.UpdatedAt)
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}
@@ -140,9 +140,9 @@ func (r *Repository) GetArticleByID(id int) (*domain.Article, error) {
 }
 
 func (r *Repository) GetArticleBySlug(slug string) (*domain.Article, error) {
-	row := r.db.QueryRow(`SELECT id, title, slug, COALESCE(summary, ''), content, COALESCE(image_url, ''), COALESCE(author, ''), is_published, created_at, updated_at FROM articles WHERE slug = ?`, slug)
+	row := r.db.QueryRow(`SELECT id, title, slug, COALESCE(category, ''), COALESCE(summary, ''), content, COALESCE(image_url, ''), COALESCE(author, ''), is_published, created_at, updated_at FROM articles WHERE slug = ?`, slug)
 	a := &domain.Article{}
-	err := row.Scan(&a.ID, &a.Title, &a.Slug, &a.Summary, &a.Content, &a.ImageURL, &a.Author, &a.IsPublished, &a.CreatedAt, &a.UpdatedAt)
+	err := row.Scan(&a.ID, &a.Title, &a.Slug, &a.Category, &a.Summary, &a.Content, &a.ImageURL, &a.Author, &a.IsPublished, &a.CreatedAt, &a.UpdatedAt)
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}
@@ -150,8 +150,8 @@ func (r *Repository) GetArticleBySlug(slug string) (*domain.Article, error) {
 }
 
 func (r *Repository) CreateArticle(article *domain.Article) error {
-	res, err := r.db.Exec(`INSERT INTO articles (title, slug, summary, content, image_url, author, is_published, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-		article.Title, article.Slug, article.Summary, article.Content, article.ImageURL, article.Author, article.IsPublished, article.CreatedAt, article.UpdatedAt)
+	res, err := r.db.Exec(`INSERT INTO articles (title, slug, category, summary, content, image_url, author, is_published, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+		article.Title, article.Slug, article.Category, article.Summary, article.Content, article.ImageURL, article.Author, article.IsPublished, article.CreatedAt, article.UpdatedAt)
 	if err != nil {
 		return err
 	}
@@ -163,13 +163,48 @@ func (r *Repository) CreateArticle(article *domain.Article) error {
 }
 
 func (r *Repository) UpdateArticle(article *domain.Article) error {
-	_, err := r.db.Exec(`UPDATE articles SET title = ?, slug = ?, summary = ?, content = ?, image_url = ?, author = ?, is_published = ?, updated_at = ? WHERE id = ?`,
-		article.Title, article.Slug, article.Summary, article.Content, article.ImageURL, article.Author, article.IsPublished, article.UpdatedAt, article.ID)
+	_, err := r.db.Exec(`UPDATE articles SET title = ?, slug = ?, category = ?, summary = ?, content = ?, image_url = ?, author = ?, is_published = ?, updated_at = ? WHERE id = ?`,
+		article.Title, article.Slug, article.Category, article.Summary, article.Content, article.ImageURL, article.Author, article.IsPublished, article.UpdatedAt, article.ID)
 	return err
 }
 
 func (r *Repository) DeleteArticle(id int) error {
 	_, err := r.db.Exec(`DELETE FROM articles WHERE id = ?`, id)
+	return err
+}
+
+func (r *Repository) ListCategories() ([]domain.ArticleCategory, error) {
+	rows, err := r.db.Query(`SELECT id, slug, title, created_at FROM categories ORDER BY id ASC`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var cats []domain.ArticleCategory
+	for rows.Next() {
+		var c domain.ArticleCategory
+		if err := rows.Scan(&c.ID, &c.Slug, &c.Title, &c.CreatedAt); err != nil {
+			return nil, err
+		}
+		cats = append(cats, c)
+	}
+	return cats, nil
+}
+
+func (r *Repository) CreateCategory(cat *domain.ArticleCategory) error {
+	res, err := r.db.Exec(`INSERT INTO categories (slug, title, created_at) VALUES (?, ?, ?)`, cat.Slug, cat.Title, cat.CreatedAt)
+	if err != nil {
+		return err
+	}
+	id, err := res.LastInsertId()
+	if err == nil {
+		cat.ID = int(id)
+	}
+	return nil
+}
+
+func (r *Repository) DeleteCategory(id int) error {
+	_, err := r.db.Exec(`DELETE FROM categories WHERE id = ?`, id)
 	return err
 }
 

@@ -82,6 +82,7 @@ func Migrate(db *sql.DB) error {
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			title TEXT NOT NULL,
 			slug TEXT NOT NULL UNIQUE,
+			category TEXT,
 			summary TEXT,
 			content TEXT NOT NULL,
 			image_url TEXT,
@@ -89,6 +90,12 @@ func Migrate(db *sql.DB) error {
 			is_published BOOLEAN DEFAULT 1,
 			created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 			updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+		)`,
+		`CREATE TABLE IF NOT EXISTS categories (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			slug TEXT NOT NULL UNIQUE,
+			title TEXT NOT NULL,
+			created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 		)`,
 	}
 
@@ -98,6 +105,37 @@ func Migrate(db *sql.DB) error {
 		}
 	}
 
+	// Back-fill the category column on databases created before it existed.
+	if err := ensureArticleCategoryColumn(db); err != nil {
+		return err
+	}
+
 	slog.Info("database migrated successfully")
+	return nil
+}
+
+// ensureArticleCategoryColumn adds the "category" column to the articles table
+// if it is missing (pre-existing databases).
+func ensureArticleCategoryColumn(db *sql.DB) error {
+	rows, err := db.Query(`PRAGMA table_info(articles)`)
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var cid int
+		var name, ctype string
+		var notnull, pk int
+		var dflt *string
+		if err := rows.Scan(&cid, &name, &ctype, &notnull, &dflt, &pk); err != nil {
+			return err
+		}
+		if name == "category" {
+			return nil
+		}
+	}
+	if _, err := db.Exec(`ALTER TABLE articles ADD COLUMN category TEXT`); err != nil {
+		return fmt.Errorf("failed to add category column: %w", err)
+	}
 	return nil
 }

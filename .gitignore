@@ -38,3 +38,12 @@ Thumbs.db
 # Build output
 bin/
 dist/
+
+# Logs
+*.log
+
+# Temp / preview folders
+_about-mobile-preview/
+
+# Source archives
+*.zip

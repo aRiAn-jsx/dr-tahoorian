@@ -1,4 +1,4 @@
-package handler
+﻿package handler
 
 import (
 	"encoding/json"
@@ -55,6 +55,12 @@ var pageFuncs = template.FuncMap{
 			return s
 		}
 		return string(runes[:length]) + "..."
+	},
+	"catTitle": func(slug string, m map[string]string) string {
+		if t, ok := m[slug]; ok && t != "" {
+			return t
+		}
+		return slug
 	},
 }
 
@@ -183,13 +189,59 @@ func (h *Handler) Projects(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) Articles(w http.ResponseWriter, r *http.Request) {
 	articles, _ := h.svc.ListPublishedArticles()
+	categories, _ := h.svc.ListCategories()
 	h.render(w, r, "articles", PageData{
 		Title:       "مقالات | طهوریان",
 		Description: "مقالات و مطالب تخصصی دکتر حسین طهوریان",
 		Content: map[string]interface{}{
-			"Articles": articles,
+			"Articles":       articles,
+			"Categories":     buildArticleCategories(articles, categories),
+			"CategoryTitles": categoryTitleMap(categories),
 		},
 	})
+}
+
+// articleCategory mirrors the "Category" shape consumed by the articles template.
+type articleCategory struct {
+	Slug  string
+	Title string
+	Count int
+}
+
+// categoryTitleMap returns a slug -> display-title lookup used by the template
+// to render human-friendly category badges instead of raw slugs.
+func categoryTitleMap(categories []domain.ArticleCategory) map[string]string {
+	titles := map[string]string{}
+	for _, c := range categories {
+		titles[c.Slug] = c.Title
+	}
+	return titles
+}
+
+// buildArticleCategories aggregates article categories (with counts) and lists
+// them in database order, so the articles page renders dynamic category chips.
+// It always includes every managed category (count may be 0) and falls back to
+// the raw slug for any article whose category isn't managed yet.
+func buildArticleCategories(articles []domain.Article, categories []domain.ArticleCategory) []articleCategory {
+	counts := map[string]int{}
+	for _, a := range articles {
+		cat := strings.TrimSpace(a.Category)
+		if cat != "" {
+			counts[cat]++
+		}
+	}
+	var out []articleCategory
+	known := map[string]bool{}
+	for _, c := range categories {
+		known[c.Slug] = true
+		out = append(out, articleCategory{Slug: c.Slug, Title: c.Title, Count: counts[c.Slug]})
+	}
+	for slug, n := range counts {
+		if !known[slug] {
+			out = append(out, articleCategory{Slug: slug, Title: slug, Count: n})
+		}
+	}
+	return out
 }
 
 func (h *Handler) ArticleDetail(w http.ResponseWriter, r *http.Request) {

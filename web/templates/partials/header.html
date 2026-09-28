@@ -1,5 +1,5 @@
 {{define "header"}}
-<header class="site-header">
+<header class="site-header{{if eq .CurrentPath "/"}} site-header--home{{end}}">
     <nav class="site-nav" aria-label="منوی اصلی">
         <a href="/" class="brand-mark" aria-label="طهوریان">
             <img class="brand-logo" src="/static/images/download%20(2).webp" alt="طهوریان">

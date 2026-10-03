@@ -9,7 +9,7 @@
 {{if .Content.Address}}{{$address = .Content.Address}}{{end}}
 {{if .Content.WorkHours}}{{$hours = .Content.WorkHours}}{{end}}
 
-<link rel="stylesheet" href="../../static/css/contant.css">
+<link rel="stylesheet" href="/static/css/contant.css">
 
 <div class="contact-page">
     
@@ -50,8 +50,13 @@
                     </span>
                     
                     <h1 class="contact-hero__title">
-                        <span class="line">راه ارتباطی با</span>
-                        <span class="line line--accent">دکتر حسین طهوریان</span>
+                        <img class="contact-hero__title-img"
+                             src="/static/images/typegrf-trim.png"
+                             alt="راه ارتباطی با دکتر حسین طهوریان"
+                             width="869"
+                             height="347"
+                             fetchpriority="high"
+                             decoding="async">
                     </h1>
                     
                     <p class="contact-hero__desc">
@@ -86,8 +91,13 @@
                 <!-- QUOTE CARD -->
                 <div class="contact-hero__visual" data-reveal="left">
                     <div class="img-hero">
-                <img src="../../static/images/img-heroglass.webp" alt="c">
-            </div>
+                        <img src="/static/images/img-heroglass.webp"
+                             alt="دکتر حسین طهوریان"
+                             width="1159"
+                             height="1356"
+                             loading="lazy"
+                             decoding="async">
+                    </div>
                     <!-- <div class="glass-card glass-card--quote">
                         <div class="glass-card__glow glass-card__glow--gold"></div>
                         <span class="quote-mark">”</span>

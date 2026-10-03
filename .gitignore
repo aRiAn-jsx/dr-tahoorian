@@ -45,5 +45,8 @@ dist/
 # Temp / preview folders
 _about-mobile-preview/
 
+# Agent / editor tooling
+.kilo/
+
 # Source archives
 *.zip

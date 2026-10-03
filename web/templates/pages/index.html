@@ -1,55 +1,72 @@
 {{define "content"}}
 {{$data := .Content}}
 <section class="hero-section">
-    <div class="hero-orbit hero-orbit--one"></div>
-    <div class="hero-orbit hero-orbit--two"></div>
+    <div class="hero-wash" aria-hidden="true"></div>
     <div class="hero-inner">
         <div class="hero-copy hero-copy--intro">
-            <span class="eyebrow">درباره من</span>
-            <h1>دکتر حسین طهوریان</h1>
-            <p>من دکتر حسین طهوریان هستم؛ مشاور و راهبر کسب‌وکار، با تمرکز بر ساختن مسیرهایی روشن برای رشد پایدار.</p>
-            <a href="/about" class="text-link">بیشتر درباره من <i data-lucide="arrow-up-left" aria-hidden="true"></i></a>
+            <span class="hero-kicker"><i data-lucide="sparkles" aria-hidden="true"></i> درباره من</span>
+            <h1 class="hero-title">دکتر حسین<br><em>طهوریان</em></h1>
+            <span class="hero-rule" aria-hidden="true"></span>
+            <p class="hero-lead">مشاور و راهبر کسب‌وکار؛ با تمرکز بر ساختن مسیرهایی روشن برای رشد پایدار، از ایده تا اجرا کنار شما می‌مانم.</p>
+            <div class="hero-actions">
+                <a href="/contact" class="hero-btn hero-btn--primary">شروع همکاری <i data-lucide="arrow-up-left" aria-hidden="true"></i></a>
+                <a href="/about" class="hero-btn hero-btn--ghost">بیشتر درباره من <i data-lucide="arrow-up-left" aria-hidden="true"></i></a>
+            </div>
+            <ul class="hero-trust">
+                <li><i data-lucide="shield-check" aria-hidden="true"></i> <span>همراهی مرحله‌به‌مرحله</span></li>
+                <li><i data-lucide="target" aria-hidden="true"></i> <span>راهبرد متناسب با کسب‌وکار شما</span></li>
+            </ul>
         </div>
 
         <div class="hero-portrait-wrap">
-            <div class="hero-portrait-glow"></div>
+            <div class="hero-portrait-halo" aria-hidden="true"></div>
             <img class="hero-portrait" src="/static/images/download%20(1).webp" alt="تصویر دکتر حسین طهوریان">
             <span class="portrait-label">_consultant & mentor_</span>
             <div class="hero-achievements" aria-label="دستاوردهای حرفه‌ای">
-                <div class="hero-achievement"><strong>۱۷<small>+</small></strong><span>سالسابقه<br><b>کار و تجربه</b></span></div>
+                <div class="hero-achievement"><strong>۱۷<small>+</small></strong><span>سال سابقه<br><b>کار و تجربه</b></span></div>
                 <div class="hero-achievement"><strong>۵</strong><span>اختراع ثبت شده</span></div>
-                <div class="hero-achievement"><strong>۳۲<small>+</small></strong><span> certificateهای<br><b>بین‌المللی</b></span></div>
+                <div class="hero-achievement"><strong>۳۲<small>+</small></strong><span>گواهی‌نامه‌های<br><b>بین‌المللی</b></span></div>
             </div>
         </div>
 
         <div class="hero-copy hero-copy--work">
-            <div class="work-card">
-                <span class="work-card__icon"><i data-lucide="sparkles" aria-hidden="true"></i></span>
-                <div>
-                    <strong>توسعه کسب‌وکار</strong>
-                    <small>همراهی از ایده تا اجرا</small>
-                </div>
-                <span class="work-card__arrow"><i data-lucide="arrow-up-left" aria-hidden="true"></i></span>
-            </div>
-            <div class="work-card">
-                <span class="work-card__icon"><i data-lucide="chart-no-axes-combined" aria-hidden="true"></i></span>
-                <div>
-                    <strong>CONSULTING</strong>
-                    <small>IMAGE DECISIONS FOR GROWTH</small>
-                </div>
-                <span class="work-card__arrow"><i data-lucide="arrow-up-left" aria-hidden="true"></i></span>
-            </div>
+            <span class="hero-side-label">حوزه‌های کلیدی</span>
+            <ol class="hero-rail">
+                <li class="rail-item">
+                    <span class="rail-item__num">۰۱</span>
+                    <div class="rail-item__body">
+                        <span class="rail-item__head"><i data-lucide="sparkles" aria-hidden="true"></i><strong>توسعه کسب‌وکار</strong></span>
+                        <small>همراهی از ایده تا اجرا</small>
+                    </div>
+                </li>
+                <li class="rail-item">
+                    <span class="rail-item__num">۰۲</span>
+                    <div class="rail-item__body">
+                        <span class="rail-item__head"><i data-lucide="chart-no-axes-combined" aria-hidden="true"></i><strong>مشاوره مدیریت</strong></span>
+                        <small>تصمیم‌های کلیدی برای رشد</small>
+                    </div>
+                </li>
+                <li class="rail-item">
+                    <span class="rail-item__num">۰۳</span>
+                    <div class="rail-item__body">
+                        <span class="rail-item__head"><i data-lucide="users-round" aria-hidden="true"></i><strong>تیم‌سازی و رهبری</strong></span>
+                        <small>ساختن تیمی هم‌راستا و پایدار</small>
+                    </div>
+                </li>
+            </ol>
             <a href="/services" class="text-link">View services <i data-lucide="arrow-up-left" aria-hidden="true"></i></a>
         </div>
     </div>
     <div class="hero-footer">
         <span>TEHRAN, IRAN</span>
         <span class="hero-footer__line"></span>
+        <a href="#value-section" class="hero-scroll" hx-boost="false" aria-label="رفتن به بخش بعدی"><i data-lucide="arrow-down" aria-hidden="true"></i></a>
+        <span class="hero-footer__line"></span>
         <span>START A FRESH COLLABORATION</span>
     </div>
 </section>
 
-<section class="value-section">
+<section class="value-section" id="value-section">
     <div class="section-shell">
         <div class="section-heading">
             <div><span class="eyebrow">چرا طهوریان؟</span><h2>تصمیم‌های بهتر،<br><em>رشد ماندگار</em></h2></div>

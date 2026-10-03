@@ -366,24 +366,14 @@
 .contact-hero__text { max-width: 620px; }
 
 .contact-hero__title {
-    font-size: clamp(42px, 5.5vw, 80px);
-    font-weight: 900;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    color: #033431;
     margin: 0 0 30px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
 }
 
-.contact-hero__title .line { display: block; }
-.contact-hero__title .line--accent {
-    font-style: italic;
-    background: linear-gradient(135deg, #B98A45 0%, #8a6530 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+.contact-hero__title-img {
+    display: block;
+    width: 100%;
+    max-width: 520px;
+    height: auto;
 }
 
 .contact-hero__desc {
@@ -460,6 +450,38 @@
 /* Quote Card */
 .contact-hero__visual { position: relative; }
 
+/* Portrait shown in place of the (commented-out) quote card */
+.img-hero {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.img-hero::before {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    top: 50%;
+    left: 50%;
+    width: 420px;
+    height: 420px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 46%, rgba(126, 178, 158, .28) 0%, rgba(185, 138, 69, .12) 58%, rgba(255, 255, 255, 0) 72%);
+}
+
+.img-hero img {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    max-width: 460px;
+    height: auto;
+    object-fit: contain;
+    object-position: center;
+    filter: drop-shadow(0 24px 40px rgba(3, 52, 49, .16));
+}
+
 .glass-card--quote {
     padding: 55px 45px 45px;
     border-radius: 32px;
@@ -521,7 +543,7 @@
 /* Scroll indicator */
 .hero__scroll {
     position: absolute;
-    /* bottom: 530px; */
+    bottom: 200px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -1113,8 +1135,7 @@
         order: 2;
     }
     
-    .contact-hero__title { align-items: center; }
-    .contact-hero__title .line { text-align: center; }
+    .contact-hero__title-img { margin: 0 auto; }
     .contact-hero__desc { margin-left: auto; margin-right: auto; }
     .contact-hero__points {
         margin-left: auto;
@@ -1123,6 +1144,10 @@
     }
     
     .contact-hero__visual { order: 1; }
+
+    .img-hero::before { width: 320px; height: 320px; }
+
+    .img-hero img { max-width: 100%; }
     
     .contact-layout {
         grid-template-columns: 1fr;
@@ -1143,7 +1168,7 @@
     
     .contact-hero { padding: 110px 0 70px; }
     .contact-hero__top { flex-direction: column; gap: 14px; margin-bottom: 40px; }
-    .contact-hero__title { font-size: 34px; line-height: 1.15; }
+    .contact-hero__title-img { max-width: 100%; }
     .contact-hero__desc { font-size: 14px; }
     
     .contact-hero__points {

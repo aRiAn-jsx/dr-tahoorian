@@ -1,0 +1,177 @@
+<%
+  const art = content.Article;
+  const recentArticles = content.RecentArticles || [];
+%>
+
+<!-- Schema.org Article Structured Data (JSON-LD) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://tahoorian.ir/articles/<%= art.slug %>#article",
+      "isPartOf": {
+        "@type": "WebPage",
+        "@id": "https://tahoorian.ir/articles/<%= art.slug %>"
+      },
+      "headline": "<%= art.title %>",
+      "description": "<%= art.summary %>",
+      "image": [
+        "https://tahoorian.ir<%= art.image_url %>"
+      ],
+      "datePublished": "<%= art.created_at ? new Date(art.created_at).toISOString() : '' %>",
+      "dateModified": "<%= art.updated_at ? new Date(art.updated_at).toISOString() : '' %>",
+      "mainEntityOfPage": "https://tahoorian.ir/articles/<%= art.slug %>",
+      "author": {
+        "@type": "Person",
+        "name": "<%= art.author %>",
+        "url": "https://tahoorian.ir/about",
+        "jobTitle": "پژوهشگر طب سنتی، مخترع صنعتی و مشاور سرمایه‌گذاری هلدینگ"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "مرکز تخصصی دکتر حسین طهوریان",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://tahoorian.ir/static/images/download%20(2).webp"
+        }
+      },
+      "inLanguage": "fa-IR",
+      "keywords": "<%= art.keywords || '' %>"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://tahoorian.ir/articles/<%= art.slug %>#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "خانه",
+          "item": "https://tahoorian.ir/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مقالات تخصصی",
+          "item": "https://tahoorian.ir/articles"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "<%= art.title %>",
+          "item": "https://tahoorian.ir/articles/<%= art.slug %>"
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<section class="min-h-screen py-10 sm:py-16 bg-[#fbfbfd]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Breadcrumb & Back -->
+        <nav class="flex items-center justify-between gap-4 mb-6 text-xs font-bold text-slate-500" aria-label="مسیر راهنما">
+            <div class="flex items-center gap-2 flex-wrap">
+                <a href="/" class="hover:text-emerald-800 transition">خانه</a>
+                <span>/</span>
+                <a href="/articles" class="hover:text-emerald-800 transition">مقالات</a>
+                <span>/</span>
+                <span class="text-slate-700 truncate max-w-xs"><%= art.title %></span>
+            </div>
+            <a href="/articles" class="text-amber-700 hover:text-amber-800 flex items-center gap-1 shrink-0 font-black">
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                <span>بازگشت به مقالات</span>
+            </a>
+        </nav>
+
+        <!-- Article Header -->
+        <header class="mb-8">
+            <div class="flex items-center gap-2.5 text-xs text-amber-700 font-bold mb-4 flex-wrap">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
+                    <i data-lucide="user-check" class="w-3.5 h-3.5 text-emerald-700"></i>
+                    <%= art.author %>
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
+                    <i data-lucide="calendar" class="w-3.5 h-3.5 text-slate-500"></i>
+                    <%= art.formattedDate || '' %>
+                </span>
+                <% if (art.reading_time) { %>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200">
+                    <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-600"></i>
+                    زمان مطالعه: <%= art.reading_time %>
+                </span>
+                <% } %>
+            </div>
+
+            <h1 class="text-2xl sm:text-4xl font-black text-slate-900 leading-tight tracking-tight mb-5">
+                <%= art.title %>
+            </h1>
+
+            <% if (art.summary) { %>
+            <div class="p-5 sm:p-6 rounded-2xl bg-amber-50/70 border-r-4 border-amber-500 text-slate-800 text-sm sm:text-base leading-relaxed font-medium shadow-sm">
+                <div class="text-xs font-bold text-amber-900 mb-1 flex items-center gap-1.5">
+                    <i data-lucide="bookmark" class="w-3.5 h-3.5"></i>
+                    چکیده و هدف مقاله:
+                </div>
+                <%= art.summary %>
+            </div>
+            <% } %>
+        </header>
+
+        <!-- Featured Image -->
+        <% if (art.image_url) { %>
+        <div class="rounded-3xl overflow-hidden mb-10 shadow-md bg-slate-100 border border-slate-200/90 max-h-[460px]">
+            <img src="<%= art.image_url %>" alt="<%= art.title %>" class="w-full h-full object-cover">
+        </div>
+        <% } %>
+
+        <!-- Article Body -->
+        <article class="bg-white rounded-3xl p-6 sm:p-12 border border-slate-200 shadow-sm">
+            <div class="prose prose-slate max-w-none text-slate-800 text-base sm:text-lg leading-relaxed font-normal">
+                <%- art.content %>
+            </div>
+
+            <!-- Footer / Author Bio -->
+            <div class="mt-12 pt-8 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-6 bg-slate-50/70 p-6 rounded-2xl border">
+                <div class="flex items-center gap-4">
+                    <img src="/static/images/download%20(1)-2.webp" alt="<%= art.author %>" class="w-16 h-16 rounded-2xl object-cover bg-white border border-amber-300 shadow-sm">
+                    <div>
+                        <div class="font-black text-slate-900 text-base flex items-center gap-1.5">
+                            <span><%= art.author %></span>
+                            <i data-lucide="badge-check" class="w-4 h-4 text-emerald-600"></i>
+                        </div>
+                        <div class="text-xs text-slate-600 mt-1">پژوهشگر طب سنتی، مخترع ۵ پتنت رسمی، مشاور سرمایه‌گذاری هلدینگ</div>
+                    </div>
+                </div>
+                <a href="/contact" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-slate-900 hover:bg-amber-500 text-white hover:text-slate-950 text-xs font-black transition shadow-md">
+                    <span>درخواست مشاوره و رزرو وقت</span>
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                </a>
+            </div>
+        </article>
+
+        <!-- Recent Articles Navigation -->
+        <% if (recentArticles && recentArticles.length > 0) { %>
+        <div class="mt-14">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-black text-slate-900">سایر مقالات تخصصی</h3>
+                <a href="/articles" class="text-xs font-bold text-amber-700 hover:underline flex items-center gap-1">
+                    <span>مشاهده همه مقالات</span>
+                    <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+                </a>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <% recentArticles.forEach(function(rec) { %>
+                <a href="/articles/<%= rec.slug %>" class="block p-5 rounded-2xl bg-white border border-slate-200 hover:border-amber-400 transition shadow-sm hover:shadow-md group">
+                    <span class="text-[11px] text-slate-500 font-bold block mb-1.5"><%= rec.formattedDate || '' %></span>
+                    <h4 class="text-sm font-bold text-slate-900 group-hover:text-amber-700 transition leading-snug"><%= rec.title %></h4>
+                </a>
+                <% }); %>
+            </div>
+        </div>
+        <% } %>
+
+    </div>
+</section>

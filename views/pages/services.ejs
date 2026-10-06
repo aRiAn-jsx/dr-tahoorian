@@ -1,0 +1,233 @@
+<%
+  const packages = (typeof content !== 'undefined' && content.Packages) ? content.Packages : [];
+%>
+
+<link rel="stylesheet" href="/static/css/services.css">
+
+<section class="srv-page">
+
+    <!-- FLOATING LIQUID GLASS AMBIENT LAYER -->
+    <div class="srv-bg-layer" aria-hidden="true">
+        <div class="srv-orb srv-orb--1"></div>
+        <div class="srv-orb srv-orb--2"></div>
+        <div class="srv-orb srv-orb--3"></div>
+        <div class="srv-bg-pattern"></div>
+    </div>
+
+    <!-- 1. HERO ATELIER -->
+    <header class="srv-hero">
+        <div class="srv-shell">
+            <div class="srv-kicker">
+                <i data-lucide="crown"></i>
+                <span>پورتفولیوی اختصاصی راهکارها و خدمات جامع</span>
+            </div>
+
+            <h1 class="srv-title">
+                همراهی راهبردی، توسعه سرمایه‌گذاری<br>
+                <em>و بازیابی اصیل تعادل زیستی با طب سنتی</em>
+            </h1>
+
+            <p class="srv-lead">
+                چهار مسیر تخصصی با هدایت مستقیم دکتر حسین طهوریان؛ همراه با تضمین رسمی خروجی‌های ملموس، نگارش مکتوب اسناد و انعقاد قرارداد رسمی محرمانگی اطلاعات (NDA).
+            </p>
+
+            <!-- Frosted Glass Stats Strip -->
+            <div class="srv-stats-strip">
+                <div class="srv-stat-unit">
+                    <div class="srv-stat-val">۲۰<small>+</small></div>
+                    <div class="srv-stat-lbl">سال تجربه مدیریت و درمان</div>
+                </div>
+                <div class="srv-stat-unit">
+                    <div class="srv-stat-val">۵</div>
+                    <div class="srv-stat-lbl">اختراع ثبت‌شده ملی و صنعتی</div>
+                </div>
+                <div class="srv-stat-unit">
+                    <div class="srv-stat-val">۳۲<small>+</small></div>
+                    <div class="srv-stat-lbl">گواهینامه بین‌المللی</div>
+                </div>
+                <div class="srv-stat-unit">
+                    <div class="srv-stat-val">۱۰۰<small>٪</small></div>
+                    <div class="srv-stat-lbl">رازداری و قرارداد رسمی NDA</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. LIQUID GLASS PACKAGES (4 DISTINCTIVE CARDS) -->
+    <section class="srv-cards-section">
+        <div class="srv-shell">
+            
+            <div class="srv-sec-header">
+                <span class="srv-sec-tag">مسیرهای اختصاصی</span>
+                <h2 class="srv-sec-title">پکیج‌های جامع؛ طراحی‌شده برای خروجی‌های ماندگار</h2>
+                <p class="srv-sec-desc">هر پکیج شامل جلسات فشرده اختصاصی، بررسی اسناد و تحویل شناسنامه مکتوب است.</p>
+            </div>
+
+            <div class="srv-cards-grid">
+                <% if (packages && packages.length > 0) { %>
+                    <% packages.forEach(function(pkg) { %>
+                    <article class="srv-card-glass <%= pkg.isFeatured ? 'srv-card-glass--featured' : '' %>">
+                        <% if (pkg.isFeatured) { %>
+                        <div class="srv-card-ribbon">
+                            <i data-lucide="crown"></i>
+                            <span>پیشنهاد اول مدیران عامل</span>
+                        </div>
+                        <% } %>
+
+                        <div>
+                            <div class="srv-card-top">
+                                <div class="srv-card-gem srv-card-gem--<%= pkg.theme || 'gold' %>">
+                                    <i data-lucide="<%= pkg.icon || 'star' %>"></i>
+                                </div>
+                                <div>
+                                    <span class="srv-card-badge-txt"><%= pkg.tag %></span>
+                                    <h3 class="srv-card-name"><%= pkg.title %></h3>
+                                </div>
+                            </div>
+
+                            <span class="srv-card-latin"><%= pkg.latinTitle %></span>
+                            <p class="srv-card-desc"><%= pkg.description %></p>
+
+                            <!-- Target Audience -->
+                            <div class="srv-card-audience">
+                                <strong>مناسب برای:</strong> <%= pkg.audience %>
+                            </div>
+
+                            <!-- Key Features -->
+                            <div class="srv-card-features">
+                                <% if (pkg.features && pkg.features.length) { %>
+                                    <% pkg.features.slice(0, 4).forEach(function(feat) { %>
+                                    <div class="srv-card-feat">
+                                        <i data-lucide="check-circle-2"></i>
+                                        <span><%= feat %></span>
+                                    </div>
+                                    <% }); %>
+                                <% } %>
+                            </div>
+
+                            <!-- Deliverables Seal Box -->
+                            <% if (pkg.deliverables && pkg.deliverables.length) { %>
+                            <div class="srv-card-deliv-box">
+                                <div class="srv-card-deliv-box__head">
+                                    <i data-lucide="stamp"></i>
+                                    <span>خروجی ملموس و سند تحویلی:</span>
+                                </div>
+                                <div class="srv-card-deliv-box__list">
+                                    <%= pkg.deliverables.join(' · ') %>
+                                </div>
+                            </div>
+                            <% } %>
+                        </div>
+
+                        <!-- Card Footer -->
+                        <div class="srv-card-footer">
+                            <div class="srv-card-meta-txt">
+                                <span>طول دوره: <strong><%= pkg.sessions.split('(')[0] %></strong></span>
+                                <span>محل برگزاری: <strong><%= pkg.location.split('/')[0] %></strong></span>
+                            </div>
+
+                            <a href="/contact?pkg=<%= encodeURIComponent(pkg.title) %>" class="srv-btn-glass-cta">
+                                <span><%= pkg.actionText %></span>
+                                <i data-lucide="arrow-up-left"></i>
+                            </a>
+                        </div>
+                    </article>
+                    <% }); %>
+                <% } %>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 3. LIQUID GLASS FAQ ACCORDION -->
+    <section class="srv-faq-section" x-data="{ openFaq: null }">
+        <div class="srv-shell">
+            
+            <div class="srv-sec-header">
+                <span class="srv-sec-tag">پرسش‌های متداول</span>
+                <h2 class="srv-sec-title">پاسخ به سوالات مراجعین و مدیران</h2>
+                <p class="srv-sec-desc">پاسخ شفاف به مهم‌ترین سوالات در خصوص نحوه برگزاری، قراردادها و تضمین محرمانگی</p>
+            </div>
+
+            <div class="srv-faq-wrap">
+                <!-- FAQ 1 -->
+                <div class="srv-faq-item-glass">
+                    <button type="button" class="srv-faq-trigger" :class="openFaq === 1 ? 'is-open' : ''" @click="openFaq = (openFaq === 1 ? null : 1)">
+                        <span>جلسات رگ‌گیری و طب سنتی چگونه و توسط چه کسی اجرا می‌شود؟</span>
+                        <div class="srv-faq-icon-orb"><i data-lucide="chevron-down"></i></div>
+                    </button>
+                    <div class="srv-faq-content" x-show="openFaq === 1" x-collapse>
+                        کلیه جلسات رگ‌گیری دستی مستقیماً توسط شخص دکتر حسین طهوریان در کلینیک بهداشتی و تخصصی برگزار می‌گردد. پیش از مداخله، ارزیابی کامل طبع و مزاج و عارضه‌یابی ستون فقرات صورت گرفته و با متدی کاملاً طبیعی و بدون عوارض شیمیایی، اسپاسم‌ها و گرفتگی‌ها آزادسازی می‌شوند.
+                    </div>
+                </div>
+
+                <!-- FAQ 2 -->
+                <div class="srv-faq-item-glass">
+                    <button type="button" class="srv-faq-trigger" :class="openFaq === 2 ? 'is-open' : ''" @click="openFaq = (openFaq === 2 ? null : 2)">
+                        <span>آیا پیش از بررسی اسناد مالی هلدینگ یا طرح اختراع، قرارداد NDA امضا می‌شود؟</span>
+                        <div class="srv-faq-icon-orb"><i data-lucide="chevron-down"></i></div>
+                    </button>
+                    <div class="srv-faq-content" x-show="openFaq === 2" x-collapse>
+                        بله، حفظ اسرار تجاری هلدینگ‌ها و صیانت از حق تقدم اختراعات اولویت نخست است. پیش از دریافت هرگونه سند فنی اختراع یا ترازنامه مالی، قرارداد رسمی عدم افشای اطلاعات (Non-Disclosure Agreement) به صورت مکتوب میان طرفین منعقد می‌شود.
+                    </div>
+                </div>
+
+                <!-- FAQ 3 -->
+                <div class="srv-faq-item-glass">
+                    <button type="button" class="srv-faq-trigger" :class="openFaq === 3 ? 'is-open' : ''" @click="openFaq = (openFaq === 3 ? null : 3)">
+                        <span>پکیج سرمایه‌گذاری برای چه مراحلی از کسب‌وکار مناسب است؟</span>
+                        <div class="srv-faq-icon-orb"><i data-lucide="chevron-down"></i></div>
+                    </button>
+                    <div class="srv-faq-content" x-show="openFaq === 3" x-collapse>
+                        این پکیج برای استارتاپ‌های آماده مقیاس‌پذیری (Growth Stage) و همچنین شرکت‌های متوسط و هلدینگ‌های چندرشته‌ای که به دنبال تجدید ساختار سرمایه، جذب شریک استراتژیک یا ورود به بازارهای جدید هستند طراحی شده است.
+                    </div>
+                </div>
+
+                <!-- FAQ 4 -->
+                <div class="srv-faq-item-glass">
+                    <button type="button" class="srv-faq-trigger" :class="openFaq === 4 ? 'is-open' : ''" @click="openFaq = (openFaq === 4 ? null : 4)">
+                        <span>نحوه رزرو وقت و آغاز فرآیند همکاری به چه صورت است؟</span>
+                        <div class="srv-faq-icon-orb"><i data-lucide="chevron-down"></i></div>
+                    </button>
+                    <div class="srv-faq-content" x-show="openFaq === 4" x-collapse>
+                        کافی است روی دکمه رزرو در پکیج مورد نظر کلیک فرمایید یا از طریق فرم تماس انتهای صفحه، اطلاعات خود را ثبت کنید. دفتر دکتر طهوریان در کمتر از ۲۴ ساعت کاری جهت هماهنگی جلسه ارزیابی با شما تماس خواهند گرفت.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 4. LIQUID GLASS VIP CALLOUT -->
+    <section class="srv-shell">
+        <div class="srv-vip-callout">
+            <div class="srv-vip-kicker">
+                <i data-lucide="calendar-check"></i>
+                <span>پذیرش جلسات حضوری و VIP</span>
+            </div>
+            <h2>آماده ایجاد یک جهش ماندگار در سلامت یا ساختار کسب‌وکار خود هستید؟</h2>
+            <p>
+                جلسه ارزیابی اولیه، فرصتی است تا نیازها و ظرفیت‌های رشد شما دقیقاً تحلیل شده و مناسب‌ترین مسیر همکاری تعیین گردد.
+            </p>
+            <div class="srv-vip-actions">
+                <a href="/contact" class="srv-btn-vip-gold">
+                    <span>درخواست وقت جلسه ارزیابی</span>
+                    <i data-lucide="arrow-up-left"></i>
+                </a>
+                <a href="tel:09152491524" class="srv-btn-vip-outline">
+                    <i data-lucide="phone"></i>
+                    <span>تماس مستقیم: ۰۹۱۵۲۴۹۱۵۲۴</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+</section>
+
+<script>
+window.addEventListener('DOMContentLoaded', function () {
+    if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+    }
+});
+</script>

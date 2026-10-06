@@ -1,0 +1,290 @@
+<%
+  const articles = (typeof content !== 'undefined' && content.Articles) ? content.Articles : [];
+  const categories = (typeof content !== 'undefined' && content.Categories) ? content.Categories : [];
+  const categoryTitles = (typeof content !== 'undefined' && content.CategoryTitles) ? content.CategoryTitles : {};
+  const total = articles.length;
+%>
+
+<link rel="stylesheet" href="/static/css/articles.css">
+
+<section class="ap">
+    <div class="shell">
+
+        <!-- COMPACT EDITORIAL HERO -->
+        <header class="ap-hero">
+            <span class="ap-hero__badge">
+                <i data-lucide="sparkles"></i>
+                <span id="ap-total"><%= total %> مقاله تخصصی</span>
+            </span>
+
+            <h1 class="ap-title">
+                مقالات، یادداشت‌ها و <em>پژوهش‌های تخصصی</em>
+            </h1>
+
+            <p class="ap-lead">
+                گزیده‌ای از مقالات تحلیلی دکتر حسین طهوریان در حوزه‌های طب سنتی و رگ‌گیری، ثبت اختراع و نوآوری صنعتی، سرمایه‌گذاری هلدینگ و مشاوره تخصصی مدیریت.
+            </p>
+        </header>
+
+        <!-- FAST SEARCH + CHIPS -->
+        <div class="ap-filters" id="toolbar">
+            <div class="ap-filterbar">
+                <label class="ap-search" for="ap-search">
+                    <span class="ap-search__icon">
+                        <i data-lucide="search"></i>
+                    </span>
+                    <input
+                        type="search"
+                        id="ap-search"
+                        placeholder="جستجو در مقالات (طب سنتی، رگ‌گیری، اختراع، سرمایه‌گذاری...)"
+                        autocomplete="off"
+                        aria-label="جستجو در مقالات">
+                    <button type="button" id="ap-clear" class="ap-search__clear" aria-label="پاک کردن جستجو">
+                        <i data-lucide="x"></i>
+                    </button>
+                </label>
+
+                <div class="ap-chips" role="tablist" aria-label="دسته‌بندی مقالات">
+                    <button type="button" class="ap-chip is-active" data-cat="all">
+                        <span>همه مقالات</span>
+                        <b><%= total %></b>
+                    </button>
+                    <% if (categories && categories.length > 0) { %>
+                        <% categories.forEach(function(c) { %>
+                        <button type="button" class="ap-chip" data-cat="<%= c.slug %>">
+                            <span><%= c.title %></span>
+                            <b><%= c.count %></b>
+                        </button>
+                        <% }); %>
+                    <% } %>
+                </div>
+            </div>
+
+            <div class="ap-status" id="ap-status" hidden>
+                <span class="ap-status__dot"></span>
+                <span id="ap-status-text"></span>
+                <button type="button" id="ap-reset">نمایش همه</button>
+            </div>
+        </div>
+
+        <!-- FAST ARTICLES GRID -->
+        <div class="ap-body">
+            <% if (articles && articles.length > 0) { %>
+            <div class="ap-grid" id="ap-grid">
+                <% articles.forEach(function(art, i) { %>
+                <article class="ap-card"
+                         data-category="<%= art.category || 'general' %>"
+                         data-title="<%= art.title %>"
+                         data-summary="<%= art.summary || '' %>"
+                         data-author="<%= art.author %>">
+                    <a href="/articles/<%= art.slug %>" class="ap-card__link">
+                        <div class="ap-card__media">
+                            <% if (art.image_url) { %>
+                            <img src="<%= art.image_url %>" alt="<%= art.title %>" loading="lazy" decoding="async">
+                            <% } else { %>
+                            <span class="ap-card__ph"><i data-lucide="file-text"></i></span>
+                            <% } %>
+                            <span class="ap-card__cat">
+                                <%= (art.category && categoryTitles[art.category]) ? categoryTitles[art.category] : (art.category || 'عمومی') %>
+                            </span>
+                        </div>
+
+                        <div class="ap-card__body">
+                            <h2 class="ap-card__title"><%= art.title %></h2>
+
+                            <% if (art.summary) { %>
+                            <p class="ap-card__excerpt"><%= art.summary %></p>
+                            <% } %>
+
+                            <div class="ap-card__footer">
+                                <time class="ap-card__date">
+                                    <i data-lucide="calendar"></i>
+                                    <%= art.formattedDate || '' %>
+                                </time>
+                                <span class="ap-card__more">
+                                    <span>مطالعه مقاله</span>
+                                    <i data-lucide="arrow-up-left"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+                <% }); %>
+            </div>
+
+            <!-- Empty (filtered) -->
+            <div class="ap-empty" id="ap-empty-results" hidden>
+                <span class="ap-empty__icon">
+                    <i data-lucide="search-x"></i>
+                </span>
+                <h3>مقاله‌ای با این عبارت یافت نشد</h3>
+                <p>می‌توانید عبارت جستجو یا دسته‌بندی انتخابی را تغییر دهید.</p>
+                <button type="button" class="btn-cta" id="ap-reset-results">
+                    <span>نمایش همه مقالات</span>
+                    <i data-lucide="rotate-ccw"></i>
+                </button>
+            </div>
+
+            <% } else { %>
+            <!-- Empty (no articles) -->
+            <div class="ap-empty">
+                <span class="ap-empty__icon">
+                    <i data-lucide="feather"></i>
+                </span>
+                <h3>هنوز مقاله‌ای منتشر نشده است</h3>
+                <p>مقالات و یادداشت‌های تخصصی به‌زودی در این بخش منتشر می‌شوند.</p>
+                <a href="/" class="btn-cta">
+                    <span>بازگشت به صفحه اصلی</span>
+                    <i data-lucide="arrow-left"></i>
+                </a>
+            </div>
+            <% } %>
+        </div>
+
+        <!-- COMPACT CTA -->
+        <section class="ap-cta">
+            <div class="ap-cta__card">
+                <div class="ap-cta__text">
+                    <span class="kicker--gold">
+                        <span class="kicker__line"></span>
+                        مشاوره و گفت‌وگوی مستقیم
+                    </span>
+                    <h2>نیاز به بررسی تخصصی پرونده، عارضه‌یابی یا نوبت رگ‌گیری دارید؟</h2>
+                    <p>برای دریافت مشاوره تخصصی در زمینه‌های طب سنتی و رگ‌گیری، ثبت اختراع، توسعه سرمایه‌گذاری یا مدیریت هلدینگ با دفتر دکتر طهوریان در ارتباط باشید.</p>
+                </div>
+                <a href="/contact" class="btn-cta">
+                    <span>درخواست وقت مشاوره</span>
+                    <i data-lucide="arrow-up-left"></i>
+                </a>
+            </div>
+        </section>
+
+    </div>
+</section>
+
+<script>
+(function () {
+    var searchInput   = document.getElementById('ap-search');
+    var searchClear   = document.getElementById('ap-clear');
+    var chips         = Array.prototype.slice.call(document.querySelectorAll('.ap-chip'));
+    var grid          = document.getElementById('ap-grid');
+    var emptyResults  = document.getElementById('ap-empty-results');
+    var statusWrap    = document.getElementById('ap-status');
+    var statusText    = document.getElementById('ap-status-text');
+    var resetBtn      = document.getElementById('ap-reset');
+    var resetResults  = document.getElementById('ap-reset-results');
+    var totalEl       = document.getElementById('ap-total');
+
+    if (grid) {
+        var cards = Array.prototype.slice.call(grid.querySelectorAll('.ap-card'));
+        var state = { query: '', category: 'all' };
+
+        function norm(s) {
+            if (!s) return '';
+            return String(s).toLowerCase()
+                .replace(/[يى]/g, 'ی')
+                .replace(/[كک]/g, 'ک')
+                .replace(/[ۀهة]/g, 'ه')
+                .replace(/[أإآا]/g, 'ا')
+                .replace(/[ؤو]/g, 'و')
+                .replace(/[\u064B-\u065F\u0670]/g, '')
+                .replace(/\u200c/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function apply() {
+            var q = norm(state.query);
+            var visible = 0;
+
+            cards.forEach(function (card) {
+                var t = norm(card.dataset.title);
+                var s = norm(card.dataset.summary);
+                var a = norm(card.dataset.author);
+                var c = (card.dataset.category || '').trim();
+                var mQ = !q || t.indexOf(q) >= 0 || s.indexOf(q) >= 0 || a.indexOf(q) >= 0;
+                var mC = state.category === 'all' || c === state.category;
+
+                if (mQ && mC) {
+                    card.style.display = '';
+                    visible++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            var hasFilter = q || state.category !== 'all';
+            if (emptyResults) emptyResults.hidden = visible > 0 || cards.length === 0;
+
+            if (statusWrap) {
+                if (hasFilter) {
+                    statusWrap.hidden = false;
+                    var parts = [];
+                    if (state.category !== 'all') {
+                        var act = chips.filter(function (ch) { return ch.classList.contains('is-active'); })[0];
+                        var lab = act ? act.querySelector('span').textContent : '';
+                        if (lab) parts.push('دسته: ' + lab);
+                    }
+                    if (q) parts.push('«' + state.query + '»');
+                    parts.push(visible + ' نتیجه');
+                    statusText.textContent = parts.join(' · ');
+                } else {
+                    statusWrap.hidden = true;
+                }
+            }
+
+            if (totalEl) {
+                totalEl.textContent = (hasFilter ? visible + ' از ' : '') + cards.length + ' مقاله تخصصی';
+            }
+        }
+
+        if (searchInput) {
+            var t0;
+            searchInput.addEventListener('input', function (e) {
+                clearTimeout(t0);
+                t0 = setTimeout(function () {
+                    state.query = e.target.value.trim();
+                    if (searchClear) searchClear.classList.toggle('is-visible', state.query.length > 0);
+                    apply();
+                }, 80);
+            });
+        }
+
+        if (searchClear) {
+            searchClear.addEventListener('click', function () {
+                searchInput.value = '';
+                state.query = '';
+                searchClear.classList.remove('is-visible');
+                searchInput.focus();
+                apply();
+            });
+        }
+
+        chips.forEach(function (chip) {
+            chip.addEventListener('click', function () {
+                chips.forEach(function (c) { c.classList.remove('is-active'); });
+                chip.classList.add('is-active');
+                state.category = chip.dataset.cat || 'all';
+                apply();
+            });
+        });
+
+        function resetAll() {
+            state.query = '';
+            state.category = 'all';
+            if (searchInput) searchInput.value = '';
+            if (searchClear) searchClear.classList.remove('is-visible');
+            chips.forEach(function (c) { c.classList.remove('is-active'); });
+            var all = chips.filter(function (c) { return c.dataset && c.dataset.cat === 'all'; })[0];
+            if (all) all.classList.add('is-active');
+            apply();
+        }
+        if (resetBtn)     resetBtn.addEventListener('click', resetAll);
+        if (resetResults) resetResults.addEventListener('click', resetAll);
+    }
+
+    if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+    }
+})();
+</script>

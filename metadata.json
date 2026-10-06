@@ -1,0 +1,8 @@
+{
+  "name": "دکتر حسین طهوریان | Dr. Hossein Tahoorian",
+  "description": "وب‌سایت رسمی و پرتال معرفی هلدینگ، خدمات و مقالات دکتر حسین طهوریان",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

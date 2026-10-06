@@ -1,0 +1,275 @@
+<link rel="stylesheet" href="/static/css/team.css">
+
+<section class="team-page">
+
+    <!-- ==================== HERO ==================== -->
+    <header class="team-hero">
+        <div class="shell">
+            <span class="team-hero__kicker">
+                <span class="team-hero__kicker-line"></span>
+                تیم ما
+            </span>
+            <h1 class="team-hero__title">
+                آدم‌هایی که <em>مسیر را می‌سازند</em>
+            </h1>
+            <p class="team-hero__desc">
+                رشد واقعی با یک نگاه تنها ساخته نمی‌شود؛ با آدم‌های متخصص و همراه شکل می‌گیرد.
+            </p>
+        </div>
+    </header>
+
+    <!-- ==================== TREE ==================== -->
+    <section class="tree-wrap">
+        <div class="shell">
+            <div class="org" id="org">
+                <!-- SVG lines overlay -->
+                <svg class="org__svg" id="orgSvg" aria-hidden="true"></svg>
+
+                <!-- LEVEL 1: CEO -->
+                <div class="org__row org__row--ceo">
+                    <article class="team-card team-card--ceo" data-id="ceo">
+                        <span class="team-card__corner team-card__corner--tl"></span>
+                        <span class="team-card__corner team-card__corner--tr"></span>
+                        <span class="team-card__corner team-card__corner--bl"></span>
+                        <span class="team-card__corner team-card__corner--br"></span>
+                        
+                        <span class="team-card__badge">
+                            <i data-lucide="crown"></i>
+                            مدیرعامل
+                        </span>
+
+                        <div class="team-card__avatar team-card__avatar--lg">
+                            <img src="/static/images/download%20(1).webp" alt="دکتر حسین طهوریان" loading="lazy" decoding="async">
+                        </div>
+
+                        <div class="team-card__body">
+                            <h3 class="team-card__name">دکتر حسین طهوریان</h3>
+                            <span class="team-card__role">بنیان‌گذار و مدیرعامل</span>
+                            <p class="team-card__bio">
+                                راهبری مجموعه‌ای از کسب‌وکارها با تمرکز بر تصمیم‌های روشن و ساختن تیم‌هایی که ایده را به نتیجه می‌رسانند.
+                            </p>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- LEVEL 2: Managers -->
+                <div class="org__row org__row--managers">
+                    
+                    <article class="team-card team-card--manager" data-id="m1" data-parent="ceo">
+                        <div class="team-card__avatar">
+                            <span class="team-card__initial">م</span>
+                            <span class="team-card__ring"></span>
+                        </div>
+                        <div class="team-card__body">
+                            <h3 class="team-card__name">مهندس محمدرضا کریمی</h3>
+                            <span class="team-card__role">مدیر عملیات</span>
+                            <p class="team-card__bio">بهینه‌سازی فرآیندها و افزایش بهره‌وری سازمانی.</p>
+                        </div>
+                    </article>
+
+                    <article class="team-card team-card--manager" data-id="m2" data-parent="ceo">
+                        <div class="team-card__avatar">
+                            <span class="team-card__initial">س</span>
+                            <span class="team-card__ring"></span>
+                        </div>
+                        <div class="team-card__body">
+                            <h3 class="team-card__name">دکتر سارا احمدی</h3>
+                            <span class="team-card__role">مدیر سرمایه‌گذاری</span>
+                            <p class="team-card__bio">ارزیابی فرصت‌ها و مدیریت پرتفوی پروژه‌های توسعه‌ای.</p>
+                        </div>
+                    </article>
+
+                    <article class="team-card team-card--manager" data-id="m3" data-parent="ceo">
+                        <div class="team-card__avatar">
+                            <span class="team-card__initial">ع</span>
+                            <span class="team-card__ring"></span>
+                        </div>
+                        <div class="team-card__body">
+                            <h3 class="team-card__name">علی رضایی</h3>
+                            <span class="team-card__role">مدیر حقوقی</span>
+                            <p class="team-card__bio">راهبری امور حقوقی و پیشگیری از ریسک‌های قانونی.</p>
+                        </div>
+                    </article>
+
+                </div>
+
+                <!-- LEVEL 3: Experts -->
+                <div class="org__row org__row--experts">
+                    
+                    <article class="team-card team-card--expert" data-id="e1" data-parent="m1">
+                        <div class="team-card__avatar team-card__avatar--sm">
+                            <span class="team-card__initial">ن</span>
+                        </div>
+                        <div class="team-card__body">
+                            <h3 class="team-card__name">نگار موسوی</h3>
+                            <span class="team-card__role">کارشناس برندینگ</span>
+                        </div>
+                    </article>
+
+                    <article class="team-card team-card--expert" data-id="e2" data-parent="m1">
+                        <div class="team-card__avatar team-card__avatar--sm">
+                            <span class="team-card__initial">ر</span>
+                        </div>
+                        <div class="team-card__body">
+                            <h3 class="team-card__name">رضا نیکخواه</h3>
+                            <span class="team-card__role">کارشناس مالی</span>
+                        </div>
+                    </article>
+
+                    <article class="team-card team-card--expert" data-id="e3" data-parent="m2">
+                        <div class="team-card__avatar team-card__avatar--sm">
+                            <span class="team-card__initial">ف</span>
+                        </div>
+                        <div class="team-card__body">
+                            <h3 class="team-card__name">فاطمه صادقی</h3>
+                            <span class="team-card__role">منابع انسانی</span>
+                        </div>
+                    </article>
+
+                    <article class="team-card team-card--expert" data-id="e4" data-parent="m2">
+                        <div class="team-card__avatar team-card__avatar--sm">
+                            <span class="team-card__initial">ا</span>
+                        </div>
+                        <div class="team-card__body">
+                            <h3 class="team-card__name">امیر حسینی</h3>
+                            <span class="team-card__role">کارشناس فناوری</span>
+                        </div>
+                    </article>
+
+                    <article class="team-card team-card--expert" data-id="e5" data-parent="m3">
+                        <div class="team-card__avatar team-card__avatar--sm">
+                            <span class="team-card__initial">م</span>
+                        </div>
+                        <div class="team-card__body">
+                            <h3 class="team-card__name">مریم کاظمی</h3>
+                            <span class="team-card__role">دیجیتال مارکتینگ</span>
+                        </div>
+                    </article>
+
+                    <article class="team-card team-card--expert" data-id="e6" data-parent="m3">
+                        <div class="team-card__avatar team-card__avatar--sm">
+                            <span class="team-card__initial">ح</span>
+                        </div>
+                        <div class="team-card__body">
+                            <h3 class="team-card__name">حسین طاهری</h3>
+                            <span class="team-card__role">تحقیق و توسعه</span>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== CTA ==================== -->
+    <section class="team-cta">
+        <div class="shell">
+            <div class="team-cta__inner">
+                <div class="team-cta__text">
+                    <span class="team-cta__kicker">— JOIN US</span>
+                    <h2 class="team-cta__title">
+                        می‌خواهید به تیم ما <em>بپیوندید؟</em>
+                    </h2>
+                </div>
+                <a href="/contact" class="team-cta__btn">
+                    <span>ارسال رزومه</span>
+                    <i data-lucide="arrow-up-left"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+</section>
+
+<script>
+(function() {
+    const org = document.getElementById('org');
+    const svg = document.getElementById('orgSvg');
+    if (!org || !svg) return;
+
+    /* ========== Build Tree Lines ========== */
+    function buildTree() {
+        const cards = org.querySelectorAll('.team-card');
+        if (!cards.length) return;
+
+        // Skip if mobile view
+        if (window.innerWidth < 900) {
+            svg.innerHTML = '';
+            return;
+        }
+
+        const orgRect = org.getBoundingClientRect();
+        svg.setAttribute('viewBox', `0 0 ${orgRect.width} ${orgRect.height}`);
+        svg.innerHTML = '';
+
+        // Map card positions
+        const map = {};
+        cards.forEach(c => {
+            const r = c.getBoundingClientRect();
+            map[c.dataset.id] = {
+                cx: r.left - orgRect.left + r.width / 2,
+                top: r.top - orgRect.top,
+                bottom: r.top - orgRect.top + r.height,
+            };
+        });
+
+        // Draw paths
+        cards.forEach(c => {
+            const parentId = c.dataset.parent;
+            if (!parentId || !map[parentId]) return;
+
+            const parent = map[parentId];
+            const child = map[c.dataset.id];
+            const startX = parent.cx;
+            const startY = parent.bottom;
+            const endX = child.cx;
+            const endY = child.top;
+            const midY = startY + (endY - startY) * 0.55;
+
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            let d;
+            if (Math.abs(endX - startX) < 6) {
+                d = `M ${startX} ${startY} L ${endX} ${endY}`;
+            } else {
+                d = `M ${startX} ${startY} L ${startX} ${midY} L ${endX} ${midY} L ${endX} ${endY}`;
+            }
+            path.setAttribute('d', d);
+            path.setAttribute('data-child', c.dataset.id);
+            path.setAttribute('data-parent', parentId);
+            path.classList.add('tree-line');
+            svg.appendChild(path);
+        });
+    }
+
+    /* ========== Hover Handlers (delegated) ========== */
+    org.addEventListener('mouseover', (e) => {
+        const card = e.target.closest('.team-card');
+        if (!card || (e.relatedTarget && card.contains(e.relatedTarget))) return;
+
+        const id = card.dataset.id;
+        svg.querySelectorAll('.tree-line').forEach(p => {
+            const match = p.dataset.parent === id || p.dataset.child === id;
+            p.classList.toggle('is-active', match);
+        });
+    });
+
+    org.addEventListener('mouseout', (e) => {
+        const card = e.target.closest('.team-card');
+        if (!card || (e.relatedTarget && card.contains(e.relatedTarget))) return;
+        svg.querySelectorAll('.tree-line').forEach(p => p.classList.remove('is-active'));
+    });
+
+    /* ========== Init & Resize ========== */
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(buildTree, 100);
+    });
+
+    window.addEventListener('load', buildTree);
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(buildTree, 200);
+    });
+})();
+</script>

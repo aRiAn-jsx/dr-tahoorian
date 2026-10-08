@@ -19,6 +19,14 @@ vendor/
 !web/static/vendor/
 !web/static/vendor/js/
 
+# Node.js artifacts & temporary runner (DO NOT PUSH TO GIT REPOSITORY)
+node_modules/
+package.json
+package-lock.json
+bun.lock
+server.ts
+.aistudio/
+
 # IDE
 .idea/
 .vscode/
@@ -28,7 +36,7 @@ vendor/
 # Environment
 .env
 
-# Database
+# Database (keep schema and migrations in git, exclude local sqlite instance)
 *.db
 
 # OS

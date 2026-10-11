@@ -586,42 +586,48 @@
 
 /* Stat strip under visual portrait */
 .hero__visual-stats {
+    position: relative;
+    z-index: 4;
     width: 100%;
     max-width: 500px;
-    margin-top: 4px;
+    margin-top: -48px;
 }
 
 .stat-strip {
+    position: relative;
+    z-index: 4;
     display: grid;
     grid-template-columns: 1fr auto 1fr auto 1fr;
     align-items: center;
     gap: 14px;
-    padding: 16px 22px;
-    border-radius: 20px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.76) 100%);
-    backdrop-filter: blur(24px) saturate(1.8);
-    -webkit-backdrop-filter: blur(24px) saturate(1.8);
-    border: 1px solid rgba(216, 178, 115, 0.45);
+    padding: 18px 24px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(248, 250, 246, 0.88) 100%);
+    backdrop-filter: blur(28px) saturate(1.9);
+    -webkit-backdrop-filter: blur(28px) saturate(1.9);
+    border: 1px solid rgba(216, 178, 115, 0.55);
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 1),
-        inset 0 -1px 0 rgba(216, 178, 115, 0.18),
-        0 18px 40px rgba(3, 52, 49, 0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        inset 0 -1px 0 rgba(216, 178, 115, 0.22),
+        0 20px 48px -10px rgba(3, 52, 49, 0.12),
+        0 4px 14px rgba(0, 0, 0, 0.03);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
 }
 
 .stat-strip:hover {
-    transform: translateY(-2px);
-    border-color: rgba(216, 178, 115, 0.7);
+    transform: translateY(-4px);
+    border-color: rgba(216, 178, 115, 0.8);
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 1),
-        0 22px 48px rgba(3, 52, 49, 0.12);
+        inset 0 -1px 0 rgba(216, 178, 115, 0.3),
+        0 26px 56px -10px rgba(3, 52, 49, 0.16);
 }
 
 .stat-strip__item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 3px;
+    gap: 4px;
     text-align: center;
 }
 
@@ -630,31 +636,32 @@
     align-items: baseline;
     gap: 2px;
     font-family: Georgia, serif;
-    font-size: 30px;
+    font-size: 32px;
     font-weight: 800;
     color: var(--green);
     line-height: 1;
     direction: rtl;
+    letter-spacing: -0.5px;
 }
 
 .stat-strip__value small {
     color: var(--gold);
-    font-size: 18px;
+    font-size: 19px;
     font-weight: 700;
 }
 
 .stat-strip__label {
-    font-size: 10px;
-    font-weight: 800;
+    font-size: 11px;
+    font-weight: 700;
     letter-spacing: 0.2px;
-    color: var(--muted);
+    color: #4b6360;
     white-space: nowrap;
 }
 
 .stat-strip__sep {
     width: 1px;
-    height: 34px;
-    background: linear-gradient(180deg, transparent, rgba(216, 178, 115, 0.45), transparent);
+    height: 36px;
+    background: linear-gradient(180deg, transparent, rgba(216, 178, 115, 0.55), transparent);
 }
 
 /* Hero scroll */

@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"context"
 	"dr-tahoorian/internal/config"
 	"dr-tahoorian/internal/domain"
 	"dr-tahoorian/internal/middleware"

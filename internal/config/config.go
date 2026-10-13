@@ -15,6 +15,9 @@ type Config struct {
 	AdminPass         string
 	TelegramBotToken  string
 	TelegramChatID    string
+	// SSI holding Telegram bot: contact-form submissions are forwarded to it.
+	BotFormsURL    string
+	BotFormsSecret string
 }
 
 func Load() *Config {
@@ -63,6 +66,8 @@ func Load() *Config {
 		AdminPass:        adminPass,
 		TelegramBotToken: os.Getenv("TELEGRAM_BOT_TOKEN"),
 		TelegramChatID:   os.Getenv("TELEGRAM_CHAT_ID"),
+		BotFormsURL:      os.Getenv("BOT_FORMS_URL"),
+		BotFormsSecret:   os.Getenv("BOT_FORMS_SECRET"),
 	}
 }
 

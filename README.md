@@ -84,6 +84,11 @@ ADMIN_PASS=admin
 # اعلان تلگرام برای فرم تماس (اختیاری — اگر خالی باشد ارسال نمی‌شود)
 TELEGRAM_BOT_TOKEN=
 TELEGRAM_CHAT_ID=
+
+# ربات تلگرام هلدینگ SSI (اختیاری): فرم تماس برای ادمین‌های ربات هم ارسال می‌شود
+# BOT_FORMS_URL آدرس سرور ربات است و BOT_FORMS_SECRET همان SITE_FORMS_SECRET ربات
+BOT_FORMS_URL=
+BOT_FORMS_SECRET=
 ```
 
 > ⚠ در استقرار صحیح `SESSION_SECRET`، `ADMIN_USER` و `ADMIN_PASS` را تغییر دهید.

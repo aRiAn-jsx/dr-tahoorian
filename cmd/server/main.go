@@ -29,7 +29,7 @@ func main() {
 	}
 
 	// Service Layer
-	svc := service.NewService(repo, cfg.TelegramBotToken, cfg.TelegramChatID)
+	svc := service.NewService(repo, cfg.TelegramBotToken, cfg.TelegramChatID, cfg.BotFormsURL, cfg.BotFormsSecret)
 
 	// HTTP Handlers
 	tmplDir := "views"
@@ -59,6 +59,8 @@ func main() {
 	r.Get("/team", h.HandleTeam)
 	r.Get("/contact", h.HandleContact)
 	r.Post("/contact", h.HandleContactSubmit)
+	// The page templates post the contact forms (htmx) to this path.
+	r.Post("/api/contact", h.HandleContactSubmit)
 
 	// Admin Auth Routes
 	r.Get("/admin/login", h.HandleAdminLogin)

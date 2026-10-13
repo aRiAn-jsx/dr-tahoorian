@@ -13,13 +13,17 @@ type Service struct {
 	repo             repository.Repository
 	telegramBotToken string
 	telegramChatID   string
+	botFormsURL      string
+	botFormsSecret   string
 }
 
-func NewService(repo repository.Repository, telegramBotToken, telegramChatID string) *Service {
+func NewService(repo repository.Repository, telegramBotToken, telegramChatID, botFormsURL, botFormsSecret string) *Service {
 	return &Service{
 		repo:             repo,
 		telegramBotToken: telegramBotToken,
 		telegramChatID:   telegramChatID,
+		botFormsURL:      botFormsURL,
+		botFormsSecret:   botFormsSecret,
 	}
 }
 
@@ -84,6 +88,11 @@ func (s *Service) SubmitContact(ctx context.Context, c *domain.Contact) error {
 	// Telegram notification in background
 	if s.telegramBotToken != "" && s.telegramChatID != "" {
 		go s.sendTelegramNotification(c)
+	}
+
+	// SSI holding Telegram bot (see botforms.go), also in background
+	if s.botFormsURL != "" && s.botFormsSecret != "" {
+		go s.forwardToBot(*c)
 	}
 	return nil
 }

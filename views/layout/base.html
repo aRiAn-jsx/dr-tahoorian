@@ -1,29 +1,29 @@
-<!DOCTYPE html>
+{{define "base"}}<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
-    <meta name="description" content="<%= typeof description !== 'undefined' && description ? description : 'دکتر حسین طهوریان — مرجع تخصصی طب سنتی و رگ‌گیری دستی، ثبت اختراع و نوآوری صنعتی، سرمایه‌گذاری هلدینگ و مشاوره تخصصی مدیریت سازمانی.' %>">
-    <meta name="keywords" content="<%= typeof keywords !== 'undefined' && keywords ? keywords : 'طب سنتی, رگ گیری, رگ گیری طب سنتی, ثبت اختراع, آموزش ثبت اختراع, تسکین دردهای عضلانی, درمان اسپاسم, سرمایه گذاری هلدینگ, مشاوره تخصصی مدیریت, دکتر حسین طهوریان' %>">
+    <title>{{.Title}}</title>
+    <meta name="description" content="{{if .Description}}{{.Description}}{{else}}دکتر حسین طهوریان — مرجع تخصصی طب سنتی و رگ‌گیری دستی، ثبت اختراع و نوآوری صنعتی، سرمایه‌گذاری هلدینگ و مشاوره تخصصی مدیریت سازمانی.{{end}}">
+    <meta name="keywords" content="{{if .Keywords}}{{.Keywords}}{{else}}طب سنتی, رگ گیری, رگ گیری طب سنتی, ثبت اختراع, آموزش ثبت اختراع, تسکین دردهای عضلانی, درمان اسپاسم, سرمایه گذاری هلدینگ, مشاوره تخصصی مدیریت, دکتر حسین طهوریان{{end}}">
     <meta name="author" content="دکتر حسین طهوریان">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-    <link rel="canonical" href="https://tahoorian.ir<%= typeof currentPath !== 'undefined' ? currentPath : '' %>">
+    <link rel="canonical" href="https://tahoorian.ir{{.CurrentPath}}">
 
     <!-- OpenGraph / Social Sharing Cards -->
     <meta property="og:site_name" content="دکتر حسین طهوریان | وب‌سایت رسمی">
-    <meta property="og:title" content="<%= title %>">
-    <meta property="og:description" content="<%= typeof description !== 'undefined' && description ? description : 'خدمات تخصصی طب سنتی و رگ‌گیری، هدایت ثبت اختراع، سرمایه‌گذاری هلدینگ و مشاوره تخصصی مدیریت با دکتر حسین طهوریان.' %>">
-    <meta property="og:type" content="<%= typeof ogType !== 'undefined' && ogType ? ogType : 'website' %>">
-    <meta property="og:url" content="https://tahoorian.ir<%= typeof currentPath !== 'undefined' ? currentPath : '' %>">
+    <meta property="og:title" content="{{.Title}}">
+    <meta property="og:description" content="{{if .Description}}{{.Description}}{{else}}خدمات تخصصی طب سنتی و رگ‌گیری، هدایت ثبت اختراع، سرمایه‌گذاری هلدینگ و مشاوره تخصصی مدیریت با دکتر حسین طهوریان.{{end}}">
+    <meta property="og:type" content="{{if .OGType}}{{.OGType}}{{else}}website{{end}}">
+    <meta property="og:url" content="https://tahoorian.ir{{.CurrentPath}}">
     <meta property="og:locale" content="fa_IR">
-    <meta property="og:image" content="<%= typeof ogImage !== 'undefined' && ogImage ? ogImage : '/static/images/download%20(1)-2.webp' %>">
+    <meta property="og:image" content="{{if .OGImage}}{{.OGImage}}{{else}}/static/images/download%20(1)-2.webp{{end}}">
 
     <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="<%= title %>">
-    <meta name="twitter:description" content="<%= typeof description !== 'undefined' && description ? description : 'دکتر حسین طهوریان — طب سنتی و رگ‌گیری، ثبت اختراع، سرمایه‌گذاری و مشاوره تخصصی مدیریت' %>">
-    <meta name="twitter:image" content="<%= typeof ogImage !== 'undefined' && ogImage ? ogImage : '/static/images/download%20(1)-2.webp' %>">
+    <meta name="twitter:title" content="{{.Title}}">
+    <meta name="twitter:description" content="{{if .Description}}{{.Description}}{{else}}دکتر حسین طهوریان — طب سنتی و رگ‌گیری، ثبت اختراع، سرمایه‌گذاری و مشاوره تخصصی مدیریت{{end}}">
+    <meta name="twitter:image" content="{{if .OGImage}}{{.OGImage}}{{else}}/static/images/download%20(1)-2.webp{{end}}">
 
     <!-- Schema.org JSON-LD Structured Data (Medical & Professional) -->
     <script type="application/ld+json">
@@ -128,12 +128,13 @@
         </defs>
     </svg>
 
-    <%- include('../partials/header') %>
+    {{template "header" .}}
     <main id="page-content">
-        <%- body %>
+        {{template "content" .}}
     </main>
-    <%- include('../partials/footer') %>
+    {{template "footer" .}}
     <script src="/static/js/main.js"></script>
     <script>window.addEventListener('DOMContentLoaded', function () { if (window.lucide) lucide.createIcons(); });</script>
 </body>
 </html>
+{{end}}

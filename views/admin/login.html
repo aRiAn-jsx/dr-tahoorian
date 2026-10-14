@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
+    <title>{{.Title}}</title>
     <link rel="icon" type="image/webp" href="/static/images/download%20(2).webp">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="/static/vendor/js/lucide.min.js"></script>
@@ -27,12 +27,12 @@
         <!-- Login Card -->
         <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-8 shadow-2xl backdrop-blur-md">
             
-            <% if (typeof error !== 'undefined' && error) { %>
+            {{if .Error}}
             <div class="mb-6 p-4 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm flex items-center gap-3">
                 <i data-lucide="alert-triangle" class="w-5 h-5 shrink-0"></i>
-                <div><%= error %></div>
+                <div>{{.Error}}</div>
             </div>
-            <% } %>
+            {{end}}
 
             <form action="/admin/login" method="POST" class="space-y-5">
                 <div>

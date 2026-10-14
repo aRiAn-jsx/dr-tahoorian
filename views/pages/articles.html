@@ -1,10 +1,7 @@
-<%
-  const articles = (typeof content !== 'undefined' && content.Articles) ? content.Articles : [];
-  const categories = (typeof content !== 'undefined' && content.Categories) ? content.Categories : [];
-  const categoryTitles = (typeof content !== 'undefined' && content.CategoryTitles) ? content.CategoryTitles : {};
-  const total = articles.length;
-%>
-
+{{define "content"}}
+{{$c := .Content}}
+{{$articles := $c.Articles}}
+{{$total := len $articles}}
 <link rel="stylesheet" href="/static/css/articles.css">
 
 <section class="ap">
@@ -14,7 +11,7 @@
         <header class="ap-hero">
             <span class="ap-hero__badge">
                 <i data-lucide="sparkles"></i>
-                <span id="ap-total"><%= total %> مقاله تخصصی</span>
+                <span id="ap-total">{{$total}} مقاله تخصصی</span>
             </span>
 
             <h1 class="ap-title">
@@ -47,16 +44,16 @@
                 <div class="ap-chips" role="tablist" aria-label="دسته‌بندی مقالات">
                     <button type="button" class="ap-chip is-active" data-cat="all">
                         <span>همه مقالات</span>
-                        <b><%= total %></b>
+                        <b>{{$total}}</b>
                     </button>
-                    <% if (categories && categories.length > 0) { %>
-                        <% categories.forEach(function(c) { %>
-                        <button type="button" class="ap-chip" data-cat="<%= c.slug %>">
-                            <span><%= c.title %></span>
-                            <b><%= c.count %></b>
+                    {{if $c.Categories}}
+                        {{range $cat := $c.Categories}}
+                        <button type="button" class="ap-chip" data-cat="{{$cat.Slug}}">
+                            <span>{{$cat.Title}}</span>
+                            <b>{{countCat $articles $cat.Slug}}</b>
                         </button>
-                        <% }); %>
-                    <% } %>
+                        {{end}}
+                    {{end}}
                 </div>
             </div>
 
@@ -69,37 +66,37 @@
 
         <!-- FAST ARTICLES GRID -->
         <div class="ap-body">
-            <% if (articles && articles.length > 0) { %>
+            {{if $articles}}
             <div class="ap-grid" id="ap-grid">
-                <% articles.forEach(function(art, i) { %>
+                {{range $art := $articles}}
                 <article class="ap-card"
-                         data-category="<%= art.category || 'general' %>"
-                         data-title="<%= art.title %>"
-                         data-summary="<%= art.summary || '' %>"
-                         data-author="<%= art.author %>">
-                    <a href="/articles/<%= art.slug %>" class="ap-card__link">
+                         data-category="{{if $art.Category}}{{$art.Category}}{{else}}general{{end}}"
+                         data-title="{{$art.Title}}"
+                         data-summary="{{$art.Summary}}"
+                         data-author="{{$art.Author}}">
+                    <a href="/articles/{{$art.Slug}}" class="ap-card__link">
                         <div class="ap-card__media">
-                            <% if (art.image_url) { %>
-                            <img src="<%= art.image_url %>" alt="<%= art.title %>" loading="lazy" decoding="async">
-                            <% } else { %>
+                            {{if $art.ImageURL}}
+                            <img src="{{$art.ImageURL}}" alt="{{$art.Title}}" loading="lazy" decoding="async">
+                            {{else}}
                             <span class="ap-card__ph"><i data-lucide="file-text"></i></span>
-                            <% } %>
+                            {{end}}
                             <span class="ap-card__cat">
-                                <%= (art.category && categoryTitles[art.category]) ? categoryTitles[art.category] : (art.category || 'عمومی') %>
+                                {{if $art.Category}}{{catTitle $c.Categories $art.Category}}{{else}}عمومی{{end}}
                             </span>
                         </div>
 
                         <div class="ap-card__body">
-                            <h2 class="ap-card__title"><%= art.title %></h2>
+                            <h2 class="ap-card__title">{{$art.Title}}</h2>
 
-                            <% if (art.summary) { %>
-                            <p class="ap-card__excerpt"><%= art.summary %></p>
-                            <% } %>
+                            {{if $art.Summary}}
+                            <p class="ap-card__excerpt">{{$art.Summary}}</p>
+                            {{end}}
 
                             <div class="ap-card__footer">
                                 <time class="ap-card__date">
                                     <i data-lucide="calendar"></i>
-                                    <%= art.formattedDate || '' %>
+                                    {{$art.FormattedDate}}
                                 </time>
                                 <span class="ap-card__more">
                                     <span>مطالعه مقاله</span>
@@ -109,7 +106,7 @@
                         </div>
                     </a>
                 </article>
-                <% }); %>
+                {{end}}
             </div>
 
             <!-- Empty (filtered) -->
@@ -125,7 +122,7 @@
                 </button>
             </div>
 
-            <% } else { %>
+            {{else}}
             <!-- Empty (no articles) -->
             <div class="ap-empty">
                 <span class="ap-empty__icon">
@@ -138,7 +135,7 @@
                     <i data-lucide="arrow-left"></i>
                 </a>
             </div>
-            <% } %>
+            {{end}}
         </div>
 
         <!-- COMPACT CTA -->
@@ -288,3 +285,4 @@
     }
 })();
 </script>
+{{end}}

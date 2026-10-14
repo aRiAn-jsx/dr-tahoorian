@@ -1,3 +1,5 @@
+{{define "content"}}
+{{$c := .Content}}
 <section class="hero-section">
     <div class="hero-wash" aria-hidden="true"></div>
     <div class="hero-inner">
@@ -308,7 +310,7 @@
     </div>
 </section>
 
-<% if (typeof content !== 'undefined' && content.Gallery && content.Gallery.length > 0) { %>
+{{if $c.Gallery}}
 <section class="portfolio-section portfolio-showcase">
     <div class="portfolio-bg-grid" aria-hidden="true"></div>
     <div class="section-shell">
@@ -321,50 +323,50 @@
         </div>
 
         <div class="portfolio-stage" x-data="{ active: 0 }">
-            <% content.Gallery.forEach(function(item, i) { %>
-            <article class="portfolio-card portfolio-card--<%= i === 0 ? 'featured' : 'compact' %>"
-                     @mouseenter="active = <%= i %>"
-                     @click="active = <%= i %>"
-                     :class="{ 'is-active': active === <%= i %> }">
+            {{range $i, $item := $c.Gallery}}
+            <article class="portfolio-card portfolio-card--{{if eq $i 0}}featured{{else}}compact{{end}}"
+                     @mouseenter="active = {{$i}}"
+                     @click="active = {{$i}}"
+                     :class="{ 'is-active': active === {{$i}} }">
                 <div class="portfolio-visual">
-                    <img src="<%= item.image_url %>" alt="<%= item.title %>" loading="lazy">
+                    <img src="{{$item.ImageURL}}" alt="{{$item.Title}}" loading="lazy">
                     <div class="portfolio-shine"></div>
                 </div>
                 <div class="portfolio-info">
-                    <span class="portfolio-number">۰<%= i + 1 %></span>
-                    <span class="portfolio-tag"><%= item.category %></span>
-                    <h3><%= item.title %></h3>
+                    <span class="portfolio-number">۰{{add $i 1}}</span>
+                    <span class="portfolio-tag">{{$item.Category}}</span>
+                    <h3>{{$item.Title}}</h3>
                     <p>برای مشاهده جزئیات پروژه، روی کارت کلیک کنید.</p>
                     <a href="/services" class="portfolio-link">مشاهده پروژه <i data-lucide="arrow-up-left"></i></a>
                 </div>
             </article>
-            <% }); %>
+            {{end}}
         </div>
 
         <div class="portfolio-progress">
-            <div class="portfolio-progress__bar" x-bind:style="`width: ${((active + 1) / <%= content.Gallery.length %>) * 100}%`"></div>
+            <div class="portfolio-progress__bar" x-bind:style="`width: ${((active + 1) / {{len $c.Gallery}}) * 100}%`"></div>
         </div>
     </div>
 </section>
-<% } %>
+{{end}}
 
-<% if (typeof content !== 'undefined' && content.Stats && content.Stats.length > 0) { %>
+{{if $c.Stats}}
 <section class="stats-section">
     <div class="section-shell">
         <div class="stats-intro"><span class="eyebrow">در یک نگاه</span><h2>تجربه‌ای که<br><em>عدد دارد</em></h2></div>
         <div class="stats-grid">
-            <% content.Stats.forEach(function(stat) { %>
+            {{range $stat := $c.Stats}}
             <div class="stat-item">
-                <div class="stat-value" x-data="{ count: 0 }" x-init="let target = <%= stat.value %>; let step = Math.ceil(target / 50); let interval = setInterval(() => { if (count < target) { count += step } else { count = target; clearInterval(interval) } }, 30)">
-                    <span x-text="count"><%= stat.value %></span><small><%= stat.suffix %></small>
+                <div class="stat-value" x-data="{ count: 0 }" x-init="let target = {{$stat.Value}}; let step = Math.ceil(target / 50); let interval = setInterval(() => { if (count < target) { count += step } else { count = target; clearInterval(interval) } }, 30)">
+                    <span x-text="count">{{$stat.Value}}</span><small>{{$stat.Suffix}}</small>
                 </div>
-                <p><%= stat.label %></p>
+                <p>{{$stat.Label}}</p>
             </div>
-            <% }); %>
+            {{end}}
         </div>
     </div>
 </section>
-<% } %>
+{{end}}
 
 <section class="contact-section contact-cards scroll-reveal">
     <div class="section-shell contact-cards-layout">
@@ -447,3 +449,4 @@
         </form>
     </div>
 </section>
+{{end}}

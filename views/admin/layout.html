@@ -1,9 +1,10 @@
+{{define "admin_layout"}}
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
+    <title>{{.Title}}</title>
     <link rel="icon" type="image/webp" href="/static/images/download%20(2).webp">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="/static/vendor/js/alpine.min.js"></script>
@@ -37,20 +38,20 @@
             <div class="flex-1 overflow-y-auto px-4 py-6 space-y-1.5">
                 <div class="px-3 pb-2 text-[11px] font-bold text-slate-400 uppercase tracking-wider">بخش اصلی</div>
                 
-                <a href="/admin/dashboard" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <%= (currentPath === '/admin' || currentPath === '/admin/dashboard') ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20' : 'text-slate-300 hover:bg-slate-800 hover:text-white' %>">
+                <a href="/admin/dashboard" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors {{if or (eq .CurrentPath "/admin") (eq .CurrentPath "/admin/dashboard")}}bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20{{else}}text-slate-300 hover:bg-slate-800 hover:text-white{{end}}">
                     <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
                     <span>داشبورد اصلی</span>
                 </a>
 
-                <a href="/admin/articles" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <%= (currentPath === '/admin/articles' || currentPath === '/admin/articles/new') ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20' : 'text-slate-300 hover:bg-slate-800 hover:text-white' %>">
+                <a href="/admin/articles" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors {{if or (eq .CurrentPath "/admin/articles") (eq .CurrentPath "/admin/articles/new")}}bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20{{else}}text-slate-300 hover:bg-slate-800 hover:text-white{{end}}">
                     <div class="flex items-center gap-3">
                         <i data-lucide="newspaper" class="w-5 h-5"></i>
                         <span>مدیریت مقالات</span>
                     </div>
-                    <span class="text-xs px-2 py-0.5 rounded-full <%= currentPath === '/admin/articles' ? 'bg-slate-950 text-white' : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' %> font-bold">فعال</span>
+                    <span class="text-xs px-2 py-0.5 rounded-full {{if eq .CurrentPath "/admin/articles"}}bg-slate-950 text-white{{else}}bg-emerald-500/20 text-emerald-400 border border-emerald-500/30{{end}} font-bold">فعال</span>
                 </a>
 
-                <a href="/admin/categories" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <%= (currentPath === '/admin/categories' || currentPath === '/admin/categories/new') ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20' : 'text-slate-300 hover:bg-slate-800 hover:text-white' %>">
+                <a href="/admin/categories" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors {{if or (eq .CurrentPath "/admin/categories") (eq .CurrentPath "/admin/categories/new")}}bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20{{else}}text-slate-300 hover:bg-slate-800 hover:text-white{{end}}">
                     <div class="flex items-center gap-3">
                         <i data-lucide="tags" class="w-5 h-5"></i>
                         <span>دسته‌بندی مقالات</span>
@@ -60,7 +61,7 @@
 
                 <div class="pt-6 px-3 pb-2 text-[11px] font-bold text-slate-400 uppercase tracking-wider">سایر بخش‌های سایت</div>
 
-                <a href="/admin/sections" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <%= currentPath === '/admin/sections' ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20' : 'text-slate-300 hover:bg-slate-800 hover:text-white' %>">
+                <a href="/admin/sections" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors {{if eq .CurrentPath "/admin/sections"}}bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20{{else}}text-slate-300 hover:bg-slate-800 hover:text-white{{end}}">
                     <div class="flex items-center gap-3">
                         <i data-lucide="layers" class="w-5 h-5"></i>
                         <span>مدیریت بخش‌ها</span>
@@ -102,7 +103,7 @@
                         <i data-lucide="menu" class="w-6 h-6"></i>
                     </button>
                     <div>
-                        <h1 class="text-lg font-black text-slate-900"><%= title %></h1>
+                        <h1 class="text-lg font-black text-slate-900">{{.Title}}</h1>
                         <p class="text-xs text-slate-400 hidden sm:block">سیستم جامع مدیریت محتوای وب‌سایت طهوریان</p>
                     </div>
                 </div>
@@ -120,21 +121,21 @@
             </header>
 
             <main class="flex-1 p-6 md:p-8 max-w-7xl w-full mx-auto space-y-6">
-                <% if (typeof error !== 'undefined' && error) { %>
+                {{if .Error}}
                 <div class="p-4 rounded-2xl bg-red-50 border border-red-200 text-red-700 flex items-center gap-3 text-sm">
                     <i data-lucide="alert-circle" class="w-5 h-5 text-red-500 shrink-0"></i>
-                    <div><%= error %></div>
+                    <div>{{.Error}}</div>
                 </div>
-                <% } %>
+                {{end}}
 
-                <% if (typeof success !== 'undefined' && success) { %>
+                {{if .Success}}
                 <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center gap-3 text-sm">
                     <i data-lucide="check-circle" class="w-5 h-5 text-emerald-500 shrink-0"></i>
-                    <div><%= success %></div>
+                    <div>{{.Success}}</div>
                 </div>
-                <% } %>
+                {{end}}
 
-                <%- body %>
+                {{template "admin_content" .}}
             </main>
 
             <footer class="py-4 px-6 text-center text-xs text-slate-400 border-t border-slate-200 bg-white">
@@ -147,7 +148,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             if (window.lucide) lucide.createIcons();
 
-            const sid = "<%= typeof sid !== 'undefined' ? sid : '' %>" || localStorage.getItem('admin_sid') || '';
+            const sid = "" || localStorage.getItem('admin_sid') || '';
             if (sid) {
                 try { localStorage.setItem('admin_sid', sid); } catch (e) {}
 
@@ -173,3 +174,4 @@
     </script>
 </body>
 </html>
+{{end}}

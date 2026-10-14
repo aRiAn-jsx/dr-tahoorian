@@ -1,3 +1,5 @@
+{{define "admin_content"}}
+{{$d := .Data}}
 <div class="space-y-6">
     
     <!-- Header Action Bar -->
@@ -30,43 +32,43 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
-                    <% if (data.Articles && data.Articles.length > 0) { %>
-                        <% data.Articles.forEach(function(art, i) { %>
+                    {{if $d.Articles}}
+                        {{range $i, $art := $d.Articles}}
                         <tr class="hover:bg-slate-50/70 transition">
-                            <td class="px-6 py-4 text-xs font-bold text-slate-400"><%= i + 1 %></td>
+                            <td class="px-6 py-4 text-xs font-bold text-slate-400">{{add $i 1}}</td>
                             <td class="px-6 py-4">
-                                <div class="font-bold text-slate-900 text-sm max-w-md"><%= art.title %></div>
-                                <div class="text-xs text-slate-400 font-mono mt-0.5" dir="ltr">/articles/<%= art.slug %></div>
-                                <% if (art.summary) { %>
-                                <div class="text-xs text-slate-500 mt-1 line-clamp-1 max-w-lg"><%= art.summary.length > 90 ? art.summary.substring(0, 90) + '...' : art.summary %></div>
-                                <% } %>
+                                <div class="font-bold text-slate-900 text-sm max-w-md">{{$art.Title}}</div>
+                                <div class="text-xs text-slate-400 font-mono mt-0.5" dir="ltr">/articles/{{$art.Slug}}</div>
+                                {{if $art.Summary}}
+                                <div class="text-xs text-slate-500 mt-1 line-clamp-1 max-w-lg">{{truncate $art.Summary 90}}</div>
+                                {{end}}
                             </td>
-                            <td class="px-6 py-4 text-slate-600 text-xs whitespace-nowrap"><%= art.author %></td>
+                            <td class="px-6 py-4 text-slate-600 text-xs whitespace-nowrap">{{$art.Author}}</td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <% if (art.is_published) { %>
+                                {{if $art.IsPublished}}
                                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
                                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                                     منتشرشده
                                 </span>
-                                <% } else { %>
+                                {{else}}
                                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200">
                                     <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
                                     پیش‌نویس
                                 </span>
-                                <% } %>
+                                {{end}}
                             </td>
-                            <td class="px-6 py-4 text-xs text-slate-500 whitespace-nowrap"><%= art.formattedDateShort || '' %></td>
-                            <td class="px-6 py-4 text-slate-500 text-xs whitespace-nowrap"><%= art.category ? art.category : '—' %></td>
+                            <td class="px-6 py-4 text-xs text-slate-500 whitespace-nowrap">{{$art.FormattedDateShort}}</td>
+                            <td class="px-6 py-4 text-slate-500 text-xs whitespace-nowrap">{{if $art.Category}}{{$art.Category}}{{else}}—{{end}}</td>
                             <td class="px-6 py-4 text-left whitespace-nowrap">
                                 <div class="inline-flex items-center gap-1.5">
-                                    <a href="/articles/<%= art.slug %>" target="_blank" class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition" title="مشاهده در سایت">
+                                    <a href="/articles/{{$art.Slug}}" target="_blank" class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition" title="مشاهده در سایت">
                                         <i data-lucide="external-link" class="w-4 h-4"></i>
                                     </a>
-                                    <a href="/admin/articles/edit/<%= art.id %>" class="p-2 text-amber-600 hover:bg-amber-50 rounded-xl transition font-medium" title="ویرایش">
+                                    <a href="/admin/articles/edit/{{$art.ID}}" class="p-2 text-amber-600 hover:bg-amber-50 rounded-xl transition font-medium" title="ویرایش">
                                         <i data-lucide="edit-3" class="w-4 h-4"></i>
                                     </a>
-                                    <form action="/admin/articles/delete/<%= art.id %>" method="POST" class="inline" onsubmit="return confirm('آیا از حذف این مقاله اطمینان دارید؟');">
-                                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                    <form action="/admin/articles/delete/{{$art.ID}}" method="POST" class="inline" onsubmit="return confirm('آیا از حذف این مقاله اطمینان دارید؟');">
+                                        <input type="hidden" name="_csrf" value="{{$.CSRFToken}}">
                                         <button type="submit" class="p-2 text-red-500 hover:bg-red-50 rounded-xl transition" title="حذف">
                                             <i data-lucide="trash-2" class="w-4 h-4"></i>
                                         </button>
@@ -74,8 +76,8 @@
                                 </div>
                             </td>
                         </tr>
-                        <% }); %>
-                    <% } else { %>
+                        {{end}}
+                    {{else}}
                     <tr>
                         <td colspan="7" class="px-6 py-16 text-center text-slate-400 text-sm">
                             <i data-lucide="newspaper" class="w-10 h-10 mx-auto mb-3 text-slate-300"></i>
@@ -85,9 +87,10 @@
                             </a>
                         </td>
                     </tr>
-                    <% } %>
+                    {{end}}
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+{{end}}

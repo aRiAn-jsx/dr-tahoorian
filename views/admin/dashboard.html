@@ -1,3 +1,5 @@
+{{define "admin_content"}}
+{{$d := .Data}}
 <div class="space-y-8">
     <!-- Welcome Banner -->
     <div class="bg-gradient-to-l from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-6 sm:p-8 text-white relative overflow-hidden border border-slate-800 shadow-lg">
@@ -28,7 +30,7 @@
         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
             <div>
                 <div class="text-xs font-bold text-slate-400">کل مقالات ثبت‌شده</div>
-                <div class="text-3xl font-black text-slate-900 mt-1"><%= data.TotalArticles %></div>
+                <div class="text-3xl font-black text-slate-900 mt-1">{{$d.TotalArticles}}</div>
             </div>
             <div class="w-12 h-12 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600">
                 <i data-lucide="newspaper" class="w-6 h-6"></i>
@@ -38,7 +40,7 @@
         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
             <div>
                 <div class="text-xs font-bold text-slate-400">مقالات منتشرشده</div>
-                <div class="text-3xl font-black text-emerald-600 mt-1"><%= data.PublishedArticles %></div>
+                <div class="text-3xl font-black text-emerald-600 mt-1">{{$d.PublishedArticles}}</div>
             </div>
             <div class="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600">
                 <i data-lucide="check-circle-2" class="w-6 h-6"></i>
@@ -48,7 +50,7 @@
         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
             <div>
                 <div class="text-xs font-bold text-slate-400">پیش‌نویس‌ها</div>
-                <div class="text-3xl font-black text-slate-500 mt-1"><%= data.DraftArticles %></div>
+                <div class="text-3xl font-black text-slate-500 mt-1">{{$d.DraftArticles}}</div>
             </div>
             <div class="w-12 h-12 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-600">
                 <i data-lucide="file-edit" class="w-6 h-6"></i>
@@ -58,7 +60,7 @@
         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
             <div>
                 <div class="text-xs font-bold text-slate-400">بخش‌های وب‌سایت</div>
-                <div class="text-3xl font-black text-blue-600 mt-1"><%= data.ActiveSections %> <span class="text-xs font-medium text-slate-400">از ۵</span></div>
+                <div class="text-3xl font-black text-blue-600 mt-1">{{with $d.ActiveSections}}{{.}}{{else}}۱{{end}} <span class="text-xs font-medium text-slate-400">از ۵</span></div>
             </div>
             <div class="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600">
                 <i data-lucide="layout-grid" class="w-6 h-6"></i>
@@ -94,50 +96,51 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
-                    <% if (data.RecentArticles && data.RecentArticles.length > 0) { %>
-                        <% data.RecentArticles.forEach(function(art) { %>
+                    {{if $d.RecentArticles}}
+                        {{range $art := $d.RecentArticles}}
                         <tr class="hover:bg-slate-50/60 transition">
                             <td class="px-6 py-4 font-bold text-slate-800 max-w-xs truncate">
-                                <%= art.title %>
-                                <div class="text-[11px] text-slate-400 font-mono font-normal">/articles/<%= art.slug %></div>
+                                {{$art.Title}}
+                                <div class="text-[11px] text-slate-400 font-mono font-normal">/articles/{{$art.Slug}}</div>
                             </td>
-                            <td class="px-6 py-4 text-slate-600 text-xs"><%= art.author %></td>
+                            <td class="px-6 py-4 text-slate-600 text-xs">{{$art.Author}}</td>
                             <td class="px-6 py-4">
-                                <% if (art.is_published) { %>
+                                {{if $art.IsPublished}}
                                 <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
                                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                                     منتشرشده
                                 </span>
-                                <% } else { %>
+                                {{else}}
                                 <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200">
                                     <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
                                     پیش‌نویس
                                 </span>
-                                <% } %>
+                                {{end}}
                             </td>
-                            <td class="px-6 py-4 text-xs text-slate-500"><%= art.formattedDateShort || '' %></td>
+                            <td class="px-6 py-4 text-xs text-slate-500">{{$art.FormattedDateShort}}</td>
                             <td class="px-6 py-4 text-left">
                                 <div class="inline-flex items-center gap-2">
-                                    <a href="/admin/articles/edit/<%= art.id %>" class="p-1.5 text-slate-600 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition" title="ویرایش">
+                                    <a href="/admin/articles/edit/{{$art.ID}}" class="p-1.5 text-slate-600 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition" title="ویرایش">
                                         <i data-lucide="edit-3" class="w-4 h-4"></i>
                                     </a>
-                                    <a href="/articles/<%= art.slug %>" target="_blank" class="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition" title="مشاهده">
+                                    <a href="/articles/{{$art.Slug}}" target="_blank" class="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition" title="مشاهده">
                                         <i data-lucide="external-link" class="w-4 h-4"></i>
                                     </a>
                                 </div>
                             </td>
                         </tr>
-                        <% }); %>
-                    <% } else { %>
+                        {{end}}
+                    {{else}}
                     <tr>
                         <td colspan="5" class="px-6 py-12 text-center text-slate-400 text-sm">
                             هنوز مقاله‌ای ثبت نشده است. 
                             <a href="/admin/articles/new" class="text-amber-600 font-bold hover:underline mr-1">نخستین مقاله را اضافه کنید.</a>
                         </td>
                     </tr>
-                    <% } %>
+                    {{end}}
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+{{end}}

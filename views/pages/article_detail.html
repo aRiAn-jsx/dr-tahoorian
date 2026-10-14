@@ -1,8 +1,6 @@
-<%
-  const art = content.Article;
-  const recentArticles = content.RecentArticles || [];
-%>
-
+{{define "content"}}
+{{$c := .Content}}
+{{$art := $c.Article}}
 <!-- Schema.org Article Structured Data (JSON-LD) -->
 <script type="application/ld+json">
 {
@@ -10,22 +8,22 @@
   "@graph": [
     {
       "@type": "Article",
-      "@id": "https://tahoorian.ir/articles/<%= art.slug %>#article",
+      "@id": "https://tahoorian.ir/articles/{{$art.Slug}}#article",
       "isPartOf": {
         "@type": "WebPage",
-        "@id": "https://tahoorian.ir/articles/<%= art.slug %>"
+        "@id": "https://tahoorian.ir/articles/{{$art.Slug}}"
       },
-      "headline": "<%= art.title %>",
-      "description": "<%= art.summary %>",
+      "headline": "{{$art.Title}}",
+      "description": "{{$art.Summary}}",
       "image": [
-        "https://tahoorian.ir<%= art.image_url %>"
+        "https://tahoorian.ir{{$art.ImageURL}}"
       ],
-      "datePublished": "<%= art.created_at ? new Date(art.created_at).toISOString() : '' %>",
-      "dateModified": "<%= art.updated_at ? new Date(art.updated_at).toISOString() : '' %>",
-      "mainEntityOfPage": "https://tahoorian.ir/articles/<%= art.slug %>",
+      "datePublished": "{{if not $art.CreatedAt.IsZero}}{{$art.CreatedAt.Format "2006-01-02T15:04:05Z07:00"}}{{end}}",
+      "dateModified": "{{if not $art.UpdatedAt.IsZero}}{{$art.UpdatedAt.Format "2006-01-02T15:04:05Z07:00"}}{{end}}",
+      "mainEntityOfPage": "https://tahoorian.ir/articles/{{$art.Slug}}",
       "author": {
         "@type": "Person",
-        "name": "<%= art.author %>",
+        "name": "{{$art.Author}}",
         "url": "https://tahoorian.ir/about",
         "jobTitle": "پژوهشگر طب سنتی، مخترع صنعتی و مشاور سرمایه‌گذاری هلدینگ"
       },
@@ -38,11 +36,11 @@
         }
       },
       "inLanguage": "fa-IR",
-      "keywords": "<%= art.keywords || '' %>"
+      "keywords": "{{$art.Keywords}}"
     },
     {
       "@type": "BreadcrumbList",
-      "@id": "https://tahoorian.ir/articles/<%= art.slug %>#breadcrumb",
+      "@id": "https://tahoorian.ir/articles/{{$art.Slug}}#breadcrumb",
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -59,8 +57,8 @@
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "<%= art.title %>",
-          "item": "https://tahoorian.ir/articles/<%= art.slug %>"
+          "name": "{{$art.Title}}",
+          "item": "https://tahoorian.ir/articles/{{$art.Slug}}"
         }
       ]
     }
@@ -78,7 +76,7 @@
                 <span>/</span>
                 <a href="/articles" class="hover:text-emerald-800 transition">مقالات</a>
                 <span>/</span>
-                <span class="text-slate-700 truncate max-w-xs"><%= art.title %></span>
+                <span class="text-slate-700 truncate max-w-xs">{{$art.Title}}</span>
             </div>
             <a href="/articles" class="text-amber-700 hover:text-amber-800 flex items-center gap-1 shrink-0 font-black">
                 <i data-lucide="arrow-right" class="w-4 h-4"></i>
@@ -91,55 +89,55 @@
             <div class="flex items-center gap-2.5 text-xs text-amber-700 font-bold mb-4 flex-wrap">
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
                     <i data-lucide="user-check" class="w-3.5 h-3.5 text-emerald-700"></i>
-                    <%= art.author %>
+                    {{$art.Author}}
                 </span>
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
                     <i data-lucide="calendar" class="w-3.5 h-3.5 text-slate-500"></i>
-                    <%= art.formattedDate || '' %>
+                    {{$art.FormattedDate}}
                 </span>
-                <% if (art.reading_time) { %>
+                {{if $art.ReadingTime}}
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200">
                     <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-600"></i>
-                    زمان مطالعه: <%= art.reading_time %>
+                    زمان مطالعه: {{$art.ReadingTime}}
                 </span>
-                <% } %>
+                {{end}}
             </div>
 
             <h1 class="text-2xl sm:text-4xl font-black text-slate-900 leading-tight tracking-tight mb-5">
-                <%= art.title %>
+                {{$art.Title}}
             </h1>
 
-            <% if (art.summary) { %>
+            {{if $art.Summary}}
             <div class="p-5 sm:p-6 rounded-2xl bg-amber-50/70 border-r-4 border-amber-500 text-slate-800 text-sm sm:text-base leading-relaxed font-medium shadow-sm">
                 <div class="text-xs font-bold text-amber-900 mb-1 flex items-center gap-1.5">
                     <i data-lucide="bookmark" class="w-3.5 h-3.5"></i>
                     چکیده و هدف مقاله:
                 </div>
-                <%= art.summary %>
+                {{$art.Summary}}
             </div>
-            <% } %>
+            {{end}}
         </header>
 
         <!-- Featured Image -->
-        <% if (art.image_url) { %>
+        {{if $art.ImageURL}}
         <div class="rounded-3xl overflow-hidden mb-10 shadow-md bg-slate-100 border border-slate-200/90 max-h-[460px]">
-            <img src="<%= art.image_url %>" alt="<%= art.title %>" class="w-full h-full object-cover">
+            <img src="{{$art.ImageURL}}" alt="{{$art.Title}}" class="w-full h-full object-cover">
         </div>
-        <% } %>
+        {{end}}
 
         <!-- Article Body -->
         <article class="bg-white rounded-3xl p-6 sm:p-12 border border-slate-200 shadow-sm">
             <div class="prose prose-slate max-w-none text-slate-800 text-base sm:text-lg leading-relaxed font-normal">
-                <%- art.content %>
+                {{safeHTML $art.Content}}
             </div>
 
             <!-- Footer / Author Bio -->
             <div class="mt-12 pt-8 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-6 bg-slate-50/70 p-6 rounded-2xl border">
                 <div class="flex items-center gap-4">
-                    <img src="/static/images/download%20(1)-2.webp" alt="<%= art.author %>" class="w-16 h-16 rounded-2xl object-cover bg-white border border-amber-300 shadow-sm">
+                    <img src="/static/images/download%20(1)-2.webp" alt="{{$art.Author}}" class="w-16 h-16 rounded-2xl object-cover bg-white border border-amber-300 shadow-sm">
                     <div>
                         <div class="font-black text-slate-900 text-base flex items-center gap-1.5">
-                            <span><%= art.author %></span>
+                            <span>{{$art.Author}}</span>
                             <i data-lucide="badge-check" class="w-4 h-4 text-emerald-600"></i>
                         </div>
                         <div class="text-xs text-slate-600 mt-1">پژوهشگر طب سنتی، مخترع ۵ پتنت رسمی، مشاور سرمایه‌گذاری هلدینگ</div>
@@ -153,7 +151,7 @@
         </article>
 
         <!-- Recent Articles Navigation -->
-        <% if (recentArticles && recentArticles.length > 0) { %>
+        {{if $c.Related}}
         <div class="mt-14">
             <div class="flex items-center justify-between mb-6">
                 <h3 class="text-xl font-black text-slate-900">سایر مقالات تخصصی</h3>
@@ -163,15 +161,16 @@
                 </a>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <% recentArticles.forEach(function(rec) { %>
-                <a href="/articles/<%= rec.slug %>" class="block p-5 rounded-2xl bg-white border border-slate-200 hover:border-amber-400 transition shadow-sm hover:shadow-md group">
-                    <span class="text-[11px] text-slate-500 font-bold block mb-1.5"><%= rec.formattedDate || '' %></span>
-                    <h4 class="text-sm font-bold text-slate-900 group-hover:text-amber-700 transition leading-snug"><%= rec.title %></h4>
+                {{range $rec := $c.Related}}
+                <a href="/articles/{{$rec.Slug}}" class="block p-5 rounded-2xl bg-white border border-slate-200 hover:border-amber-400 transition shadow-sm hover:shadow-md group">
+                    <span class="text-[11px] text-slate-500 font-bold block mb-1.5">{{$rec.FormattedDate}}</span>
+                    <h4 class="text-sm font-bold text-slate-900 group-hover:text-amber-700 transition leading-snug">{{$rec.Title}}</h4>
                 </a>
-                <% }); %>
+                {{end}}
             </div>
         </div>
-        <% } %>
+        {{end}}
 
     </div>
 </section>
+{{end}}

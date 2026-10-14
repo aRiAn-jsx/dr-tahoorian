@@ -1,7 +1,5 @@
-<%
-  const packages = (typeof content !== 'undefined' && content.Packages) ? content.Packages : [];
-%>
-
+{{define "content"}}
+{{$c := .Content}}
 <link rel="stylesheet" href="/static/css/services.css">
 
 <section class="srv-page">
@@ -64,76 +62,76 @@
             </div>
 
             <div class="srv-cards-grid">
-                <% if (packages && packages.length > 0) { %>
-                    <% packages.forEach(function(pkg) { %>
-                    <article class="srv-card-glass <%= pkg.isFeatured ? 'srv-card-glass--featured' : '' %>">
-                        <% if (pkg.isFeatured) { %>
+                {{if $c.Packages}}
+                    {{range $pkg := $c.Packages}}
+                    <article class="srv-card-glass {{if $pkg.IsFeatured}}srv-card-glass--featured{{end}}">
+                        {{if $pkg.IsFeatured}}
                         <div class="srv-card-ribbon">
                             <i data-lucide="crown"></i>
                             <span>پیشنهاد اول مدیران عامل</span>
                         </div>
-                        <% } %>
+                        {{end}}
 
                         <div>
                             <div class="srv-card-top">
-                                <div class="srv-card-gem srv-card-gem--<%= pkg.theme || 'gold' %>">
-                                    <i data-lucide="<%= pkg.icon || 'star' %>"></i>
+                                <div class="srv-card-gem srv-card-gem--{{if $pkg.Theme}}{{$pkg.Theme}}{{else}}gold{{end}}">
+                                    <i data-lucide="{{if $pkg.Icon}}{{$pkg.Icon}}{{else}}star{{end}}"></i>
                                 </div>
                                 <div>
-                                    <span class="srv-card-badge-txt"><%= pkg.tag %></span>
-                                    <h3 class="srv-card-name"><%= pkg.title %></h3>
+                                    <span class="srv-card-badge-txt">{{$pkg.Tag}}</span>
+                                    <h3 class="srv-card-name">{{$pkg.Title}}</h3>
                                 </div>
                             </div>
 
-                            <span class="srv-card-latin"><%= pkg.latinTitle %></span>
-                            <p class="srv-card-desc"><%= pkg.description %></p>
+                            <span class="srv-card-latin">{{$pkg.LatinTitle}}</span>
+                            <p class="srv-card-desc">{{$pkg.Description}}</p>
 
                             <!-- Target Audience -->
                             <div class="srv-card-audience">
-                                <strong>مناسب برای:</strong> <%= pkg.audience %>
+                                <strong>مناسب برای:</strong> {{$pkg.Audience}}
                             </div>
 
                             <!-- Key Features -->
                             <div class="srv-card-features">
-                                <% if (pkg.features && pkg.features.length) { %>
-                                    <% pkg.features.slice(0, 4).forEach(function(feat) { %>
+                                {{if $pkg.Features}}
+                                    {{range $feat := firstN 4 $pkg.Features}}
                                     <div class="srv-card-feat">
                                         <i data-lucide="check-circle-2"></i>
-                                        <span><%= feat %></span>
+                                        <span>{{$feat}}</span>
                                     </div>
-                                    <% }); %>
-                                <% } %>
+                                    {{end}}
+                                {{end}}
                             </div>
 
                             <!-- Deliverables Seal Box -->
-                            <% if (pkg.deliverables && pkg.deliverables.length) { %>
+                            {{if $pkg.Deliverables}}
                             <div class="srv-card-deliv-box">
                                 <div class="srv-card-deliv-box__head">
                                     <i data-lucide="stamp"></i>
                                     <span>خروجی ملموس و سند تحویلی:</span>
                                 </div>
                                 <div class="srv-card-deliv-box__list">
-                                    <%= pkg.deliverables.join(' · ') %>
+                                    {{join " · " $pkg.Deliverables}}
                                 </div>
                             </div>
-                            <% } %>
+                            {{end}}
                         </div>
 
                         <!-- Card Footer -->
                         <div class="srv-card-footer">
                             <div class="srv-card-meta-txt">
-                                <span>طول دوره: <strong><%= pkg.sessions.split('(')[0] %></strong></span>
-                                <span>محل برگزاری: <strong><%= pkg.location.split('/')[0] %></strong></span>
+                                <span>طول دوره: <strong>{{before $pkg.Sessions "("}}</strong></span>
+                                <span>محل برگزاری: <strong>{{before $pkg.Location "/"}}</strong></span>
                             </div>
 
-                            <a href="/contact?pkg=<%= encodeURIComponent(pkg.title) %>" class="srv-btn-glass-cta">
-                                <span><%= pkg.actionText %></span>
+                            <a href="/contact?pkg={{$pkg.Title}}" class="srv-btn-glass-cta">
+                                <span>{{$pkg.ActionText}}</span>
                                 <i data-lucide="arrow-up-left"></i>
                             </a>
                         </div>
                     </article>
-                    <% }); %>
-                <% } %>
+                    {{end}}
+                {{end}}
             </div>
 
         </div>
@@ -231,3 +229,4 @@ window.addEventListener('DOMContentLoaded', function () {
     }
 });
 </script>
+{{end}}

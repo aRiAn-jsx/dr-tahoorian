@@ -8,6 +8,7 @@ import (
 	"dr-tahoorian/internal/service"
 	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 	"path/filepath"
 	"strconv"
@@ -55,14 +56,16 @@ func (h *Handler) renderPage(w http.ResponseWriter, pageName string, data PageDa
 	headerPath := filepath.Join(h.tmplDir, "partials", "header.html")
 	footerPath := filepath.Join(h.tmplDir, "partials", "footer.html")
 
-	t, err := template.ParseFiles(basePath, tmplPath, headerPath, footerPath)
+	t, err := template.New("").Funcs(funcMap).ParseFiles(basePath, tmplPath, headerPath, footerPath)
 	if err != nil {
 		http.Error(w, "Template error: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	_ = t.ExecuteTemplate(w, "base", data)
+	if err := t.ExecuteTemplate(w, "base", data); err != nil {
+		log.Printf("render %s: %v", pageName, err)
+	}
 }
 
 func (h *Handler) renderAdmin(w http.ResponseWriter, r *http.Request, adminView string, data PageData) {
@@ -72,14 +75,16 @@ func (h *Handler) renderAdmin(w http.ResponseWriter, r *http.Request, adminView 
 	layoutPath := filepath.Join(h.tmplDir, "admin", "layout.html")
 	viewPath := filepath.Join(h.tmplDir, "admin", adminView+".html")
 
-	t, err := template.ParseFiles(layoutPath, viewPath)
+	t, err := template.New("").Funcs(funcMap).ParseFiles(layoutPath, viewPath)
 	if err != nil {
 		http.Error(w, "Admin template error: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	_ = t.ExecuteTemplate(w, "admin_layout", data)
+	if err := t.ExecuteTemplate(w, "admin_layout", data); err != nil {
+		log.Printf("render admin/%s: %v", adminView, err)
+	}
 }
 
 func (h *Handler) HandleHome(w http.ResponseWriter, r *http.Request) {
@@ -185,6 +190,9 @@ func (h *Handler) HandleTeam(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) HandleContact(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	contactInfo, _ := h.repo.GetContactInfo(ctx)
+	if contactInfo == nil {
+		contactInfo = &domain.ContactInfo{}
+	}
 	h.renderPage(w, "contact", PageData{
 		Title:       "تماس با دکتر حسین طهوریان | دریافت نوبت و مشاوره",
 		Description: "راه‌های ارتباطی، نشانی دفتر مرکزی و فرم تماس جهت رزرو وقت معاینه طب سنتی، مشاوره سرمایه‌گذاری و راهبری هلدینگ.",
@@ -293,6 +301,10 @@ func (h *Handler) HandleAdminDashboard(w http.ResponseWriter, r *http.Request) {
 			pubCount++
 		}
 	}
+	recent := articles
+	if len(recent) > 5 {
+		recent = recent[:5]
+	}
 	h.renderAdmin(w, r, "dashboard", PageData{
 		Title:       "داشبورد مدیریت | طهوریان",
 		CurrentPath: "/admin/dashboard",
@@ -300,7 +312,7 @@ func (h *Handler) HandleAdminDashboard(w http.ResponseWriter, r *http.Request) {
 			"TotalArticles":     len(articles),
 			"PublishedArticles": pubCount,
 			"DraftArticles":     len(articles) - pubCount,
-			"RecentArticles":    articles,
+			"RecentArticles":    recent,
 		},
 	})
 }
@@ -326,6 +338,7 @@ func (h *Handler) HandleAdminArticleCreate(w http.ResponseWriter, r *http.Reques
 			CurrentPath: "/admin/articles/new",
 			Data: map[string]interface{}{
 				"IsNew":      true,
+				"Article":    &domain.Article{Author: "دکتر حسین طهوریان"},
 				"Categories": cats,
 			},
 		})

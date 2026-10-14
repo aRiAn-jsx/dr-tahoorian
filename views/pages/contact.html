@@ -1,18 +1,6 @@
-<%
-  let phone = "02122014567";
-  let phoneLabel = "۰۲۱-۲۲۰۱۴۵۶۷";
-  let email = "info@tahoorian.ir";
-  let address = "خیابان ولیعصر، برج تجاری آرین، طبقه ۱۲";
-  let hours = "شنبه تا چهارشنبه ۹:۰۰ الی ۱۷:۰۰";
-
-  if (typeof content !== 'undefined' && content) {
-    if (content.phone) { phone = content.phone; phoneLabel = content.phone; }
-    if (content.email) { email = content.email; }
-    if (content.address) { address = content.address; }
-    if (content.work_hours) { hours = content.work_hours; }
-  }
-%>
-
+{{define "content"}}
+{{$c := .Content}}
+{{$ci := $c.ContactInfo}}
 <link rel="stylesheet" href="/static/css/contant.css">
 
 <div class="contact-page">
@@ -141,14 +129,14 @@
                     </p>
 
                     <!-- Phone -->
-                    <a class="channel-glass channel-glass--link" href="tel:<%= phone %>">
+                    <a class="channel-glass channel-glass--link" href="tel:{{tel $ci.Phone}}">
                         <span class="channel-glass__icon">
                             <i data-lucide="phone-call"></i>
                             <span class="channel-glass__pulse"></span>
                         </span>
                         <div class="channel-glass__body">
                             <small>تماس تلفنی و هماهنگی</small>
-                            <strong><%= phoneLabel %></strong>
+                            <strong>{{$ci.Phone}}</strong>
                             <em>پاسخگویی شنبه تا چهارشنبه</em>
                         </div>
                         <span class="channel-glass__go">
@@ -157,13 +145,13 @@
                     </a>
 
                     <!-- Email -->
-                    <a class="channel-glass channel-glass--link" href="mailto:<%= email %>">
+                    <a class="channel-glass channel-glass--link" href="mailto:{{$ci.Email}}">
                         <span class="channel-glass__icon">
                             <i data-lucide="mail"></i>
                         </span>
                         <div class="channel-glass__body">
                             <small>مکاتبات رسمی</small>
-                            <strong dir="ltr"><%= email %></strong>
+                            <strong dir="ltr">{{$ci.Email}}</strong>
                             <em>ارسال پیشنهاد و دعوت‌نامه</em>
                         </div>
                         <span class="channel-glass__go">
@@ -178,7 +166,7 @@
                         </span>
                         <div class="channel-glass__body">
                             <small>دفتر مرکزی</small>
-                            <strong><%= address %></strong>
+                            <strong>{{$ci.Address}}</strong>
                             <em>پذیرش حضوری با وقت قبلی</em>
                         </div>
                     </div>
@@ -190,7 +178,7 @@
                         </span>
                         <div class="channel-glass__body">
                             <small>ساعات کاری</small>
-                            <strong><%= hours %></strong>
+                            <strong>{{$ci.WorkHours}}</strong>
                             <em>فرم آنلاین ۲۴ ساعته فعال است</em>
                         </div>
                     </div>
@@ -395,3 +383,4 @@
     });
 })();
 </script>
+{{end}}
